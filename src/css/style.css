@@ -1,0 +1,49 @@
+body{
+    background-color: rgb(218, 223, 221);
+    
+}
+
+.nav-link{
+    font-size: 18px !important;
+    color: #000000;
+}
+
+.container-index{
+    color: #2e2e2e !important;
+    background-color: #f0f2f5 !important;
+}
+
+.title-index{
+    color: #58af9b !important;
+}
+
+#navbar-header .nav-link:hover {
+    color: #58af9b !important; 
+    
+  }
+
+  .btn-register{
+    border: 2px solid #58af9b !important;
+
+  }.btn-register:hover{
+    transition: 0.3s;
+    color: #fff !important;
+    background-color: #58af9b !important;
+  }
+
+  .btn-login{
+    color: #fff !important;
+    background-color: #58af9b !important;
+  }.btn-login:hover{
+    transition: 0.3s;
+    background-color: #3e8070 !important;
+
+  }
+
+  
+ 
+
+
+
+
+  
