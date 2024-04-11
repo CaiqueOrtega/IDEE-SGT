@@ -24,7 +24,7 @@
 
             <div class="card-body bg-white container-fluid">
                 <div class="container py-5">
-                    <form id="userRegister" method="POST" action="/projeto/pages/register/controller/create.php">
+                    <form id="userRegister" method="POST" action="/IDEE-SGT/pages/register/controller/create.php">
                     <div class="msg"></div>
                 <div class="row ">
                     
@@ -141,7 +141,7 @@
 
                                 var loginLink = $('<a>').text('Entrar na conta')
                                     .addClass('btn btn-sm mt-3 btn-login')
-                                    .attr('href', '/projeto/pages/login/login.php');
+                                    .attr('href', '/IDEE-SGT/pages/login/login.php');
 
                                
                                 $('.btn-login').replaceWith(loginLink);

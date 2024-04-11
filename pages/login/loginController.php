@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ];
 
                 
-                $resp = ['msg' => 'Login efetuado com sucesso', 'status' => 200, 'redirect' => '/projeto/pages/dashboard.php'];
+                $resp = ['msg' => 'Login efetuado com sucesso', 'status' => 200, 'redirect' => '/IDEE-SGT/pages/dashboard.php'];
             
             } else {
                 $resp = ['msg' => 'E-mail ou Senha inválida', 'status' => 403];
@@ -52,6 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if (isset($_GET['logout']) && isset($_SESSION['login'])) {
     session_unset();
     session_destroy();
-    header("Location: /projeto/home.php");
+    header("Location: /IDEE-SGT/home.php");
     exit();
 } 

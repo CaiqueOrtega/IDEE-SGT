@@ -133,7 +133,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/projeto/pages/training/controller/create.php",
+            url: "/IDEE-SGT/pages/training/controller/create.php",
             data: formData,
             success: function (response) {
                 if (response.status !== 200) {
@@ -157,7 +157,7 @@ $(document).ready(function () {
                     errorModal.show();
                     $.ajax({
                         type: 'GET',
-                        url: '/projeto/pages/training/tableTraining.php',
+                        url: '/IDEE-SGT/pages/training/tableTraining.php',
                         success: function (newTableHTML) {
                             $('#tabelaTraining').replaceWith(newTableHTML);
 
@@ -205,7 +205,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '/projeto/pages/training/controller/delete.php',
+            url: '/IDEE-SGT/pages/training/controller/delete.php',
             data: { token: token },
             success: function (response) {
                 if (response.status == 400) {
@@ -221,7 +221,7 @@ $(document).ready(function () {
                 } else {
                     $.ajax({
                         type: 'GET',
-                        url: '/projeto/pages/training/tableTraining.php',
+                        url: '/IDEE-SGT/pages/training/tableTraining.php',
                         success: function (newTableHTML) {
                             $('#tabelaTraining').replaceWith(newTableHTML);
 
@@ -259,7 +259,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '/projeto/pages/training/modalUpdateTraining.php',
+            url: '/IDEE-SGT/pages/training/modalUpdateTraining.php',
             data: { token: tokenTreinamento },
             success: function (response) {
 
@@ -316,7 +316,7 @@ function loadUpdateScript() {
             editedData['tokenTreinamento'] = tokenTreinamento;
 
             $.ajax({
-                url: "/projeto/pages/training/controller/update.php",
+                url: "/IDEE-SGT/pages/training/controller/update.php",
                 method: "POST",
                 data: editedData,
                 success: function (response) {
@@ -329,7 +329,7 @@ function loadUpdateScript() {
                         console.log(response);
                         $.ajax({
                             type: 'GET',
-                            url: '/projeto/pages/training/tableTraining.php',
+                            url: '/IDEE-SGT/pages/training/tableTraining.php',
                             success: function (newTableHTML) {
                                 $('#tabelaTraining').replaceWith(newTableHTML);
 

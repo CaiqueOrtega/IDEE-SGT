@@ -28,7 +28,7 @@
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
 
-                                    <form id="login" method="POST" action="/projeto/pages/login/loginController.php">
+                                    <form id="login" method="POST" action="/IDEE-SGT/pages/login/loginController.php">
                                         <div class="d-flex justify-content-between mb-3 pb-1">
                                             <span class="h5 fw-bold mb-0 mt-2" style="color: #58af9b;"><i class="fa fa-user" style="color: #58af9b;">
                                                 </i> Entre na sua conta

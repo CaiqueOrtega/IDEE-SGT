@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (logoutButton) {
         logoutButton.addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = "/projeto/pages/login/loginController.php?logout";
+            window.location.href = "/IDEE-SGT/pages/login/loginController.php?logout";
         });
     }
 

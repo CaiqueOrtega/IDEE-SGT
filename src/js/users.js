@@ -4,7 +4,7 @@ function openModal(tokenUsuario) {
 
     $.ajax({
         type: 'POST',
-        url: '/projeto/pages/users/modalUsers.php',
+        url: '/IDEE-SGT/pages/users/modalUsers.php',
         data: {
             tokenUsuario: tokenUsuario
         },
@@ -53,7 +53,7 @@ $(document).on('click', '#confirmarUpdatePermissaoBtn', function () {
 
     $.ajax({
         type: 'POST',
-        url: '/projeto/pages/users/controller/update.php',
+        url: '/IDEE-SGT/pages/users/controller/update.php',
         data: {
             tokenUsuario: tokenTabela,
             tokenPermissao: tokenSelect
@@ -75,7 +75,7 @@ $(document).on('click', '#confirmarUpdatePermissaoBtn', function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/projeto/pages/users/modalUsers.php',
+                    url: '/IDEE-SGT/pages/users/modalUsers.php',
                     data: {
                         tokenUsuario: tokenTabela
                     },

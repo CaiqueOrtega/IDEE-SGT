@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09-Abr-2024 às 20:15
+-- Tempo de geração: 11-Abr-2024 às 22:33
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `banco`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `aluno`
+--
+
+CREATE TABLE `aluno` (
+  `id` int(11) NOT NULL,
+  `id_funcionario_fk` int(11) UNSIGNED NOT NULL,
+  `turma_aluno_fk` int(10) UNSIGNED NOT NULL,
+  `nota` decimal(10,2) DEFAULT NULL,
+  `frequencia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `aluno`
+--
+
+INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) VALUES
+(2, 79, 31, NULL, 100),
+(3, 80, 31, NULL, 100),
+(4, 81, 31, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -57,7 +80,8 @@ CREATE TABLE `empresa_cliente` (
 INSERT INTO `empresa_cliente` (`id`, `razao_social`, `nome_fantasia`, `email`, `cnpj`, `telefone`, `usuario_id`) VALUES
 (117, 'Mpl industria e comercio de roupas ltda', 'Paco nine dado e m pollo', 'larissaqueiroz@gestaoapice.com.br', '08.007.677/0004-06', '(62) 3277-9900', 44),
 (118, 'Ocw saude e seguranca do trabalho ltda', 'Idee saude e seguranca do trabalho', 'ortegaengseg@outlook.com', '45.221.565/0001-37', '(44) 9914-7571', 45),
-(119, 'Textil canatiba ltda', 'Canatiba', 'canatiba@canatiba.com', '56.723.091/0001-48', '(19) 3459-4000', 44);
+(119, 'Textil canatiba ltda', 'Canatiba', 'canatiba@canatiba.com', '56.723.091/0001-48', '(19) 3459-4000', 44),
+(120, 'Sancris linhas e fios ltda', 'Sancris linhas e fios ltda', 'siscon@siscon.cnt.br', '80.446.990/0010-16', '(44) 3024-9373', 44);
 
 -- --------------------------------------------------------
 
@@ -78,7 +102,8 @@ CREATE TABLE `empresa_cliente_cargo` (
 INSERT INTO `empresa_cliente_cargo` (`id`, `nome`, `empresa_id`) VALUES
 (129, 'Teste', 117),
 (130, 'qteste', 118),
-(131, 'teste ', 119);
+(131, 'teste ', 119),
+(132, 'Gestor de Compras ', 120);
 
 -- --------------------------------------------------------
 
@@ -99,7 +124,8 @@ CREATE TABLE `empresa_cliente_departamento` (
 INSERT INTO `empresa_cliente_departamento` (`id`, `nome`, `empresa_id`) VALUES
 (102, 'Rh', 117),
 (103, 'teste', 118),
-(104, 'compras', 119);
+(104, 'compras', 119),
+(105, 'Compras', 120);
 
 -- --------------------------------------------------------
 
@@ -129,7 +155,8 @@ INSERT INTO `empresa_cliente_funcionario` (`id`, `empresa_id`, `nome_funcionario
 (79, 118, 'teste', 'marcos@marcos.com', '(44) 9-9969-6842', 'F', '182.311.304-46', 2, 130, 103),
 (80, 118, 'caique', 'caique@caique.com', '(44) 9-9969-6842', 'F', '940.873.387-89', 3, 130, 103),
 (81, 118, 'jao ', 'joao@joao.com', '(32) 7-7990-0652', 'M', '603.683.582-59', 4, 130, 103),
-(82, 119, 'Joao zoi', 'jao@jao.com', '(36) 4-3535-2865', 'M', '665.754.742-09', 3, 131, 104);
+(82, 119, 'Joao zoi', 'jao@jao.com', '(36) 4-3535-2865', 'M', '665.754.742-09', 3, 131, 104),
+(83, 120, 'marcia', 'marcia@marcia.com', '(44) 9-5652-9652', 'F', '932.656.220-45', 1, 132, 105);
 
 -- --------------------------------------------------------
 
@@ -144,6 +171,15 @@ CREATE TABLE `ficha_inscricao` (
   `empresa_id` int(10) UNSIGNED NOT NULL,
   `data_realizacao` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `ficha_inscricao`
+--
+
+INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
+(227, '[{\"id\":\"83\"}]', 25, 120, '2024-04-09'),
+(228, '[{\"id\":\"78\"}]', 24, 117, '2024-04-10'),
+(229, '[{\"id\":\"79\"},{\"id\":\"80\"},{\"id\":\"81\"}]', 24, 118, '2024-04-11');
 
 -- --------------------------------------------------------
 
@@ -226,11 +262,30 @@ INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `
 
 CREATE TABLE `turma` (
   `id` int(10) UNSIGNED NOT NULL,
-  `funcionarios_alunos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`funcionarios_alunos`)),
   `treinamento_id` int(11) UNSIGNED NOT NULL,
-  `frequencia` int(11) NOT NULL,
-  `nota` decimal(10,2) NOT NULL
+  `empresa_aluno` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `turma`
+--
+
+INSERT INTO `turma` (`id`, `treinamento_id`, `empresa_aluno`) VALUES
+(17, 24, '117'),
+(18, 24, '117'),
+(19, 24, '117'),
+(20, 24, '118'),
+(21, 24, '118'),
+(22, 24, '118'),
+(23, 24, '118'),
+(24, 24, '118'),
+(25, 24, '118'),
+(26, 24, '118'),
+(27, 24, '118'),
+(28, 24, '118'),
+(29, 24, '118'),
+(30, 24, '118'),
+(31, 24, '118');
 
 -- --------------------------------------------------------
 
@@ -257,6 +312,14 @@ INSERT INTO `usuario` (`id`, `data_nascimento`, `cpf`, `telefone`, `genero`) VAL
 --
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices para tabela `aluno`
+--
+ALTER TABLE `aluno`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `turma_id_aluno_fk` (`turma_aluno_fk`),
+  ADD KEY `funcionario_id_fk` (`id_funcionario_fk`);
 
 --
 -- Índices para tabela `colaborador`
@@ -342,6 +405,12 @@ ALTER TABLE `usuario`
 --
 
 --
+-- AUTO_INCREMENT de tabela `aluno`
+--
+ALTER TABLE `aluno`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de tabela `colaborador`
 --
 ALTER TABLE `colaborador`
@@ -351,31 +420,31 @@ ALTER TABLE `colaborador`
 -- AUTO_INCREMENT de tabela `empresa_cliente`
 --
 ALTER TABLE `empresa_cliente`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente_cargo`
 --
 ALTER TABLE `empresa_cliente_cargo`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente_departamento`
 --
 ALTER TABLE `empresa_cliente_departamento`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente_funcionario`
 --
 ALTER TABLE `empresa_cliente_funcionario`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=230;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -393,7 +462,7 @@ ALTER TABLE `treinamento`
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
@@ -404,6 +473,13 @@ ALTER TABLE `usuario`
 --
 -- Restrições para despejos de tabelas
 --
+
+--
+-- Limitadores para a tabela `aluno`
+--
+ALTER TABLE `aluno`
+  ADD CONSTRAINT `funcionario_id_fk` FOREIGN KEY (`id_funcionario_fk`) REFERENCES `empresa_cliente_funcionario` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `turma_id_aluno_fk` FOREIGN KEY (`turma_aluno_fk`) REFERENCES `turma` (`id`) ON DELETE CASCADE;
 
 --
 -- Limitadores para a tabela `colaborador`

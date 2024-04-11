@@ -3,7 +3,7 @@
 
 session_start();
 if(!isset($_SESSION['login'])){
-    header('Location: /projeto/home.php');
+    header('Location: /IDEE-SGT/home.php');
     exit;
 }
 
