@@ -138,7 +138,30 @@
                 </div>
 
                 <div class="modal-footer d-flex justify-content-end mt-5">
-                    <button type="submit" class="btn btn-login" id="confirmarInsertCompanyBtn">Confirmar</button>
+                    <button type="submit" class="btn btn-login" id="confirmarInsertClassBtn" data-token="<?php echo $tokenInscricao; ?>">Confirmar</button>
+
+                    <script>
+                        $(document).ready(function() {
+                            $('#confirmarInsertClassBtn').click(function() {
+                                var tokenFicha = $('#confirmarInsertClassBtn').data("token");
+
+                                $.ajax({
+                                    url: 'class/controller/createClass.php',
+                                    method: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        tokenFicha: tokenFicha
+                                    },
+                                    success: function(response) {
+                                        console.log("sucess")
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(xhr.responseText);
+                                    }
+                                });
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -212,7 +235,3 @@
 
     </div>
 </div>
-
-
-
-
