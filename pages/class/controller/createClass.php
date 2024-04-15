@@ -8,12 +8,10 @@ header('Content-Type: application/json');
 
 $connection = new Database();
 
-
 if (!isset($_POST['tokenFicha'])) {
     echo json_encode(['msg' => 'Dados ausentes', 'status' => 400]);
     exit();
 }
-
 
 $tokenFicha = $_POST['tokenFicha'];
 
@@ -25,77 +23,114 @@ try {
 }
 
 try {
-
-    $stmt = $connection->connection()->prepare("SELECT * FROM ficha_inscricao WHERE  id = :idFichaInscricao");
+    $stmt = $connection->connection()->prepare("SELECT * FROM ficha_inscricao WHERE id = :idFichaInscricao");
     $stmt->bindParam(':idFichaInscricao', $idFichaInscricao);
     $stmt->execute();
 
-    
     if ($stmt->rowCount() > 0) {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $funcionarioId = $result['funcionarios'];
         $treinamentoId = $result['treinamento_id'];
         $empresaId = $result['empresa_id'];
 
-        $turmaId = classRegister($connection, $treinamentoId, $empresaId);
+        // Chama a função classRegister para cadastrar a turma e obter o ID
+        $turmaResult = classRegister($connection, $treinamentoId, $empresaId);
+        $turmaResultDecoded = json_decode($turmaResult, true);
 
-        studentRegister($connection, $funcionarioId, $turmaId );
-      
-        
+        if ($turmaResultDecoded['status'] === 200) {
+            $turmaId = $turmaResultDecoded['turma_id'];
+
+            // Chama a função studentRegister para cadastrar os alunos na turma
+            $registerResult = studentRegister($connection, $funcionarioId, $turmaId);
+            $registerResultDecoded = json_decode($registerResult, true);
+
+            if ($registerResultDecoded['status'] === 200) {
+                // Se todos os alunos foram registrados, exclua a inscrição pendente
+                $stmtDelete = $connection->connection()->prepare("DELETE FROM ficha_inscricao WHERE id = :idFichaInscricao");
+                $stmtDelete->bindParam(':idFichaInscricao', $idFichaInscricao);
+                $stmtDelete->execute();
+
+                echo $registerResult; // Exibe a resposta da função studentRegister
+            } else {
+                echo $registerResult; // Exibe a resposta da função studentRegister
+            }
+        } else {
+            echo $turmaResult; // Exibe a resposta da função classRegister
+        }
     }
 } catch (Exception $e) {
-    
     echo json_encode(['msg' => $e->getMessage(), 'status' => 400]);
     exit;
 }
 
-function classRegister($connection, $treinamentoId, $empresaId) {
+
+function classRegister($connection, $treinamentoId, $empresaId)
+{
     try {
         $pdo = $connection->connection();
         $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare("INSERT INTO `turma` (`treinamento_id`, `empresa_aluno`) 
+        // Verifica se a empresa já possui uma turma com o mesmo treinamento
+        $stmtCheck = $pdo->prepare("SELECT COUNT(*) FROM `turma` WHERE `treinamento_id` = :treinamento_id AND `empresa_aluno` = :empresa_aluno");
+        $stmtCheck->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_STR);
+        $stmtCheck->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_STR);
+        $stmtCheck->execute();
+        $count = $stmtCheck->fetchColumn();
+
+        if ($count > 0) {
+            // Se a empresa já tiver uma turma com o mesmo treinamento, retorna uma mensagem de erro
+            return json_encode(['msg' => 'A empresa já possui uma turma com o mesmo treinamento', 'status' => 400]);
+        } else {
+            // Caso contrário, insere a nova turma no banco de dados
+            $stmtInsert = $pdo->prepare("INSERT INTO `turma` (`treinamento_id`, `empresa_aluno`) 
                             VALUES (:treinamento_id, :empresa_aluno)");
 
-        $stmt->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_STR);
-        $stmt->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_STR);
+            $stmtInsert->execute();
 
-        $stmt->execute();
-        
-        // Obtém o ID do último registro inserido
-        $turmaId = $pdo->lastInsertId();
+            $turmaId = $pdo->lastInsertId();
 
-        $pdo->commit();
+            $pdo->commit();
 
-        // Retorna o ID da turma
-        return $turmaId;
+            return json_encode(['msg' => 'Turma registrada com sucesso', 'status' => 200, 'turma_id' => $turmaId]);
+        }
     } catch (PDOException $e) {
         $pdo->rollback();
-        return null; // Em caso de erro, retorna null
+        return json_encode(['msg' => 'Erro ao cadastrar Turma: ' . $e->getMessage(), 'status' => 400]);
     }
 }
 
-
-
 function studentRegister($connection, $funcionariosIds, $turmaId) {
-    echo("entrou");
     try {
         $funcionariosArray = json_decode($funcionariosIds, true);
-        
+
         $pdo = $connection->connection();
         if (is_array($funcionariosArray)) {
             $pdo->beginTransaction();
 
-            $stmt = $pdo->prepare("INSERT INTO `aluno` (`id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) 
+            $stmtExists = $pdo->prepare("SELECT COUNT(*) FROM `aluno` WHERE `id_funcionario_fk` = :funcionarioId AND `turma_aluno_fk` = :turmaId");
+            $stmtInsert = $pdo->prepare("INSERT INTO `aluno` (`id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) 
                                     VALUES (:funcionarioId, :turmaId, null, 100)");
 
             foreach ($funcionariosArray as $funcionario) {
                 $funcionarioId = $funcionario['id'];
-                echo($funcionarioId);
-                $stmt->bindParam(':funcionarioId', $funcionarioId, PDO::PARAM_INT);
-                $stmt->bindParam(':turmaId', $turmaId, PDO::PARAM_INT);
-                $stmt->execute();
-                echo("test");
+
+                // Verifica se já existe um registro do aluno na turma
+                $stmtExists->bindParam(':funcionarioId', $funcionarioId, PDO::PARAM_INT);
+                $stmtExists->bindParam(':turmaId', $turmaId, PDO::PARAM_INT);
+                $stmtExists->execute();
+                $count = $stmtExists->fetchColumn();
+
+                if ($count == 0) {
+                    // Insere o aluno na turma apenas se não existir um registro prévio
+                    $stmtInsert->bindParam(':funcionarioId', $funcionarioId, PDO::PARAM_INT);
+                    $stmtInsert->bindParam(':turmaId', $turmaId, PDO::PARAM_INT);
+                    $stmtInsert->execute();
+                } else {
+                    // Se o aluno já estiver cadastrado na turma, emitir uma mensagem de aviso
+                    echo "O aluno com ID $funcionarioId já está cadastrado na turma com ID $turmaId.<br>";
+                }
             }
 
             $pdo->commit();
