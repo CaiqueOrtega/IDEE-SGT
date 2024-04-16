@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 11-Abr-2024 às 22:33
+-- Tempo de geração: 16-Abr-2024 às 19:12
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -40,9 +40,12 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) VALUES
-(2, 79, 31, NULL, 100),
-(3, 80, 31, NULL, 100),
-(4, 81, 31, NULL, 100);
+(34, 78, 57, NULL, 100),
+(35, 79, 58, NULL, 100),
+(36, 80, 58, NULL, 100),
+(37, 81, 58, NULL, 100),
+(38, 82, 59, NULL, 100),
+(39, 85, 60, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -81,7 +84,8 @@ INSERT INTO `empresa_cliente` (`id`, `razao_social`, `nome_fantasia`, `email`, `
 (117, 'Mpl industria e comercio de roupas ltda', 'Paco nine dado e m pollo', 'larissaqueiroz@gestaoapice.com.br', '08.007.677/0004-06', '(62) 3277-9900', 44),
 (118, 'Ocw saude e seguranca do trabalho ltda', 'Idee saude e seguranca do trabalho', 'ortegaengseg@outlook.com', '45.221.565/0001-37', '(44) 9914-7571', 45),
 (119, 'Textil canatiba ltda', 'Canatiba', 'canatiba@canatiba.com', '56.723.091/0001-48', '(19) 3459-4000', 44),
-(120, 'Sancris linhas e fios ltda', 'Sancris linhas e fios ltda', 'siscon@siscon.cnt.br', '80.446.990/0010-16', '(44) 3024-9373', 44);
+(120, 'Sancris linhas e fios ltda', 'Sancris linhas e fios ltda', 'siscon@siscon.cnt.br', '80.446.990/0010-16', '(44) 3024-9373', 44),
+(121, 'Honda automoveis do brasil ltda', 'Honda', 'hab_fiscal@honda.com.br', '01.192.333/0001-22', '(19) 3864-4400', 44);
 
 -- --------------------------------------------------------
 
@@ -103,7 +107,8 @@ INSERT INTO `empresa_cliente_cargo` (`id`, `nome`, `empresa_id`) VALUES
 (129, 'Teste', 117),
 (130, 'qteste', 118),
 (131, 'teste ', 119),
-(132, 'Gestor de Compras ', 120);
+(132, 'Gestor de Compras ', 120),
+(133, 'vendedor', 121);
 
 -- --------------------------------------------------------
 
@@ -125,7 +130,8 @@ INSERT INTO `empresa_cliente_departamento` (`id`, `nome`, `empresa_id`) VALUES
 (102, 'Rh', 117),
 (103, 'teste', 118),
 (104, 'compras', 119),
-(105, 'Compras', 120);
+(105, 'Compras', 120),
+(106, 'vendas', 121);
 
 -- --------------------------------------------------------
 
@@ -156,7 +162,9 @@ INSERT INTO `empresa_cliente_funcionario` (`id`, `empresa_id`, `nome_funcionario
 (80, 118, 'caique', 'caique@caique.com', '(44) 9-9969-6842', 'F', '940.873.387-89', 3, 130, 103),
 (81, 118, 'jao ', 'joao@joao.com', '(32) 7-7990-0652', 'M', '603.683.582-59', 4, 130, 103),
 (82, 119, 'Joao zoi', 'jao@jao.com', '(36) 4-3535-2865', 'M', '665.754.742-09', 3, 131, 104),
-(83, 120, 'marcia', 'marcia@marcia.com', '(44) 9-5652-9652', 'F', '932.656.220-45', 1, 132, 105);
+(83, 120, 'marcia', 'marcia@marcia.com', '(44) 9-5652-9652', 'F', '932.656.220-45', 1, 132, 105),
+(84, 117, 'joao paulo ', 'paulo@joao.com', '(65) 2-3256-2520', 'M', '733.618.760-95', 2, 129, 102),
+(85, 121, 'Guilherme', 'guilherme@guilherme.com', '(65) 2-4541-5623', 'M', '203.152.830-09', 1, 133, 106);
 
 -- --------------------------------------------------------
 
@@ -177,9 +185,8 @@ CREATE TABLE `ficha_inscricao` (
 --
 
 INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
-(227, '[{\"id\":\"83\"}]', 25, 120, '2024-04-09'),
-(228, '[{\"id\":\"78\"}]', 24, 117, '2024-04-10'),
-(229, '[{\"id\":\"79\"},{\"id\":\"80\"},{\"id\":\"81\"}]', 24, 118, '2024-04-11');
+(235, '[{\"id\":\"79\"},{\"id\":\"80\"},{\"id\":\"81\"}]', 24, 118, '2024-04-12'),
+(237, '[{\"id\":\"82\"}]', 24, 119, '2024-04-13');
 
 -- --------------------------------------------------------
 
@@ -252,7 +259,8 @@ CREATE TABLE `treinamento` (
 
 INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `carga_horaria`, `horas_pratica`, `horas_teorica`, `ementa`, `pre_requisitos`, `normas_referencia`, `material`, `reciclagem`, `nr`) VALUES
 (24, 45, 'Teste', 'Teste', '55:00:00', '25:00:00', '30:00:00', 'Teste', 'Teste', 'teste', 'Teste', 'Anual', '1'),
-(25, 45, 'Treino de fotos grandes', 'Trinos saborosos', '50:00:00', '25:00:00', '25:00:00', 'Google', 'Buscar', 'louco', 'Hihihihhihi', 'Anual', '2');
+(25, 45, 'Treino de fotos grandes', 'Trinos saborosos', '50:00:00', '25:00:00', '25:00:00', 'Google', 'Buscar', 'louco', 'Hihihihhihi', 'Anual', '2'),
+(26, 45, 'Treino', 'Treino', '65:00:00', '35:00:00', '30:00:00', 'Treino', 'Treino', ' treino ', 'Treino', 'Anual', '2');
 
 -- --------------------------------------------------------
 
@@ -271,21 +279,10 @@ CREATE TABLE `turma` (
 --
 
 INSERT INTO `turma` (`id`, `treinamento_id`, `empresa_aluno`) VALUES
-(17, 24, '117'),
-(18, 24, '117'),
-(19, 24, '117'),
-(20, 24, '118'),
-(21, 24, '118'),
-(22, 24, '118'),
-(23, 24, '118'),
-(24, 24, '118'),
-(25, 24, '118'),
-(26, 24, '118'),
-(27, 24, '118'),
-(28, 24, '118'),
-(29, 24, '118'),
-(30, 24, '118'),
-(31, 24, '118');
+(57, 24, '117'),
+(58, 24, '118'),
+(59, 24, '119'),
+(60, 26, '121');
 
 -- --------------------------------------------------------
 
@@ -408,7 +405,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de tabela `colaborador`
@@ -420,31 +417,31 @@ ALTER TABLE `colaborador`
 -- AUTO_INCREMENT de tabela `empresa_cliente`
 --
 ALTER TABLE `empresa_cliente`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente_cargo`
 --
 ALTER TABLE `empresa_cliente_cargo`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente_departamento`
 --
 ALTER TABLE `empresa_cliente_departamento`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente_funcionario`
 --
 ALTER TABLE `empresa_cliente_funcionario`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=230;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -456,13 +453,13 @@ ALTER TABLE `permissao`
 -- AUTO_INCREMENT de tabela `treinamento`
 --
 ALTER TABLE `treinamento`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
@@ -537,7 +534,7 @@ ALTER TABLE `treinamento`
 -- Limitadores para a tabela `turma`
 --
 ALTER TABLE `turma`
-  ADD CONSTRAINT `treinamento_id_turma_fk` FOREIGN KEY (`treinamento_id`) REFERENCES `ficha_inscricao` (`treinamento_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `treinamento_id_turma_fk` FOREIGN KEY (`treinamento_id`) REFERENCES `treinamento` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

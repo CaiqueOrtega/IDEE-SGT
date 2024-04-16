@@ -5,14 +5,14 @@
             <h3>Turmas</h3>
 
 
-            <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnInscription"><i class="fa-solid fa-file-pdf text-center"></i></button>
+            <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
         </div>
     </div>
 </div>
 
 <?php include('./tableClass.php')?>
 
-<div id="modalInscriptionInfoContent"></div>
+<div id="modalClassInfoContent"></div>
 
 
 
