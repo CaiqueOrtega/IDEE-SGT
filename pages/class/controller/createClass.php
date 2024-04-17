@@ -1,5 +1,7 @@
 <?php
 
+use PhpParser\Node\Stmt;
+
 require('../../../api/private/connect.php');
 include('../../../api/validade/validate.php');
 include('../../../api/private/cript.php');
@@ -34,8 +36,10 @@ try {
         $empresaId = $result['empresa_id'];
 
         // Chama a função classRegister para cadastrar a turma e obter o ID
-        $turmaResult = classRegister($connection, $treinamentoId, $empresaId);
+        $colaboradorId = getColaboradorId($connection, $treinamentoId);
+        $turmaResult = classRegister($connection, $treinamentoId, $empresaId, $colaboradorId);
         $turmaResultDecoded = json_decode($turmaResult, true);
+
 
         if ($turmaResultDecoded['status'] === 200) {
             $turmaId = $turmaResultDecoded['turma_id'];
@@ -45,7 +49,7 @@ try {
             $registerResultDecoded = json_decode($registerResult, true);
 
             if ($registerResultDecoded['status'] === 200) {
-                // Se todos os alunos foram registrados, exclua a inscrição pendente
+                // Se todos os alunos foram registrados, exclua a inscrição pendente 
                 $stmtDelete = $connection->connection()->prepare("DELETE FROM ficha_inscricao WHERE id = :idFichaInscricao");
                 $stmtDelete->bindParam(':idFichaInscricao', $idFichaInscricao);
                 $stmtDelete->execute();
@@ -64,29 +68,32 @@ try {
 }
 
 
-function classRegister($connection, $treinamentoId, $empresaId)
+function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
 {
+    echo("entrou2");
     try {
         $pdo = $connection->connection();
         $pdo->beginTransaction();
 
         // Verifica se a empresa já possui uma turma com o mesmo treinamento
         $stmtCheck = $pdo->prepare("SELECT COUNT(*) FROM `turma` WHERE `treinamento_id` = :treinamento_id AND `empresa_aluno` = :empresa_aluno");
-        $stmtCheck->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_STR);
-        $stmtCheck->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_STR);
+        $stmtCheck->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);
+        $stmtCheck->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_INT);
         $stmtCheck->execute();
         $count = $stmtCheck->fetchColumn();
 
+       
         if ($count > 0) {
             // Se a empresa já tiver uma turma com o mesmo treinamento, retorna uma mensagem de erro
             return json_encode(['msg' => 'A empresa já possui uma turma com o mesmo treinamento', 'status' => 400]);
         } else {
             // Caso contrário, insere a nova turma no banco de dados
-            $stmtInsert = $pdo->prepare("INSERT INTO `turma` (`treinamento_id`, `empresa_aluno`) 
-                            VALUES (:treinamento_id, :empresa_aluno)");
-
-            $stmtInsert->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_STR);
-            $stmtInsert->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_STR);
+            $stmtInsert = $pdo->prepare("INSERT INTO `turma` (`treinamento_id`, `empresa_aluno` , `colaborador_id_fk`) 
+                            VALUES (:treinamento_id, :empresa_aluno , :colaborador_id)");
+         
+            $stmtInsert->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':colaborador_id', $colaboradorId, PDO::PARAM_INT);
             $stmtInsert->execute();
 
             $turmaId = $pdo->lastInsertId();
@@ -101,7 +108,9 @@ function classRegister($connection, $treinamentoId, $empresaId)
     }
 }
 
-function studentRegister($connection, $funcionariosIds, $turmaId) {
+function studentRegister($connection, $funcionariosIds, $turmaId){
+echo("entrou3");
+
     try {
         $funcionariosArray = json_decode($funcionariosIds, true);
 
@@ -145,4 +154,17 @@ function studentRegister($connection, $funcionariosIds, $turmaId) {
         }
         return json_encode(['msg' => 'Erro ao cadastrar alunos: ' . $e->getMessage(), 'status' => 400]);
     }
+}
+
+function getColaboradorId($connection, $treinamentoId)
+{
+    echo("entrou1");
+
+    $stmt = $connection->connection()->prepare("SELECT `colaborador_id` FROM treinamento WHERE `id` = :treinamento_id");
+    $stmt->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result['colaborador_id'];
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16-Abr-2024 às 19:12
+-- Tempo de geração: 17-Abr-2024 às 19:35
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -40,12 +40,9 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) VALUES
-(34, 78, 57, NULL, 100),
-(35, 79, 58, NULL, 100),
-(36, 80, 58, NULL, 100),
-(37, 81, 58, NULL, 100),
-(38, 82, 59, NULL, 100),
-(39, 85, 60, NULL, 100);
+(40, 79, 65, NULL, 100),
+(41, 80, 65, NULL, 100),
+(42, 81, 65, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -185,7 +182,6 @@ CREATE TABLE `ficha_inscricao` (
 --
 
 INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
-(235, '[{\"id\":\"79\"},{\"id\":\"80\"},{\"id\":\"81\"}]', 24, 118, '2024-04-12'),
 (237, '[{\"id\":\"82\"}]', 24, 119, '2024-04-13');
 
 -- --------------------------------------------------------
@@ -271,18 +267,16 @@ INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `
 CREATE TABLE `turma` (
   `id` int(10) UNSIGNED NOT NULL,
   `treinamento_id` int(11) UNSIGNED NOT NULL,
-  `empresa_aluno` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+  `empresa_aluno` int(11) NOT NULL,
+  `colaborador_id_fk` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Extraindo dados da tabela `turma`
 --
 
-INSERT INTO `turma` (`id`, `treinamento_id`, `empresa_aluno`) VALUES
-(57, 24, '117'),
-(58, 24, '118'),
-(59, 24, '119'),
-(60, 26, '121');
+INSERT INTO `turma` (`id`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) VALUES
+(65, 24, 118, 45);
 
 -- --------------------------------------------------------
 
@@ -389,7 +383,8 @@ ALTER TABLE `treinamento`
 --
 ALTER TABLE `turma`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `treinamento_id_turma_fk` (`treinamento_id`);
+  ADD KEY `treinamento_id_turma_fk` (`treinamento_id`),
+  ADD KEY `id_colaborador_fk` (`colaborador_id_fk`);
 
 --
 -- Índices para tabela `usuario`
@@ -405,7 +400,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de tabela `colaborador`
@@ -459,7 +454,7 @@ ALTER TABLE `treinamento`
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
@@ -534,6 +529,7 @@ ALTER TABLE `treinamento`
 -- Limitadores para a tabela `turma`
 --
 ALTER TABLE `turma`
+  ADD CONSTRAINT `id_colaborador_fk` FOREIGN KEY (`colaborador_id_fk`) REFERENCES `login` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `treinamento_id_turma_fk` FOREIGN KEY (`treinamento_id`) REFERENCES `treinamento` (`id`) ON DELETE CASCADE;
 COMMIT;
 
