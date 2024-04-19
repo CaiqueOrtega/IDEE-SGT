@@ -10,8 +10,8 @@ include '../../api/private/cript.php';
             <tr>
                 <th scope="col">Razao Social</th>
                 <th scope="col">Nome Fantasia</th>
-                <th scope="col">Email</th>
                 <th scope="col">CNPJ</th>
+                <th scope="col">Email</th>
                 <th scope="col">Telefone</th>
                 <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                     <th scope="col">Usuário</th>
@@ -32,9 +32,9 @@ include '../../api/private/cript.php';
                 <tr class="data-row" data-token="<?php echo $token; ?>">
 
                     <th class="editable-cell" data-field="razao_social"><?php echo $empresa['razao_social']; ?></th>
-                    <td class="editable-cell" data-field="nome_fantasia"><?php echo $empresa['nome_fantasia']; ?></td>
-                    <td class="editable-cell" data-field="email"><?php echo $empresa['email']; ?></td>
+                    <td class="editable-cell" data-field="nome_fantasia"><?php echo $empresa['nome_fantasia']; ?></td>           
                     <td class="editable-cell" data-field="cnpj"><?php echo $empresa['cnpj']; ?></td>
+                    <td class="editable-cell" data-field="email"><?php echo $empresa['email']; ?></td>
                     <td class="editable-cell" data-field="telefone"><?php echo $empresa['telefone']; ?></td>
                     <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                             <td class="editable-cell" data-field="registro"><?php echo $empresa['nome_usuario']; ?></td>

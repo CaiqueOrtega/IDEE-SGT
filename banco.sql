@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 17-Abr-2024 às 19:35
+-- Tempo de geração: 19-Abr-2024 às 20:09
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -40,9 +40,12 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) VALUES
-(40, 79, 65, NULL, 100),
-(41, 80, 65, NULL, 100),
-(42, 81, 65, NULL, 100);
+(55, 79, 72, NULL, 100),
+(56, 80, 72, NULL, 100),
+(57, 81, 72, NULL, 100),
+(58, 79, 73, NULL, 100),
+(59, 80, 73, NULL, 100),
+(60, 81, 73, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -177,13 +180,6 @@ CREATE TABLE `ficha_inscricao` (
   `data_realizacao` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Extraindo dados da tabela `ficha_inscricao`
---
-
-INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
-(237, '[{\"id\":\"82\"}]', 24, 119, '2024-04-13');
-
 -- --------------------------------------------------------
 
 --
@@ -204,7 +200,8 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `permissao_id`) VALUES
 (44, 'Admin', 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', 4),
-(45, 'Marcos Risson', 'darcos077@gmail.com', 'a43c27c2babefd68df8a694900f30a1c', 2);
+(45, 'Marcos Risson', 'darcos077@gmail.com', '1791962eadeadcd9001ce88815698370', 1),
+(46, 'Caique Ortega ', 'caique@caique.com', 'b9bb2af1b75e826fb82cedabd4f3fa8b', 2);
 
 -- --------------------------------------------------------
 
@@ -255,8 +252,7 @@ CREATE TABLE `treinamento` (
 
 INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `carga_horaria`, `horas_pratica`, `horas_teorica`, `ementa`, `pre_requisitos`, `normas_referencia`, `material`, `reciclagem`, `nr`) VALUES
 (24, 45, 'Teste', 'Teste', '55:00:00', '25:00:00', '30:00:00', 'Teste', 'Teste', 'teste', 'Teste', 'Anual', '1'),
-(25, 45, 'Treino de fotos grandes', 'Trinos saborosos', '50:00:00', '25:00:00', '25:00:00', 'Google', 'Buscar', 'louco', 'Hihihihhihi', 'Anual', '2'),
-(26, 45, 'Treino', 'Treino', '65:00:00', '35:00:00', '30:00:00', 'Treino', 'Treino', ' treino ', 'Treino', 'Anual', '2');
+(27, 46, 'Treinamento1', 'Caique', '60:00:00', '30:00:00', '30:00:00', 'Caique', 'Caique', 'caique ', 'Caique', 'Bianual', '1');
 
 -- --------------------------------------------------------
 
@@ -266,6 +262,7 @@ INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `
 
 CREATE TABLE `turma` (
   `id` int(10) UNSIGNED NOT NULL,
+  `nome_turma` varchar(255) NOT NULL,
   `treinamento_id` int(11) UNSIGNED NOT NULL,
   `empresa_aluno` int(11) NOT NULL,
   `colaborador_id_fk` int(10) UNSIGNED NOT NULL
@@ -275,8 +272,9 @@ CREATE TABLE `turma` (
 -- Extraindo dados da tabela `turma`
 --
 
-INSERT INTO `turma` (`id`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) VALUES
-(65, 24, 118, 45);
+INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) VALUES
+(72, 'Turma A', 24, 118, 45),
+(73, 'Turma B', 27, 118, 46);
 
 -- --------------------------------------------------------
 
@@ -298,7 +296,8 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `data_nascimento`, `cpf`, `telefone`, `genero`) VALUES
 (44, '2004-11-04', '094.784.949-10', '(44) 9-9969-6842', 'M'),
-(45, '2004-11-04', '452.599.192-54', '(44) 9-9969-6842', 'M');
+(45, '2004-11-04', '452.599.192-54', '(44) 9-9969-6842', 'M'),
+(46, '2004-11-07', '697.924.960-68', '(85) 4-8652-4185', 'M');
 
 --
 -- Índices para tabelas despejadas
@@ -400,7 +399,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de tabela `colaborador`
@@ -436,7 +435,7 @@ ALTER TABLE `empresa_cliente_funcionario`
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -448,19 +447,19 @@ ALTER TABLE `permissao`
 -- AUTO_INCREMENT de tabela `treinamento`
 --
 ALTER TABLE `treinamento`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- Restrições para despejos de tabelas
