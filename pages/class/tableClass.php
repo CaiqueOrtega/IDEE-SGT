@@ -30,7 +30,7 @@ include '../../api/private/cript.php';
                     <th class="editable-cell" data-field="turma"><?php echo $turma['nome_turma']; ?></th>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['nomenclatura']; ?></td>
                     <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['nome_fantasia']; ?></td>
-                    <td class="editable-cell" data-field="colaborador_id_fk"><?php echo $turma['nome']; ?></td>  
+                    <td class="editable-cell" data-field="colaborador_id_fk"><?php echo $turma['nome_usuario']; ?></td>  
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['carga_horaria']; ?></td>  
                     
                     <td class="text-center">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 19-Abr-2024 às 20:09
+-- Tempo de geração: 22-Abr-2024 às 19:42
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -200,8 +200,9 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `permissao_id`) VALUES
 (44, 'Admin', 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', 4),
-(45, 'Marcos Risson', 'darcos077@gmail.com', '1791962eadeadcd9001ce88815698370', 1),
-(46, 'Caique Ortega ', 'caique@caique.com', 'b9bb2af1b75e826fb82cedabd4f3fa8b', 2);
+(45, 'Marcos Risson', 'darcos077@gmail.com', '1791962eadeadcd9001ce88815698370', 2),
+(46, 'Caique Ortega ', 'caique@caique.com', 'b9bb2af1b75e826fb82cedabd4f3fa8b', 2),
+(47, 'Geovana Pavesi', 'geovana@geovana.com', '1791962eadeadcd9001ce88815698370', 3);
 
 -- --------------------------------------------------------
 
@@ -297,7 +298,8 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`id`, `data_nascimento`, `cpf`, `telefone`, `genero`) VALUES
 (44, '2004-11-04', '094.784.949-10', '(44) 9-9969-6842', 'M'),
 (45, '2004-11-04', '452.599.192-54', '(44) 9-9969-6842', 'M'),
-(46, '2004-11-07', '697.924.960-68', '(85) 4-8652-4185', 'M');
+(46, '2004-11-07', '697.924.960-68', '(85) 4-8652-4185', 'M'),
+(47, '1998-07-05', '827.250.330-12', '(65) 3-4165-3241', 'F');
 
 --
 -- Índices para tabelas despejadas
@@ -459,7 +461,7 @@ ALTER TABLE `turma`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Restrições para despejos de tabelas
