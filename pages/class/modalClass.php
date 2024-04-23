@@ -10,7 +10,7 @@
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Turma</h5>
-                        <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+                        <a href="#turma" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
                             <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
@@ -40,9 +40,31 @@
                         <p id="horasTeorica">
                             <span class="fw-semibold">Horas Teórica:</span> <?php echo $turma['horas_teorica']; ?>
                         </p>
+                    </div>
+                </div>
+
+
+                <div class="row card mt-4 py-2  mx-1 rounded-1" style='margin-bottom: -10px;'>
+
+                    <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
+                        <h5>Empresa</h5>
+                        <a href="#empresa" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="collapse " id="collapseExample2">
+                    <div class="card card-body border-top-0 rounded-0 mx-1">
                         <p id="empresa">
                             <span class="fw-semibold">Empresa:</span> <?php echo $turma['nome_fantasia']; ?>
                         </p>
+                        <p id="cnpj">
+                            <span class="fw-semibold">CNPJ:</span> <?php echo $turma['cnpj']; ?>
+                        </p>
+                       
+                        
 
                     </div>
                 </div>
@@ -50,13 +72,11 @@
             </div>
 
 
-
-
-
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+
+                <button type="button" class="btn btn-login">Confirmar</button>
             </div>
         </div>
     </div>
 </div>
+
