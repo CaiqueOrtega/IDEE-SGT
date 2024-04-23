@@ -42,35 +42,19 @@
   });
 </script>
 
-<script>
-  $(document).ready(function() {
-    $('.open-modal').on('click', function() {
-      var modalType = $(this).data('modal-type');
-
-      $.ajax({
-        url: 'positionAndDepartment/modalInsertPositionAndDepartment.php',
-        type: 'POST',
-        data: {
-          modal_type: modalType
-        },
-        success: function(response) {
-          $('#dynamicModalContent').html(response);
-          $('#modaldynamicModal').modal('show');
-          $('#cargooudepartamento').text(modalType);
-        },
-        error: function(error) {
-          console.log(error);
-        }
-      });
-    });
-  });
-</script>
 
 
 <div class="mt-3">
   <?php require('./tableClass.php') ?>
 </div>
 
+
+
+
+<?php require('./modalClass.php');
+
+include('../errorAndSuccessModal.php'); ?>
+<script src="../src/js/scriptClass.js"></script>
 
 
 

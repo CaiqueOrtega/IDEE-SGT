@@ -11,7 +11,10 @@ include '../../api/private/cript.php';
                 <th scope="col">Turma</th>
                 <th scope="col">Treinamento</th>               
                 <th scope="col">Empresa</th>
-                <th scope="col">Cordenador</th>
+                <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
+                    <th scope="col">Cordenador</th>
+
+                <?php } ?>
                 <th scope="col">Carga Horaria</th>
                 <th class="text-center">Excluir</th>
                 <th class="text-end">Mais</th>
@@ -32,6 +35,7 @@ include '../../api/private/cript.php';
                     <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['nome_fantasia']; ?></td>
                     <td class="editable-cell" data-field="colaborador_id_fk"><?php echo $turma['nome_usuario']; ?></td>  
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['carga_horaria']; ?></td>  
+
                     
                     <td class="text-center">
                         
@@ -43,7 +47,7 @@ include '../../api/private/cript.php';
 
                     <td class="text-end">
         
-                        <a href="#" class="text-primary d-flex modalClassInfo"  >
+                        <a href="#" class="text-primary d-flex"  data-bs-toggle="modal" data-bs-target="#modalClassInfo">
                         <i class="bi bi-eye"></i> <i class="bi bi-three-dots-vertical"></i>
                         </a>
         
