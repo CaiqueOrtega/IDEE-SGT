@@ -1,5 +1,5 @@
 <?php
-require('../../api/private/connect.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/IDEE-SGT/api/private/connect.php');
 
 
 session_start();
@@ -17,15 +17,13 @@ try {
     $connection = new Database();
     $turmasData = getCordenadorId($id, $connection, $where);
     $alunosData = getAlunosData($id, $connection, $where);
-
-
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
 
 function getCordenadorId($userId, $connection, $whereClause)
 {
-   
+
 
     try {
         $pdo = $connection->connection();
@@ -44,7 +42,7 @@ function getCordenadorId($userId, $connection, $whereClause)
 
         $stmt = $pdo->prepare($sql);
 
-       
+
         if (strpos($whereClause, ':id') != false) {
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         }
@@ -71,7 +69,7 @@ function getAlunosData($userId, $connection, $whereClause)
 
         $stmt = $pdo->prepare($sql);
 
-       
+
         if (strpos($whereClause, ':id') != false) {
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         }

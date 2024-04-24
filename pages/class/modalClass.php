@@ -17,6 +17,11 @@
 
                 </div>
 
+                    <?php foreach ($turmasData as $turma) {
+                                        $token = encrypt_id($turma['id'], $encryptionKey, $signatureKey);
+
+                                        
+                                    ?>
                 <div class="collapse " id="collapseExample1">
                     <div class="card card-body border-top-0 rounded-0 mx-1">
                         <p id="turma">
@@ -42,8 +47,9 @@
                         </p>
                     </div>
                 </div>
+                <?php } ?>
 
-
+                
                 <div class="row card mt-4 py-2  mx-1 rounded-1" style='margin-bottom: -10px;'>
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
@@ -71,7 +77,7 @@
                 </div>
 
             </div>
-
+            
 
             <div class="modal-footer">
 
