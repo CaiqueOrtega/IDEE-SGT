@@ -87,34 +87,33 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
         } else {
             // Caso contrário, insere a nova turma no banco de dados
             // Recupere o último caractere do nome da última turma
-$stmtUltimaTurma = $pdo->prepare("SELECT SUBSTRING(nome_turma, -1) AS ultima_letra FROM turma ORDER BY id DESC LIMIT 1");
-$stmtUltimaTurma->execute();
-$ultimaTurma = $stmtUltimaTurma->fetch(PDO::FETCH_ASSOC);
+            $stmtUltimaTurma = $pdo->prepare("SELECT SUBSTRING(nome_turma, -1) AS ultima_letra FROM turma ORDER BY id DESC LIMIT 1");
+            $stmtUltimaTurma->execute();
+            $ultimaTurma = $stmtUltimaTurma->fetch(PDO::FETCH_ASSOC);
 
-// Determine a próxima letra com base na última turma cadastrada
-$proximaLetra = 'A';
-if ($ultimaTurma && $ultimaTurma['ultima_letra'] >= 'A' && $ultimaTurma['ultima_letra'] < 'Z') {
-    $proximaLetra = chr(ord($ultimaTurma['ultima_letra']) + 1);
-}
+            // Determine a próxima letra com base na última turma cadastrada
+            $proximaLetra = 'A';
+            if ($ultimaTurma && $ultimaTurma['ultima_letra'] >= 'A' && $ultimaTurma['ultima_letra'] < 'Z') {
+                $proximaLetra = chr(ord($ultimaTurma['ultima_letra']) + 1);
+            }
 
-// Gere o nome da turma com base na próxima letra
-$nomeTurma = "Turma " . $proximaLetra;
+            // Gere o nome da turma com base na próxima letra
+            $nomeTurma = "Turma " . $proximaLetra;
 
-// Insira a nova turma no banco de dados
-$stmtInsert = $pdo->prepare("INSERT INTO `turma` (`nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) 
+            // Insira a nova turma no banco de dados
+            $stmtInsert = $pdo->prepare("INSERT INTO `turma` (`nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) 
                                 VALUES (:nome_turma, :treinamento_id, :empresa_aluno, :colaborador_id)");
-$stmtInsert->bindParam(':nome_turma', $nomeTurma, PDO::PARAM_STR);
-$stmtInsert->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);
-$stmtInsert->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_INT);
-$stmtInsert->bindParam(':colaborador_id', $colaboradorId, PDO::PARAM_INT);
-$stmtInsert->execute();
+            $stmtInsert->bindParam(':nome_turma', $nomeTurma, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':colaborador_id', $colaboradorId, PDO::PARAM_INT);
+            $stmtInsert->execute();
 
-$turmaId = $pdo->lastInsertId();
+            $turmaId = $pdo->lastInsertId();
 
-$pdo->commit();
+            $pdo->commit();
 
-return json_encode(['msg' => 'Turma registrada com sucesso', 'status' => 200, 'turma_id' => $turmaId]);
-
+            return json_encode(['msg' => 'Turma registrada com sucesso', 'status' => 200, 'turma_id' => $turmaId]);
         }
     } catch (PDOException $e) {
         $pdo->rollback();

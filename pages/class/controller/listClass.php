@@ -1,6 +1,7 @@
 <?php
 require('../../api/private/connect.php');
 
+
 session_start();
 $id = $_SESSION['login']['id'];
 $idPermissao = $_SESSION['login']['permissao'];

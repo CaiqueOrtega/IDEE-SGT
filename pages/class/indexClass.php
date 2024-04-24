@@ -14,7 +14,7 @@
 
 
         <button class="btn btn-outline-primary d-flex" id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block"> Editar</span></button>
-        <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnCompany"><i class="fa-solid fa-file-pdf text-center"></i></button>
+        <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
       </div>
 
 
@@ -26,9 +26,9 @@
 <script>
   $(document).ready(function() {
 
-    $("#relatorioBtnCompany").click(function() {
+    $("#relatorioBtnClass").click(function() {
 
-      if ($('#tableCompanys tbody tr').length === 0) {
+      if ($('#tableClass tbody tr').length === 0) {
 
         $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
         var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
@@ -36,7 +36,7 @@
         errorModal.show();
       } else {
 
-        window.open('relatorio/indexCompany.php', '_blank');
+        window.open('relatorio/indexClass.php', '_blank');
       }
     });
   });
@@ -52,9 +52,4 @@
 
 
 <?php require('./modalClass.php');
-
-include('../errorAndSuccessModal.php'); ?>
-<script src="../src/js/scriptClass.js"></script>
-
-
 
