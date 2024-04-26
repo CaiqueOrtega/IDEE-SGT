@@ -1,30 +1,25 @@
 <?php
 require('../../api/private/connect.php');
 
-
 session_start();
 $id = $_SESSION['login']['id'];
 $idPermissao = $_SESSION['login']['permissao'];
 
 try {
     if ($idPermissao == 1 || $idPermissao == 4) {
-        $where = " WHERE 1=1";
+        $whereClause = " WHERE 1=1";
     } else {
-
-        $where = " WHERE turma.colaborador_id_fk = :id";
+        $whereClause = " WHERE turma.colaborador_id_fk = :id";
     }
 
-    $connection = new Database();
-    $turmasData = getCordenadorId($id, $connection, $where);
-    $alunosData = getAlunosData($id, $connection, $where);
+    $turmasData = getTurmasByCoordinatorId($id, $connection, $whereClause);
+    $alunosData = getAlunosDataByCoordinatorId($id, $connection, $whereClause);
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
 
-function getCordenadorId($userId, $connection, $whereClause)
+function getTurmasByCoordinatorId($userId, $connection, $whereClause)
 {
-
-
     try {
         $pdo = $connection->connection();
 
@@ -42,8 +37,7 @@ function getCordenadorId($userId, $connection, $whereClause)
 
         $stmt = $pdo->prepare($sql);
 
-
-        if (strpos($whereClause, ':id') != false) {
+        if (strpos($whereClause, ':id') !== false) {
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         }
 
@@ -56,7 +50,7 @@ function getCordenadorId($userId, $connection, $whereClause)
     }
 }
 
-function getAlunosData($userId, $connection, $whereClause)
+function getAlunosDataByCoordinatorId($userId, $connection, $whereClause)
 {
     try {
         $pdo = $connection->connection();
@@ -69,8 +63,7 @@ function getAlunosData($userId, $connection, $whereClause)
 
         $stmt = $pdo->prepare($sql);
 
-
-        if (strpos($whereClause, ':id') != false) {
+        if (strpos($whereClause, ':id') !== false) {
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         }
 

@@ -48,33 +48,6 @@ include '../../api/private/cript.php';
                             <i class="bi bi-eye"></i> <i class="bi bi-three-dots-vertical"></i>
                         </a>
 
-                        <script>
-                            $(document).ready(function() {
-                                
-                                $('a[data-bs-toggle="modal"]').click(function(event) {
-                                   
-                                    event.preventDefault();
-                                    
-                                    var token = $(this).data('token');
-
-                                    $.ajax({
-                                        url: 'class/controller/listClass.php', 
-                                        type: 'POST',
-                                        data: {
-                                            token: token
-                                        },
-                                        success: function(response) {
-                                          
-                                            console.log('Resposta do servidor:', response);
-                                        },
-                                        error: function(xhr, status, error) {
-                                           
-                                            console.error('Erro de solicitação:', status, error);
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
 
                     </td>
                 </tr>
