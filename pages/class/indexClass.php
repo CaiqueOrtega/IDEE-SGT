@@ -52,4 +52,3 @@
 
 
 <?php require('./modalClass.php');
-

@@ -1,5 +1,5 @@
 <?php
-require('../../api/private/connect.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/IDEE-SGT/api/private/connect.php');
 
 
 session_start();

@@ -1,3 +1,15 @@
+<?php
+// seu_arquivo.php
+
+if(isset($_POST['index'])) {
+    $index = $_POST['index'];
+    // Faça o que precisa ser feito com o índice recebido
+    // Por exemplo, você pode usá-lo para buscar dados no banco de dados ou realizar outras operações.
+    echo "Índice recebido: " . $index;
+} else {
+    echo "Índice não recebido.";
+}
+?>
 
 
 
@@ -20,11 +32,11 @@
 
                 </div>
 
-                 
+           
                 <div class="collapse " id="collapseExample1">
                     <div class="card card-body border-top-0 rounded-0 mx-1">
                         <p id="turma">
-                            <span class="fw-semibold">Turma:</span> <?php echo $turma['nome_turma']; ?>
+                            <span class="fw-semibold">Turma:</span> <?php echo $turmasData[$index]['nome_turma']; ?>
                         </p>
                         <p id="treinamento">
                             <span class="fw-semibold">Treinamento:</span> <?php echo $turma['nomenclatura']; ?>
@@ -46,7 +58,7 @@
                         </p>
                     </div>
                 </div>
-              
+            
 
                 
                 <div class="row card mt-4 py-2  mx-1 rounded-1" style='margin-bottom: -10px;'>
@@ -85,4 +97,3 @@
         </div>
     </div>
 </div>
-
