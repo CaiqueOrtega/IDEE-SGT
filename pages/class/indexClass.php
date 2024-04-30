@@ -45,10 +45,10 @@
 
 
 <div class="mt-3">
-  <?php require('./tableClass.php') ?>
+  <?php require('./tableClass.php'); ?>
 </div>
 
 
 
 
-<?php require('./modalClass.php');
+<?php require('./modalClass.php');?>

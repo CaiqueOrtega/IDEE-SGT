@@ -1,16 +1,26 @@
 <?php
-// seu_arquivo.php
-
+// Verifica se o índice foi recebido via POST
 if(isset($_POST['index'])) {
+    // Obtém o índice enviado via POST
     $index = $_POST['index'];
-    // Faça o que precisa ser feito com o índice recebido
-    // Por exemplo, você pode usá-lo para buscar dados no banco de dados ou realizar outras operações.
-    echo "Índice recebido: " . $index;
-} else {
-    echo "Índice não recebido.";
-}
-?>
 
+    // Inclui o arquivo que contém os dados das turmas (caso ainda não tenha sido incluído)
+    require_once('./controller/listClass.php');
+
+    // Verifica se o índice existe no array $turmasData
+    if(isset($turmasData[$index])) {
+        // Obtém os dados da turma com base no índice
+        $turma = $turmasData[$index];
+
+      
+    } else {
+            echo "Índice inválido.";
+        }
+    } else {
+        echo "Índice não recebido.";
+    }
+        // Agora, você pode usar os dados da turma para preencher o HTML do modal
+?>
 
 
 <div class="modal fade" id="modalClassInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -97,3 +107,6 @@ if(isset($_POST['index'])) {
         </div>
     </div>
 </div>
+
+
+
