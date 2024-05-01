@@ -51,35 +51,9 @@ include '../../api/private/cript.php';
                         </a>
 
                         <script>
-                            $(document).ready(function() {
-                                $(".modalClassInfo1").click(function(e) {
-                                    e.preventDefault();
-                                    var index = $(this).closest('tr').data('index'); // Captura o valor de data-index
-                                    var token = $(this).data('token'); // Captura o token da turma
-
-                                    var turmaData = JSON.stringify(<?php echo json_encode($turmasData); ?>);
-
-                                    // Faz a requisição AJAX
-                                    $.ajax({
-                                        url: './class/modalClass.php', // Caminho do arquivo PHP
-                                        method: 'POST',
-                                        data: {
-                                            index: index,
-                                            turma: token, // Passa o token da turma
-                                            turmasData: turmaData // Passa tanto o índice quanto a variável $turmasData
-                                        },
-
-                                        error: function(xhr, status, error) {
-                                            // Lida com erros na requisição
-                                            console.error(error);
-                                        }
-                                    });
-                                });
-                            });
+                            // Defina uma variável JavaScript com os dados PHP
+                            var turmasData = <?php echo json_encode($turmasData); ?>;
                         </script>
-
-
-
                     </td>
                 </tr>
             <?php } ?>

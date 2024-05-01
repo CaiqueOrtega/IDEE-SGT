@@ -51,8 +51,8 @@ function getCordenadorId($userId, $connection, $whereClause)
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        error_log('Erro ao buscar dados da empresa: ' . $e->getMessage());
-        throw new Exception('Erro interno ao buscar dados da empresa');
+        error_log('Erro ao buscar dados da turma: ' . $e->getMessage());
+        throw new Exception('Erro interno ao buscar dados da turma');
     }
 }
 

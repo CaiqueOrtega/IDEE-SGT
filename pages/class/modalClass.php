@@ -1,26 +1,4 @@
-<?php
-// Verifica se o índice foi recebido via POST
-if(isset($_POST['index'])) {
-    // Obtém o índice enviado via POST
-    $index = $_POST['index'];
 
-    // Inclui o arquivo que contém os dados das turmas (caso ainda não tenha sido incluído)
-    require_once('./controller/listClass.php');
-
-    // Verifica se o índice existe no array $turmasData
-    if(isset($turmasData[$index])) {
-        // Obtém os dados da turma com base no índice
-        $turma = $turmasData[$index];
-
-      
-    } else {
-            echo "Índice inválido.";
-        }
-    } else {
-        echo "Índice não recebido.";
-    }
-        // Agora, você pode usar os dados da turma para preencher o HTML do modal
-?>
 
 
 <div class="modal fade" id="modalClassInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -46,7 +24,7 @@ if(isset($_POST['index'])) {
                 <div class="collapse " id="collapseExample1">
                     <div class="card card-body border-top-0 rounded-0 mx-1">
                         <p id="turma">
-                            <span class="fw-semibold">Turma:</span> <?php echo $turmasData[$index]['nome_turma']; ?>
+                            <span class="fw-semibold">Turma:</span> <?php echo $turma['nome_turma']; ?>
                         </p>
                         <p id="treinamento">
                             <span class="fw-semibold">Treinamento:</span> <?php echo $turma['nomenclatura']; ?>

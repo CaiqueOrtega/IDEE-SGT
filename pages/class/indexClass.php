@@ -52,3 +52,5 @@
 
 
 <?php require('./modalClass.php');?>
+
+<script src="../src/js/scriptClass.js"></script>
