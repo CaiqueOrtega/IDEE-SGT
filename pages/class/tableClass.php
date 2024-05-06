@@ -46,7 +46,7 @@ include '../../api/private/cript.php';
 
                     <td class="text-end">
 
-                        <a href="#" class="text-primary d-flex modalClassInfo1" data-bs-toggle="modal" data-token="<?php echo $token; ?>" data-bs-target="#modalClassInfo">
+                        <a href="#" class="text-primary d-flex modalClassInfo1 float-end" data-bs-toggle="modal" data-token="<?php echo $token; ?>" data-bs-target="#modalClassInfo">
                             <i class="bi bi-eye"></i> <i class="bi bi-three-dots-vertical"></i>
                         </a>
 

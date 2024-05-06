@@ -1,6 +1,3 @@
-
-
-
 <div class="modal fade" id="modalClassInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -20,7 +17,7 @@
 
                 </div>
 
-           
+
                 <div class="collapse " id="collapseExample1">
                     <div class="card card-body border-top-0 rounded-0 mx-1">
                         <p id="turma">
@@ -46,9 +43,9 @@
                         </p>
                     </div>
                 </div>
-            
 
-                
+
+
                 <div class="row card mt-4 py-2  mx-1 rounded-1" style='margin-bottom: -10px;'>
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
@@ -69,22 +66,29 @@
                         <p id="cnpj">
                             <span class="fw-semibold">CNPJ:</span> <?php echo $turma['cnpj']; ?>
                         </p>
-                       
-                        
+
+
 
                     </div>
                 </div>
 
+
+
+
+
             </div>
-            
+
 
             <div class="modal-footer">
 
                 <button type="button" class="btn btn-login">Confirmar</button>
+
+
+                <a href="/IDEE-SGT/pages/class/tableStudents.php" class="list-group-item list-group-item-action py-3">
+                    <i class="bi bi-person me-3"></i>Notas e Frequência
+                </a>
+
             </div>
         </div>
     </div>
 </div>
-
-
-

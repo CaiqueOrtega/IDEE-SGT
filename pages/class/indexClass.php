@@ -46,6 +46,7 @@
 
 <div class="mt-3">
   <?php require('./tableClass.php'); ?>
+
 </div>
 
 

@@ -61,10 +61,16 @@ function getAlunosData($userId, $connection, $whereClause)
     try {
         $pdo = $connection->connection();
 
-        $sql = "SELECT aluno.*, turma.id AS turma_aluno_fk
-        FROM aluno
-        INNER JOIN turma ON aluno.turma_aluno_fk = turma.id;
-        
+        $sql = "SELECT 
+        aluno.*, 
+        turma.id AS turma_aluno_fk,
+        turma.*, 
+        empresa_cliente_funcionario.id AS id_funcionario_fk,
+        empresa_cliente_funcionario.* 
+        FROM  aluno
+        INNER JOIN turma ON aluno.turma_aluno_fk = turma.id
+        INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
+
                 $whereClause";
 
         $stmt = $pdo->prepare($sql);
