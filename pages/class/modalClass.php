@@ -10,9 +10,55 @@
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Turma</h5>
-                        <a href="#" id="btn-info-class" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+                        <a href="#" class="btn btn-info-class" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
+
+                        <style>
+                            .rotate {
+                                transition: transform 0.3s ease-in-out;
+                            }
+
+                            .rotate.rotate-180 {
+                                transform: rotate(180deg);
+                            }
+                        </style>
+                        
+                        <script>
+                            // Seleciona todos os botões com a classe 'btn'
+                            var buttons = document.querySelectorAll('.btn');
+
+                            // Itera sobre cada botão
+                            buttons.forEach(function(button) {
+                                // Adiciona um ouvinte de evento de clique a cada botão
+                                button.addEventListener('click', function() {
+                                    var btn = this;
+                                    var icon = btn.querySelector('.icon');
+
+                                    // Desabilita o botão
+                                    btn.disabled = true;
+
+                                    // Verifica se as informações estão abertas ou fechadas
+                                    var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+                                    // Muda a seta dependendo do estado das informações
+                                    if (isExpanded) {
+                                        icon.classList.remove('bi-chevron-right');
+                                        icon.classList.add('bi-chevron-down');
+                                    } else {
+                                        icon.classList.remove('bi-chevron-down');
+                                        icon.classList.add('bi-chevron-right');
+                                    }
+
+                                    // Aguarda 1 segundo para simular a animação
+                                    setTimeout(function() {
+                                        // Reabilita o botão após a animação
+                                        btn.disabled = false;
+                                    }, 1000);
+                                });
+                            });
+                        </script>
+
                     </div>
 
                 </div>
@@ -50,8 +96,8 @@
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Empresa</h5>
-                        <a href="#" id="btn-info-company" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+                        <a href="#" id="btn-info-company" class="btn btn-info-class " data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
 
