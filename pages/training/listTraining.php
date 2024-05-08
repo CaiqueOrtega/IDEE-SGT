@@ -25,7 +25,7 @@
         <p class="card-text nomenclaura" style="font-size: 18px; "><?php echo $treinamento['nomenclatura']; ?></p>
 
         <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#<?php echo $colapsoId; ?>" aria-expanded="false" aria-controls="collapseExample">
-          <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+          <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
 
         </a>
       </div>
@@ -63,13 +63,42 @@
 
 
 
-  
+
 
 <?php }
 include('../errorAndSuccessModal.php');
 ?>
 
+<script>
+  var buttons = document.querySelectorAll('.btn');
 
+  // Itera sobre cada botão
+  buttons.forEach(function(button) {
+    // Adiciona um ouvinte de evento de clique a cada botão
+    button.addEventListener('click', function() {
+      var btn = this;
+      var icon = btn.querySelector('.icon');
 
+      // Desabilita o botão
+      btn.disabled = true;
 
+      // Verifica se as informações estão abertas ou fechadas
+      var isExpanded = btn.getAttribute('aria-expanded') === 'true';
 
+      // Muda a seta dependendo do estado das informações
+      if (isExpanded) {
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-down');
+      } else {
+        icon.classList.remove('bi-chevron-down');
+        icon.classList.add('bi-chevron-right');
+      }
+
+      // Aguarda 1 segundo para simular a animação
+      setTimeout(function() {
+        // Reabilita o botão após a animação
+        btn.disabled = false;
+      }, 1000);
+    });
+  });
+</script>

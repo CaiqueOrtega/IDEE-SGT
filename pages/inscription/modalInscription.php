@@ -15,7 +15,7 @@
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Treinamento Solicitado</h5>
                         <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+                            <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
 
@@ -44,7 +44,7 @@
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Empresa Solicitante</h5>
                         <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+                            <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
 
@@ -73,7 +73,7 @@
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Funcionários Inscritos</h5>
                         <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
+                            <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
 
@@ -159,6 +159,40 @@
                                         console.error(xhr.responseText);
                                     }
                                 });
+                            });
+                        });
+
+
+
+                        var buttons = document.querySelectorAll('.btn');
+
+                        // Itera sobre cada botão
+                        buttons.forEach(function(button) {
+                            // Adiciona um ouvinte de evento de clique a cada botão
+                            button.addEventListener('click', function() {
+                                var btn = this;
+                                var icon = btn.querySelector('.icon');
+
+                                // Desabilita o botão
+                                btn.disabled = true;
+
+                                // Verifica se as informações estão abertas ou fechadas
+                                var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+                                // Muda a seta dependendo do estado das informações
+                                if (isExpanded) {
+                                    icon.classList.remove('bi-chevron-right');
+                                    icon.classList.add('bi-chevron-down');
+                                } else {
+                                    icon.classList.remove('bi-chevron-down');
+                                    icon.classList.add('bi-chevron-right');
+                                }
+
+                                // Aguarda 1 segundo para simular a animação
+                                setTimeout(function() {
+                                    // Reabilita o botão após a animação
+                                    btn.disabled = false;
+                                }, 1000);
                             });
                         });
                     </script>
