@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<h6 class="mt-4">Esta empresa já possui uma inscrição pendente para este treinamento. 
         Para visualizar ou modificar os dados, acesse a seção de 
         <a href="#" data-bs-dismiss="modal" aria-label="Close" 
-        onclick="loadContent(\'/projeto/pages/inscription/indexInscription.php\')" 
+        onclick="loadContent(\'/IDEE-SGT/pages/inscription/indexInscription.php\')" 
         class="font-weight-bold">inscrições pendentes</a>.</h6>';
         exit;
     }
@@ -85,4 +85,4 @@ function getFuncionariosNaoCadastrados($connection, $empresaId, $treinamentoId)
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-?>
+

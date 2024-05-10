@@ -10,7 +10,6 @@ try {
     if ($idPermissao == 1 || $idPermissao == 4) {
         $where = " WHERE 1=1";
     } else {
-
         $where = " WHERE turma.colaborador_id_fk = :id";
     }
 
@@ -20,6 +19,8 @@ try {
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
+
+
 
 function getCordenadorId($userId, $connection, $whereClause)
 {
@@ -38,6 +39,7 @@ function getCordenadorId($userId, $connection, $whereClause)
         INNER JOIN `treinamento` ON turma.treinamento_id = treinamento.id
         INNER JOIN `empresa_cliente` ON turma.empresa_aluno = empresa_cliente.id
         INNER JOIN `login`ON turma.colaborador_id_fk = login.id 
+        
                 $whereClause";
 
         $stmt = $pdo->prepare($sql);
@@ -63,7 +65,6 @@ function getAlunosData($userId, $connection, $whereClause)
 
         $sql = "SELECT 
         aluno.*, 
-        turma.id AS turma_aluno_fk,
         turma.*, 
         empresa_cliente_funcionario.id AS id_funcionario_fk,
         empresa_cliente_funcionario.* 
@@ -71,7 +72,7 @@ function getAlunosData($userId, $connection, $whereClause)
         INNER JOIN turma ON aluno.turma_aluno_fk = turma.id
         INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
 
-                $whereClause";
+                $whereClause ";
 
         $stmt = $pdo->prepare($sql);
 
