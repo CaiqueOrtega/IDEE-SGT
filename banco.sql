@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22-Abr-2024 às 19:42
+-- Tempo de geração: 15-Maio-2024 às 19:35
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -40,12 +40,15 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) VALUES
-(55, 79, 72, NULL, 100),
-(56, 80, 72, NULL, 100),
-(57, 81, 72, NULL, 100),
-(58, 79, 73, NULL, 100),
-(59, 80, 73, NULL, 100),
-(60, 81, 73, NULL, 100);
+(74, 85, 81, NULL, 100),
+(75, 79, 82, NULL, 100),
+(76, 80, 82, NULL, 100),
+(77, 81, 82, NULL, 100),
+(78, 78, 83, NULL, 100),
+(79, 84, 83, NULL, 100),
+(80, 79, 84, NULL, 100),
+(81, 80, 84, NULL, 100),
+(82, 81, 84, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -265,7 +268,7 @@ CREATE TABLE `turma` (
   `id` int(10) UNSIGNED NOT NULL,
   `nome_turma` varchar(255) NOT NULL,
   `treinamento_id` int(11) UNSIGNED NOT NULL,
-  `empresa_aluno` int(11) NOT NULL,
+  `empresa_aluno` int(11) UNSIGNED NOT NULL,
   `colaborador_id_fk` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -274,8 +277,10 @@ CREATE TABLE `turma` (
 --
 
 INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) VALUES
-(72, 'Turma A', 24, 118, 45),
-(73, 'Turma B', 27, 118, 46);
+(81, 'Turma A', 24, 121, 45),
+(82, 'Turma B', 24, 118, 45),
+(83, 'Turma C', 24, 117, 45),
+(84, 'Turma D', 27, 118, 46);
 
 -- --------------------------------------------------------
 
@@ -310,8 +315,8 @@ INSERT INTO `usuario` (`id`, `data_nascimento`, `cpf`, `telefone`, `genero`) VAL
 --
 ALTER TABLE `aluno`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `turma_id_aluno_fk` (`turma_aluno_fk`),
-  ADD KEY `funcionario_id_fk` (`id_funcionario_fk`);
+  ADD KEY `funcionario_id_fk` (`id_funcionario_fk`),
+  ADD KEY `turma_id_aluno_fk` (`turma_aluno_fk`);
 
 --
 -- Índices para tabela `colaborador`
@@ -385,7 +390,8 @@ ALTER TABLE `treinamento`
 ALTER TABLE `turma`
   ADD PRIMARY KEY (`id`),
   ADD KEY `treinamento_id_turma_fk` (`treinamento_id`),
-  ADD KEY `id_colaborador_fk` (`colaborador_id_fk`);
+  ADD KEY `id_colaborador_fk` (`colaborador_id_fk`),
+  ADD KEY `empresa_id_turma_fk` (`empresa_aluno`);
 
 --
 -- Índices para tabela `usuario`
@@ -401,7 +407,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT de tabela `colaborador`
@@ -437,7 +443,7 @@ ALTER TABLE `empresa_cliente_funcionario`
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -455,7 +461,7 @@ ALTER TABLE `treinamento`
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
@@ -530,6 +536,7 @@ ALTER TABLE `treinamento`
 -- Limitadores para a tabela `turma`
 --
 ALTER TABLE `turma`
+  ADD CONSTRAINT `empresa_id_turma_fk` FOREIGN KEY (`empresa_aluno`) REFERENCES `empresa_cliente` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `id_colaborador_fk` FOREIGN KEY (`colaborador_id_fk`) REFERENCES `login` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `treinamento_id_turma_fk` FOREIGN KEY (`treinamento_id`) REFERENCES `treinamento` (`id`) ON DELETE CASCADE;
 COMMIT;

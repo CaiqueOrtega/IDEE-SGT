@@ -68,7 +68,6 @@ try {
 
 function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
 {
-    echo ("entrou2");
     try {
         $pdo = $connection->connection();
         $pdo->beginTransaction();
@@ -79,7 +78,6 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
         $stmtCheck->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_INT);
         $stmtCheck->execute();
         $count = $stmtCheck->fetchColumn();
-
 
         if ($count > 0) {
             // Se a empresa já tiver uma turma com o mesmo treinamento, retorna uma mensagem de erro
@@ -113,6 +111,9 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
 
             $pdo->commit();
 
+            // Echo para imprimir o ID da turma cadastrada com sucesso
+            echo "ID da Turma cadastrada: " . $turmaId;
+
             return json_encode(['msg' => 'Turma registrada com sucesso', 'status' => 200, 'turma_id' => $turmaId]);
         }
     } catch (PDOException $e) {
@@ -120,6 +121,7 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
         return json_encode(['msg' => 'Erro ao cadastrar Turma: ' . $e->getMessage(), 'status' => 400]);
     }
 }
+
 
 function studentRegister($connection, $funcionariosIds, $turmaId)
 {

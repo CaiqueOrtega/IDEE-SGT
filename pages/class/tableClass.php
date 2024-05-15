@@ -24,6 +24,7 @@ include '../../api/private/cript.php';
             <?php
             foreach ($turmasData as $index => $turma) {
                 $token = encrypt_id($turma['id'], $encryptionKey, $signatureKey);
+           
 
             ?>
 

@@ -8,17 +8,35 @@ $idPermissao = $_SESSION['login']['permissao'];
 
 try {
     if ($idPermissao == 1 || $idPermissao == 4) {
-        $where = " WHERE 1=1";
+        $whereTurma = " WHERE 1=1";
+        $whereAluno = " WHERE 1=1";
     } else {
-        $where = " WHERE turma.colaborador_id_fk = :id";
+        $whereTurma = " WHERE turma.colaborador_id_fk = :id";
+        $whereAluno = " WHERE aluno.turma_aluno_fk = :turmaId AND turma.colaborador_id_fk = :id";
     }
 
     $connection = new Database();
-    $turmasData = getCordenadorId($id, $connection, $where);
-    $alunosData = getAlunosData($id, $connection, $where);
+    $turmasData = getCordenadorId($id, $connection, $whereTurma);
+
+    // Iterar sobre as turmas para obter os dados dos alunos de cada turma
+    foreach ($turmasData as $turma) {
+        $turmaId = $turma['id'];
+        echo "Processando turma ID: $turmaId <br>";
+
+        $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
+        echo "Número de alunos encontrados na turma $turmaId: " . count($alunosData) . "<br>";
+
+        // Aqui você pode processar os dados dos alunos conforme necessário
+        foreach ($alunosData as $aluno) {
+            // Processar os dados dos alunos...
+            echo "ID do Aluno: " . $aluno['id'] . ", Nome do Aluno: " . $aluno['nome'] . "<br>";
+        }
+    }
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
+
+
 
 
 
@@ -58,27 +76,29 @@ function getCordenadorId($userId, $connection, $whereClause)
     }
 }
 
-function getAlunosData($userId, $connection, $whereClause)
+function getAlunosData($userId, $connection, $whereClause,$turmaId)
 {
     try {
         $pdo = $connection->connection();
 
         $sql = "SELECT 
         aluno.*, 
-        turma.*, 
         empresa_cliente_funcionario.id AS id_funcionario_fk,
         empresa_cliente_funcionario.* 
         FROM  aluno
-        INNER JOIN turma ON aluno.turma_aluno_fk = turma.id
+        INNER JOIN turma ON aluno.turma_aluno_fk = turma.id 
         INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
-
-                $whereClause ";
+        $whereClause";
 
         $stmt = $pdo->prepare($sql);
 
-
-        if (strpos($whereClause, ':id') != false) {
+        if (strpos($whereClause, ':id') !== false) {
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        }
+
+        if (strpos($whereClause, ':turmaId') !== false) {
+            // Se estiver usando o parâmetro :turmaId, você precisa passá-lo também
+            $stmt->bindParam(':turmaId', $turmaId, PDO::PARAM_INT); // Certifique-se de definir $turmaId
         }
 
         $stmt->execute();
