@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalClassInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color:white;">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="me-2 fas fa-users"></i>Informações da Turma</h1>
@@ -110,7 +110,7 @@
                                 <tbody class="mt-1">
                                     <?php
                                     foreach ($alunosData as $aluno) {
-                                        $tokenAluno = encrypt_id($aluno['id'], $encryptionKey, $signatureKey);
+                                        $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
 
 
                                     ?>

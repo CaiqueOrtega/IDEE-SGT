@@ -20,7 +20,7 @@ try {
 
     // Iterar sobre as turmas para obter os dados dos alunos de cada turma
     foreach ($turmasData as $turma) {
-        $turmaId = $turma['id'];
+        $turmaId = $turma['turma_id'];
         echo "Processando turma ID: $turmaId <br>";
 
         $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
@@ -29,7 +29,7 @@ try {
         // Aqui você pode processar os dados dos alunos conforme necessário
         foreach ($alunosData as $aluno) {
             // Processar os dados dos alunos...
-            echo "ID do Aluno: " . $aluno['id'] . ", Nome do Aluno: " . $aluno['nome'] . "<br>";
+            echo "ID do Aluno: " . $aluno['id'] . ", Nome do Aluno: " . $aluno['nome_funcionario'] . "<br>";
         }
     }
 } catch (Exception $e) {
@@ -48,6 +48,7 @@ function getCordenadorId($userId, $connection, $whereClause)
         $pdo = $connection->connection();
 
         $sql = "SELECT turma.*, 
+        turma.id AS turma_id,
         treinamento.id AS treinamento_id,
         treinamento.*, 
         empresa_cliente.id AS empresa_id,
@@ -81,8 +82,8 @@ function getAlunosData($userId, $connection, $whereClause,$turmaId)
     try {
         $pdo = $connection->connection();
 
-        $sql = "SELECT 
-        aluno.*, 
+        $sql = "SELECT aluno.*, 
+        aluno.id AS aluno_id,
         empresa_cliente_funcionario.id AS id_funcionario_fk,
         empresa_cliente_funcionario.* 
         FROM  aluno

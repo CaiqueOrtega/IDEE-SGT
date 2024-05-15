@@ -2,7 +2,7 @@ $(document).ready(function() {
     $(".modalClassInfo1").click(function(e) {
         e.preventDefault();
         var index = $(this).closest('tr').data('index'); // Captura o valor de data-index
-        var token = $(this).data('token'); // Captura o token da turma
+
 
         // Use os dados da variável JavaScript definida no arquivo PHP
         var turmaSelecionada = turmasData[index];

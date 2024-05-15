@@ -23,7 +23,7 @@ include '../../api/private/cript.php';
         <tbody class="mt-1">
             <?php
             foreach ($turmasData as $index => $turma) {
-                $token = encrypt_id($turma['id'], $encryptionKey, $signatureKey);
+                $token = encrypt_id($turma['turma_id'], $encryptionKey, $signatureKey);
            
 
             ?>
