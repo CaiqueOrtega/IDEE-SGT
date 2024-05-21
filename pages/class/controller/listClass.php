@@ -17,21 +17,6 @@ try {
 
     $connection = new Database();
     $turmasData = getCordenadorId($id, $connection, $whereTurma);
-
-    // Iterar sobre as turmas para obter os dados dos alunos de cada turma
-    foreach ($turmasData as $turma) {
-        $turmaId = $turma['turma_id'];
-        echo "Processando turma ID: $turmaId <br>";
-
-        $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
-        echo "Número de alunos encontrados na turma $turmaId: " . count($alunosData) . "<br>";
-
-        // Aqui você pode processar os dados dos alunos conforme necessário
-        foreach ($alunosData as $aluno) {
-            // Processar os dados dos alunos...
-            echo "ID do Aluno: " . $aluno['id'] . ", Nome do Aluno: " . $aluno['nome_funcionario'] . "<br>";
-        }
-    }
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
@@ -77,7 +62,7 @@ function getCordenadorId($userId, $connection, $whereClause)
     }
 }
 
-function getAlunosData($userId, $connection, $whereClause,$turmaId)
+function getAlunosData($userId, $connection, $whereClause, $turmaId = null)
 {
     try {
         $pdo = $connection->connection();
@@ -86,7 +71,7 @@ function getAlunosData($userId, $connection, $whereClause,$turmaId)
         aluno.id AS aluno_id,
         empresa_cliente_funcionario.id AS id_funcionario_fk,
         empresa_cliente_funcionario.* 
-        FROM  aluno
+        FROM aluno
         INNER JOIN turma ON aluno.turma_aluno_fk = turma.id 
         INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
         $whereClause";
@@ -97,9 +82,8 @@ function getAlunosData($userId, $connection, $whereClause,$turmaId)
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         }
 
-        if (strpos($whereClause, ':turmaId') !== false) {
-            // Se estiver usando o parâmetro :turmaId, você precisa passá-lo também
-            $stmt->bindParam(':turmaId', $turmaId, PDO::PARAM_INT); // Certifique-se de definir $turmaId
+        if ($turmaId !== null && strpos($whereClause, ':turmaId') !== false) {
+            $stmt->bindParam(':turmaId', $turmaId, PDO::PARAM_INT);
         }
 
         $stmt->execute();
@@ -110,3 +94,8 @@ function getAlunosData($userId, $connection, $whereClause,$turmaId)
         throw new Exception('Erro interno ao buscar dados do(s) aluno(s)');
     }
 }
+
+
+
+
+

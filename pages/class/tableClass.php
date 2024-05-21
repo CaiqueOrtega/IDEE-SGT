@@ -23,9 +23,10 @@ include '../../api/private/cript.php';
         <tbody class="mt-1">
             <?php
             foreach ($turmasData as $index => $turma) {
+                $turmaId = $turma['turma_id'];
                 $token = encrypt_id($turma['turma_id'], $encryptionKey, $signatureKey);
-           
 
+                $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
             ?>
 
                 <tr class="data-row" id="tableClassInfo" data-index="<?php echo $index; ?>">
@@ -35,6 +36,7 @@ include '../../api/private/cript.php';
                     <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['nome_fantasia']; ?></td>
                     <td class="editable-cell" data-field="colaborador_id_fk"><?php echo $turma['nome_usuario']; ?></td>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['carga_horaria']; ?></td>
+
 
 
                     <td class="text-center">
@@ -47,15 +49,20 @@ include '../../api/private/cript.php';
 
                     <td class="text-end">
 
-                        <a href="#" class="text-primary d-flex modalClassInfo1 float-end" data-bs-toggle="modal" data-token="<?php echo $token; ?>" data-bs-target="#modalClassInfo">
+                        <a href="#" class="text-primary d-flex modalClassInfo1 float-end" data-bs-toggle="modal" data-token="<?php echo $token; ?>" data-bs-target="#modalClassInfo-<?php echo $turma['turma_id']; ?>" data-index="<?php echo $index; ?>">
                             <i class="bi bi-eye"></i> <i class="bi bi-three-dots-vertical"></i>
                         </a>
 
-                        <script>
-                            // Defina uma variável JavaScript com os dados PHP
-                            var turmasData = <?php echo json_encode($turmasData); ?>;
-                        </script>
+ 
+            
                     </td>
+
+                    <td>
+
+                    <?php require('./modalClass.php'); ?>
+                    </td>
+
+
                 </tr>
             <?php } ?>
         </tbody>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 15-Maio-2024 às 19:35
+-- Tempo de geração: 21-Maio-2024 às 03:18
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.0.30
 
@@ -31,7 +31,9 @@ CREATE TABLE `aluno` (
   `id` int(11) NOT NULL,
   `id_funcionario_fk` int(11) UNSIGNED NOT NULL,
   `turma_aluno_fk` int(10) UNSIGNED NOT NULL,
-  `nota` decimal(10,2) DEFAULT NULL,
+  `nota_pratica` decimal(10,1) DEFAULT NULL,
+  `nota_teorica` decimal(10,1) DEFAULT NULL,
+  `nota_media` decimal(10,1) DEFAULT NULL,
   `frequencia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -39,16 +41,13 @@ CREATE TABLE `aluno` (
 -- Extraindo dados da tabela `aluno`
 --
 
-INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota`, `frequencia`) VALUES
-(74, 85, 81, NULL, 100),
-(75, 79, 82, NULL, 100),
-(76, 80, 82, NULL, 100),
-(77, 81, 82, NULL, 100),
-(78, 78, 83, NULL, 100),
-(79, 84, 83, NULL, 100),
-(80, 79, 84, NULL, 100),
-(81, 80, 84, NULL, 100),
-(82, 81, 84, NULL, 100);
+INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota_pratica`, `nota_teorica`, `nota_media`, `frequencia`) VALUES
+(83, 79, 85, 8.5, 6.0, 7.9, 100),
+(84, 80, 85, NULL, NULL, NULL, 100),
+(85, 81, 85, NULL, NULL, NULL, 100),
+(86, 78, 86, NULL, NULL, NULL, 100),
+(87, 84, 86, NULL, NULL, NULL, 100),
+(88, 83, 87, NULL, NULL, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -183,6 +182,13 @@ CREATE TABLE `ficha_inscricao` (
   `data_realizacao` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Extraindo dados da tabela `ficha_inscricao`
+--
+
+INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
+(265, '[{\"id\":\"82\"}]', 24, 119, '2024-05-21');
+
 -- --------------------------------------------------------
 
 --
@@ -277,10 +283,9 @@ CREATE TABLE `turma` (
 --
 
 INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) VALUES
-(81, 'Turma A', 24, 121, 45),
-(82, 'Turma B', 24, 118, 45),
-(83, 'Turma C', 24, 117, 45),
-(84, 'Turma D', 27, 118, 46);
+(85, 'Turma A', 24, 118, 45),
+(86, 'Turma B', 24, 117, 45),
+(87, 'Turma C', 24, 120, 45);
 
 -- --------------------------------------------------------
 
@@ -407,7 +412,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de tabela `colaborador`
@@ -443,7 +448,7 @@ ALTER TABLE `empresa_cliente_funcionario`
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=266;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -461,7 +466,7 @@ ALTER TABLE `treinamento`
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
