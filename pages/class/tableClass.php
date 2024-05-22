@@ -13,7 +13,7 @@ include '../../api/private/cript.php';
                 <th scope="col">Empresa</th>
                 <th scope="col">Coordenador</th>
                 <th scope="col">Carga Horaria</th>
-                <th class="text-center">Excluir</th>
+                <th class="text-center">Cancelar Turma</th>
                 <th class="text-end">Mais</th>
             </tr>
 
@@ -33,7 +33,7 @@ include '../../api/private/cript.php';
 
                     <th class="editable-cell" data-field="turma"><?php echo $turma['nome_turma']; ?></th>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['nomenclatura']; ?></td>
-                    <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['nome_fantasia']; ?></td>
+                    <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['razao_social']; ?></td>
                     <td class="editable-cell" data-field="colaborador_id_fk"><?php echo $turma['nome_usuario']; ?></td>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['carga_horaria']; ?></td>
 
@@ -42,7 +42,7 @@ include '../../api/private/cript.php';
                     <td class="text-center">
 
                         <a href="#" class="ms-2 text-danger text-center" data-bs-toggle="modal" data-bs-target="#modalDeleteClass">
-                            <i class="bi bi-trash3-fill"></i>
+                            <i class="bi bi-x-lg"></i>
                         </a>
 
                     </td>

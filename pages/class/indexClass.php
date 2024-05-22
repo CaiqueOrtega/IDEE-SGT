@@ -6,9 +6,9 @@
   <div class="row py-3 bg-light shadow border rounded-2">
     <div class="col d-flex justify-content-between">
       <h3>Turmas</h3>
-        <div class="d-flex">
-          <button class="btn btn-outline-primary d-flex" id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
-          <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
+      <div class="d-flex">
+        <button class="btn btn-outline-primary d-flex" id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+        <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
       </div>
     </div>
   </div>
@@ -33,10 +33,3 @@
 </div>
 
 <script src="../src/js/scriptClass.js"></script>
-
-                      
-
-
-
-
-

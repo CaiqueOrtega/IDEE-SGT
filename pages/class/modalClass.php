@@ -74,73 +74,102 @@
 </div>
 
 
-<div class="modal fade" id="modalStudents-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="studentsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen ">
+<!-- Fullscreen Modal -->
+<div class="modal fade" id="modalStudents-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="studentsModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #58af9b; color:white;">
+            <div class="modal-header" style="background-color: #58af9b; color: white;">
                 <h1 class="modal-title fs-5" id="studentsModalLabel"><i class="me-2 fas fa-users"></i>Alunos da Turma</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body " style="background-color: #f0f2f5 ;">
+                <div class="container card border shadow" >
+                    <div class="row py-3 bg-light  border rounded-top align-items-center">
+                        <div class="col d-flex align-items-center">
+                            <h3 class="text-start">Alunos</h3>
+                        </div>
+                        <div class="col d-flex justify-content-end align-items-center">
+                            <!-- Botão para Modal de Notas -->
+                            <button class="btn btn-outline-success me-2 d-flex align-items-center py-2" id="openNotas-<?php echo $turma['turma_id']; ?>">
+                                <i class="bi bi-clipboard2-check me-1"></i><span class="d-none d-md-block">Notas</span>
+                            </button>
+                            <!-- Botão para Modal de Frequência -->
+                            <button class="btn btn-outline-primary d-flex align-items-center py-2" id="openFrequencia-<?php echo $turma['turma_id']; ?>">
+                                <i class="bi bi-calendar2-date me-1"></i><span class="d-none d-md-block">Frequência</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Registro</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Documento</th>
+                                        <th scope="col">Gênero</th>
+                                        <th scope="col">Remover Aluno</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="mt-1">
+                                    <?php foreach ($alunosData as $index => $aluno) {
+                                        $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
+                                    ?>
+                                        <tr class="data-row" data-index="<?php echo $index; ?>">
+                                            <th data-field="registro" class="text-right"> <?php echo $aluno['numero_registro_empresa']; ?></th>
+                                            <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
+                                            <th data-field="cpf"><?php echo $aluno['cpf']; ?></th>
+                                            <td data-field="genero"><?php echo $aluno['genero']; ?></td>
+                                            <td class="text-right">
+                                                <a href="#" class="ms-2 text-danger text-end/" data-bs-toggle="modal" data-bs-target="#modalDeleteStudents">
+                                                    <i class="bi bi-trash3-fill fs-6"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Notas -->
+<div class="modal fade" id="modalNotas-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNotasLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #58af9b; color: white;">
+                <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da Turma - Notas</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
-                <div class="container card border">
-                    <div class="row py-3 bg-light shadow-sm border rounded- align-items-center">
-                        <div class="col d-flex align-items-center">
-                            <h3 class="text-center">Alunos</h3>
-                            <div class="d-flex justify-content-between mb-3">
-
-
-                            </div>
-                        </div>
-                    </div>
-
-
-
+                <div class="card-body">
                     <div class="table-responsive">
                         <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
                             <thead>
                                 <tr>
                                     <th scope="col">Registro</th>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">Documento</th>
-                                    <th scope="col">Gênero</th>
-                                    <th scope="col">Remover</th>
-                                    <th scope="col">Frequência</th>
-                                    <th scope="col">Notas</th>
+                                    <th scope="col">Nota Pratica</th>
+                                    <th scope="col">Nota Teorica</th>
+                                    <th scope="col">Media</th>
                                 </tr>
                             </thead>
                             <tbody class="mt-1">
-                                <?php
-                                foreach ($alunosData as $index => $aluno) {
+                                <?php foreach ($alunosData as $index => $aluno) {
                                     $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
                                 ?>
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"> <?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <td data-field="cpf"><?php echo $aluno['cpf']; ?></td>
-                                        <td data-field="genero"><?php echo $aluno['genero']; ?></td>
-
-                                        <td class="text-right">
-
-                                            <a href="#" class="ms-2 text-danger text-end/" data-bs-toggle="modal" data-bs-target="#modalDeleteStudents">
-                                                <i class="bi bi-trash3-fill fs-6"></i>
-                                            </a>
-                                        </td>
-
-                                        <th class="text-right">
-
-                                            <a href="#" class="ms-2 text-primary text-end" data-bs-toggle="modal" data-bs-target="#modalFrequencia-<?php echo $turma['turma_id']; ?>">
-                                                <i class="bi bi-calendar2-date fs-6"></i>
-                                            </a>
-
-                                        </th>
-
-                                        <th class="text-right">
-
-                                            <a href="#" class="ms-2 text-success text-end" data-bs-toggle="modal" data-bs-target="#modalNotas-<?php echo $turma['turma_id']; ?>">
-                                                <i class="bi bi-clipboard2-check "></i>
-                                                </button>
-                                        </t>
+                                        <th class="editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica'] ?? '0'; ?></th>
+                                        <th class="editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica'] ?? '0'; ?></th>
+                                        <th class="editable-cell" data-field="nota_media"><?php echo $aluno['nota_media'] ?? '0'; ?></th>
 
                                     </tr>
                                 <?php } ?>
@@ -148,44 +177,122 @@
                         </table>
                     </div>
                 </div>
+
+
             </div>
-
-            <div class="modal-footer">
-
+            <div class="modal-footer mt-3">
+                <button type="button" class="btn btn-login" data-bs-dismiss="modal">Confirmar</button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal de Frequência -->
+<div class="modal fade" id="modalFrequencia-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalFrequenciaLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #58af9b; color: white;">
+                <h1 class="modal-title fs-5" id="modalFrequenciaLabel"><i class="me-2 fas fa-users"></i>Informações da Turma - Frequência</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
 
-        <script>
-            var buttons = document.querySelectorAll('.btn');
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Registro</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Presença</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody class="mt-1">
+                                <?php foreach ($alunosData as $index => $aluno) {
+                                    $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
+                                ?>
+                                    <tr class="data-row" data-index="<?php echo $index; ?>">
+                                        <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
+                                        <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
+                                        <!-- Checkbox de Frequência -->
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>" name="frequencia[]" value="<?php echo $aluno['aluno_id']; ?>">
+                                                <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>">
+                                                    Presente
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-            // Itera sobre cada botão
-            buttons.forEach(function(button) {
-                // Adiciona um ouvinte de evento de clique a cada botão
-                button.addEventListener('click', function() {
-                    var btn = this;
-                    var icon = btn.querySelector('.icon');
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                    // Desabilita o botão
-                    btn.disabled = true;
 
-                    // Verifica se as informações estão abertas ou fechadas
-                    var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+            </div>
+            <div class="modal-footer mt-3">
+                <button type="button" class="btn btn-login" data-bs-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    // Muda a seta dependendo do estado das informações
-                    if (isExpanded) {
-                        icon.classList.remove('bi-chevron-right');
-                        icon.classList.add('bi-chevron-down');
-                    } else {
-                        icon.classList.remove('bi-chevron-down');
-                        icon.classList.add('bi-chevron-right');
-                    }
 
-                    // Aguarda 1 segundo para simular a animação
-                    setTimeout(function() {
-                        // Reabilita o botão após a animação
-                        btn.disabled = false;
-                    }, 1000);
-                });
+<script>
+    $(document).ready(function() {
+        // Função para abrir o modal secundário sem fechar o fullscreen modal
+        function openSecondaryModal(trigger, modalToOpen, parentModal) {
+            $(trigger).on('click', function() {
+                $(modalToOpen).modal('show');
+                $(parentModal).css('z-index', '1040'); // Ajusta o z-index para manter o fullscreen modal no fundo
             });
-        </script>
+
+            $(modalToOpen).on('hidden.bs.modal', function() {
+                $(parentModal).css('z-index', '1055'); // Redefine o z-index quando o modal secundário é fechado
+            });
+        }
+
+        // Aplicando a função para os modais de Notas e Frequência
+        openSecondaryModal('#openNotas-<?php echo $turma['turma_id']; ?>', '#modalNotas-<?php echo $turma['turma_id']; ?>', '#modalStudents-<?php echo $turma['turma_id']; ?>');
+        openSecondaryModal('#openFrequencia-<?php echo $turma['turma_id']; ?>', '#modalFrequencia-<?php echo $turma['turma_id']; ?>', '#modalStudents-<?php echo $turma['turma_id']; ?>');
+    });
+</script>
+
+<script>
+    var buttons = document.querySelectorAll('.btn-info-class');
+
+    // Itera sobre cada botão
+    buttons.forEach(function(button) {
+        // Adiciona um ouvinte de evento de clique a cada botão
+        button.addEventListener('click', function() {
+            var btn = this;
+            var icon = btn.querySelector('.icon');
+
+            // Desabilita o botão
+            btn.disabled = true;
+
+            // Verifica se as informações estão abertas ou fechadas
+            var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+            // Muda a seta dependendo do estado das informações
+            if (isExpanded) {
+                icon.classList.remove('bi-chevron-right');
+                icon.classList.add('bi-chevron-down');
+            } else {
+                icon.classList.remove('bi-chevron-down');
+                icon.classList.add('bi-chevron-right');
+            }
+
+            // Aguarda 1 segundo para simular a animação
+            setTimeout(function() {
+                // Reabilita o botão após a animação
+                btn.disabled = false;
+            }, 1000);
+        });
+    });
+</script>
