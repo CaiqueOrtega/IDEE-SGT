@@ -1,6 +1,6 @@
 <?php
 require('./controller/listClass.php');
-include '../../api/private/cript.php';
+
 ?>
 
 
@@ -11,7 +11,7 @@ include '../../api/private/cript.php';
                 <th scope="col">Turma</th>
                 <th scope="col">Treinamento</th>
                 <th scope="col">Empresa</th>
-                <th scope="col">Coordenador</th>
+                <th scope="col">Colaborador</th>
                 <th scope="col">Carga Horaria</th>
                 <th class="text-center">Cancelar Turma</th>
                 <th class="text-end">Mais</th>
@@ -29,7 +29,7 @@ include '../../api/private/cript.php';
                 $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
             ?>
 
-                <tr class="data-row" id="tableClassInfo" data-index="<?php echo $index; ?>">
+                <tr class="data-row" id="tableClassInfo" data-token="<?php echo $token; ?>">
 
                     <th class="editable-cell" data-field="turma"><?php echo $turma['nome_turma']; ?></th>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['nomenclatura']; ?></td>
@@ -41,7 +41,7 @@ include '../../api/private/cript.php';
 
                     <td class="text-center">
 
-                        <a href="#" class="ms-2 text-danger text-center" data-bs-toggle="modal" data-bs-target="#modalDeleteClass">
+                        <a href="#" class="ms-2 text-danger text-center" data-bs-toggle="modal" data-bs-target="#modalDeleteClass" >
                             <i class="bi bi-x-lg"></i>
                         </a>
 
@@ -68,3 +68,5 @@ include '../../api/private/cript.php';
         </tbody>
     </table>
 </div>
+
+

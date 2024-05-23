@@ -83,10 +83,10 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body " style="background-color: #f0f2f5 ;">
-                <div class="container card border shadow" >
+                <div class="container card border shadow">
                     <div class="row py-3 bg-light  border rounded-top align-items-center">
                         <div class="col d-flex align-items-center">
-                            <h3 class="text-start">Alunos</h3>
+                            <h3 class="text-start mb-0">Alunos</h3>
                         </div>
                         <div class="col d-flex justify-content-end align-items-center">
                             <!-- Botão para Modal de Notas -->
@@ -109,7 +109,6 @@
                                         <th scope="col">Nome</th>
                                         <th scope="col">Documento</th>
                                         <th scope="col">Gênero</th>
-                                        <th scope="col">Frequencia</th>
                                         <th scope="col">Remover Aluno</th>
                                     </tr>
                                 </thead>
@@ -122,7 +121,7 @@
                                             <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
                                             <th data-field="cpf"><?php echo $aluno['cpf']; ?></th>
                                             <td data-field="genero"><?php echo $aluno['genero']; ?></td>
-                                            <td data-field="frequencia"><?php  echo '%' . $aluno['frequencia'] ;  ?></td>
+
 
                                             <td class="text-right">
                                                 <a href="#" class="ms-2 text-danger text-end/" data-bs-toggle="modal" data-bs-target="#modalDeleteStudents">
@@ -208,33 +207,58 @@
                                 <tr>
                                     <th scope="col">Registro</th>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">Presença</th>
-                                   
+
+                                    <?php
+
+                                    for ($i = 1; $i <= $dias; $i++) { ?>
+                                        <th scope="col"><?php echo $i; ?></th>
+                                    <?php } ?>
+
+                                    <th scope="col">Frequencia</th>
+
                                 </tr>
                             </thead>
-                            <tbody class="mt-1">
-                                <?php foreach ($alunosData as $index => $aluno) {
-                                    $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
-                                ?>
+                            <tbody>
+                                <?php foreach ($alunosData as $index => $aluno) { ?>
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <!-- Checkbox de Frequência -->
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>" name="frequencia[]" value="<?php echo $aluno['aluno_id']; ?>">
-                                                <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>">
+                                        <?php for ($i = 1; $i <= $dias; $i++) { ?>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked>
+                                                    <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
+                                                </div>
+                                            </td>
 
-                                                </label>
-                                            </div>
-                                        </td>
+
+                                        <?php } ?>
+                                        <td data-field="nome_funcionario"><?php echo $aluno['frequencia']; ?></td>
                                     </tr>
-
                                 <?php } ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                <!-- Estilos customizados para os checkboxes -->
+                <style>
+                    .form-check-input:checked~.form-check-label {
+                        color: green;
+                    }
+
+                    .form-check-input:not(:checked)~.form-check-label {
+                        color: red;
+                    }
+
+                    .form-check-input:not(:checked)~.form-check-label::after {
+                        content: "\f00d";
+                        /* Unicode for FontAwesome "X" icon */
+                        font-family: "Font Awesome 5 Free";
+                        font-weight: 900;
+                        margin-left: 5px;
+                    }
+                </style>
 
 
             </div>
