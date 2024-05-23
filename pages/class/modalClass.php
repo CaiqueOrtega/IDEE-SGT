@@ -109,6 +109,7 @@
                                         <th scope="col">Nome</th>
                                         <th scope="col">Documento</th>
                                         <th scope="col">Gênero</th>
+                                        <th scope="col">Frequencia</th>
                                         <th scope="col">Remover Aluno</th>
                                     </tr>
                                 </thead>
@@ -121,6 +122,8 @@
                                             <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
                                             <th data-field="cpf"><?php echo $aluno['cpf']; ?></th>
                                             <td data-field="genero"><?php echo $aluno['genero']; ?></td>
+                                            <td data-field="frequencia"><?php  echo '%' . $aluno['frequencia'] ;  ?></td>
+
                                             <td class="text-right">
                                                 <a href="#" class="ms-2 text-danger text-end/" data-bs-toggle="modal" data-bs-target="#modalDeleteStudents">
                                                     <i class="bi bi-trash3-fill fs-6"></i>
@@ -221,7 +224,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>" name="frequencia[]" value="<?php echo $aluno['aluno_id']; ?>">
                                                 <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>">
-                                                    Presente
+
                                                 </label>
                                             </div>
                                         </td>
