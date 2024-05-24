@@ -207,15 +207,24 @@
                                 <tr>
                                     <th scope="col">Registro</th>
                                     <th scope="col">Nome</th>
-
+                                    <th scope="col">Frequencia</th>
                                     <?php
+                                    $cargaHorariaTotal = isset($turma['carga_horaria']) ? $turma['carga_horaria'] : 0;
+
+                                    // Verificar se $cargaHorariaTotal é numérico
+                                    if (!is_numeric($cargaHorariaTotal)) {
+                                        $cargaHorariaTotal = 0;
+                                    }
+
+                                    // Número de horas consideradas por dia
+                                    $horasPorDia = 4;
+
+                                    // Calcular o número de dias
+                                    $dias = ceil($cargaHorariaTotal / $horasPorDia);
 
                                     for ($i = 1; $i <= $dias; $i++) { ?>
-                                        <th scope="col"><?php echo $i; ?></th>
+                                        <th scope="col">Dia <?php echo $i; ?></th>
                                     <?php } ?>
-
-                                    <th scope="col">Frequencia</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -223,6 +232,12 @@
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
+                                        <td data-field="frequencia">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>" name="frequencia[]" value="<?php echo $aluno['aluno_id']; ?>" checked>
+                                                <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>"></label>
+                                            </div>
+                                        </td>
                                         <?php for ($i = 1; $i <= $dias; $i++) { ?>
                                             <td>
                                                 <div class="form-check">
@@ -230,10 +245,7 @@
                                                     <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
                                                 </div>
                                             </td>
-
-
                                         <?php } ?>
-                                        <td data-field="nome_funcionario"><?php echo $aluno['frequencia']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

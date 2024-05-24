@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     // Confirmar deleção e enviar o token para o servidor
     $('#confirmDeleteBtn').on('click', function () {
-        var token = $('#modalDeleteClass').data('token');
+        var token = $('#confirmDeleteBtn').data('token');
         console.log('Token to be sent to server:', token);
 
         $('#modalDeleteClass').modal('hide');

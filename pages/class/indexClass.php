@@ -1,6 +1,3 @@
-<?php 
-include '../../api/private/cript.php';
-?>
 
 
 

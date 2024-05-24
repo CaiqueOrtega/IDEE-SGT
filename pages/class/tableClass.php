@@ -1,6 +1,6 @@
 <?php
 require('./controller/listClass.php');
-
+include '../../api/private/cript.php';
 ?>
 
 
