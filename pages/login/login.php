@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../src/css/lib/bootstrap.min.css">
     <link rel="stylesheet" href="../../src/css/style.css">
+    <link rel="icon" type="image/png" href="../../src/img/logo1.png">
     <title>Entrar</title>
 </head>
 

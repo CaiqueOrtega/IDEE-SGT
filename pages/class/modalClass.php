@@ -142,7 +142,7 @@
 
 <!-- Modal de Notas -->
 <div class="modal fade" id="modalNotas-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNotasLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
                 <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da Turma - Notas</h1>
@@ -169,9 +169,9 @@
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"> <?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <th class="editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica'] ?? '0'; ?></th>
-                                        <th class="editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica'] ?? '0'; ?></th>
-                                        <th class="editable-cell" data-field="nota_media"><?php echo $aluno['nota_media'] ?? '0'; ?></th>
+                                        <th class="editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica']; ?></th>
+                                        <th class="editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica']; ?></th>
+                                        <th class="editable-cell" data-field="nota_media"><?php echo $aluno['nota_media']; ?></th>
 
                                     </tr>
                                 <?php } ?>
@@ -191,7 +191,7 @@
 
 <!-- Modal de Frequência -->
 <div class="modal fade" id="modalFrequencia-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalFrequenciaLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
                 <h1 class="modal-title fs-5" id="modalFrequenciaLabel"><i class="me-2 fas fa-users"></i>Informações da Turma - Frequência</h1>
@@ -200,77 +200,48 @@
             <div class="modal-body">
 
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Registro</th>
-                                    <th scope="col">Nome</th>
-                                    <th scope="col">Frequencia</th>
-                                    <?php
-                                    $cargaHorariaTotal = isset($turma['carga_horaria']) ? $turma['carga_horaria'] : 0;
+            <div class="card-body">
+    <div class="table-responsive">
+        <table id="tabelaStudents" class="table table-hover table-striped table table-bordered" style="--bs-table-bg: transparent !important;">
+            <thead>
+                <tr>
+                    <th scope="col">Registro</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Frequência</th>
+                    <?php 
+                    $cargaHorariaTotal = $turma['carga_horaria'];
+                    $horasPorDia = 4;
+                    $dias = ceil($cargaHorariaTotal / $horasPorDia);
 
-                                    // Verificar se $cargaHorariaTotal é numérico
-                                    if (!is_numeric($cargaHorariaTotal)) {
-                                        $cargaHorariaTotal = 0;
-                                    }
-
-                                    // Número de horas consideradas por dia
-                                    $horasPorDia = 4;
-
-                                    // Calcular o número de dias
-                                    $dias = ceil($cargaHorariaTotal / $horasPorDia);
-
-                                    for ($i = 1; $i <= $dias; $i++) { ?>
-                                        <th scope="col">Dia <?php echo $i; ?></th>
-                                    <?php } ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($alunosData as $index => $aluno) { ?>
-                                    <tr class="data-row" data-index="<?php echo $index; ?>">
-                                        <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
-                                        <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <td data-field="frequencia">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>" name="frequencia[]" value="<?php echo $aluno['aluno_id']; ?>" checked>
-                                                <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>"></label>
-                                            </div>
-                                        </td>
-                                        <?php for ($i = 1; $i <= $dias; $i++) { ?>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked>
-                                                    <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
-                                                </div>
-                                            </td>
-                                        <?php } ?>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    for ($i = 1; $i <= $dias; $i++) { ?>
+                        <th scope="col">Dia <?php echo $i; ?></th>
+                    <?php } ?>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider " >
+                <?php foreach ($alunosData as $index => $aluno) { ?>
+                    <tr class="data-row  align-middle " data-index="<?php echo $index; ?>">
+                        <th data-field="registro" class="text-right "><?php echo $aluno['numero_registro_empresa']; ?></th>
+                        <td data-field="nome_funcionario "><?php echo $aluno['nome_funcionario']; ?></td>
+                        <td data-field="frequencia "><?php echo $aluno['frequencia'];?></td>
+                        
+                        <?php for ($i = 1; $i <= $dias; $i++) { ?>
+                            <td class="p-4">
+                                <div class="form-check fs-5">
+                                    <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked>
+                                    <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
+                                </div>
+                            </td>
+                        <?php } ?>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
                 <!-- Estilos customizados para os checkboxes -->
-                <style>
-                    .form-check-input:checked~.form-check-label {
-                        color: green;
-                    }
-
-                    .form-check-input:not(:checked)~.form-check-label {
-                        color: red;
-                    }
-
-                    .form-check-input:not(:checked)~.form-check-label::after {
-                        content: "\f00d";
-                        /* Unicode for FontAwesome "X" icon */
-                        font-family: "Font Awesome 5 Free";
-                        font-weight: 900;
-                        margin-left: 5px;
-                    }
-                </style>
+                
 
 
             </div>

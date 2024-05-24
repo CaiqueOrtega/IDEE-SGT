@@ -16,6 +16,8 @@ $permissao = $_SESSION['login']['permissao'];
     <link rel="stylesheet" href="../src/css/dashboardStyle.css">
     <link rel="stylesheet" href="../src/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" type="image/png" href="../src/img/logo1.png">
+   
 
 
     <script src="../src/js/lib/jquery.min.js"></script>

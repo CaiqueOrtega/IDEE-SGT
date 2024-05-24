@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22/05/2024 às 22:09
+-- Tempo de geração: 24/05/2024 às 22:06
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -31,10 +31,10 @@ CREATE TABLE `aluno` (
   `id` int(11) NOT NULL,
   `id_funcionario_fk` int(11) UNSIGNED NOT NULL,
   `turma_aluno_fk` int(10) UNSIGNED NOT NULL,
-  `nota_pratica` decimal(10,1) DEFAULT NULL,
-  `nota_teorica` decimal(10,1) DEFAULT NULL,
-  `nota_media` decimal(10,1) DEFAULT NULL,
-  `frequencia` int(11) NOT NULL
+  `nota_pratica` decimal(10,1) NOT NULL,
+  `nota_teorica` decimal(10,1) NOT NULL,
+  `nota_media` decimal(10,1) NOT NULL,
+  `frequencia` decimal(10,1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -42,12 +42,12 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota_pratica`, `nota_teorica`, `nota_media`, `frequencia`) VALUES
-(99, 78, 100, NULL, NULL, NULL, 100),
-(100, 84, 100, NULL, NULL, NULL, 100),
-(101, 79, 101, NULL, NULL, NULL, 100),
-(102, 80, 101, NULL, NULL, NULL, 100),
-(103, 81, 101, NULL, NULL, NULL, 100),
-(104, 82, 102, NULL, NULL, NULL, 100);
+(105, 79, 103, 0.0, 0.0, 0.0, 100.0),
+(106, 80, 103, 0.0, 0.0, 0.0, 100.0),
+(107, 81, 103, 0.0, 0.0, 0.0, 100.0),
+(108, 78, 104, 0.0, 0.0, 0.0, 100.0),
+(109, 84, 104, 0.0, 0.0, 0.0, 100.0),
+(110, 85, 105, 0.0, 0.0, 0.0, 100.0);
 
 -- --------------------------------------------------------
 
@@ -276,9 +276,9 @@ CREATE TABLE `turma` (
 --
 
 INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) VALUES
-(100, 'Turma A', 24, 117, 45),
-(101, 'Turma B', 24, 118, 45),
-(102, 'Turma C', 24, 119, 45);
+(103, 'Turma A', 24, 118, 45),
+(104, 'Turma B', 24, 117, 45),
+(105, 'Turma C', 24, 121, 45);
 
 -- --------------------------------------------------------
 
@@ -405,7 +405,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT de tabela `colaborador`
@@ -441,7 +441,7 @@ ALTER TABLE `empresa_cliente_funcionario`
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=282;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -459,7 +459,7 @@ ALTER TABLE `treinamento`
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`

@@ -136,7 +136,7 @@ function studentRegister($connection, $funcionariosIds, $turmaId)
 
             $stmtExists = $pdo->prepare("SELECT COUNT(*) FROM `aluno` WHERE `id_funcionario_fk` = :funcionarioId AND `turma_aluno_fk` = :turmaId");
             $stmtInsert = $pdo->prepare("INSERT INTO `aluno` (`id_funcionario_fk`, `turma_aluno_fk`, `nota_pratica`,`nota_teorica`,`nota_media`,`frequencia`) 
-                                    VALUES (:funcionarioId, :turmaId, null , null , null , 100)");
+                                    VALUES (:funcionarioId, :turmaId, 0 , 0 , 0 , 100)");
 
             foreach ($funcionariosArray as $funcionario) {
                 $funcionarioId = $funcionario['id'];
