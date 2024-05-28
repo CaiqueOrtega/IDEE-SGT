@@ -29,13 +29,13 @@
                             <span class="fw-semibold">Objetivo:</span> <?php echo $turma['objetivo']; ?>
                         </p>
                         <p id="cargaHoraria">
-                            <span class="fw-semibold">Carga Horária:</span> <?php echo $turma['carga_horaria']; ?>
+                            <span class="fw-semibold">Carga Horária:</span> <?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?>
                         </p>
                         <p id="horasPratica">
-                            <span class="fw-semibold">Horas Prática:</span> <?php echo $turma['horas_pratica']; ?>
+                            <span class="fw-semibold">Horas Prática:</span> <?php echo sprintf('%02d:00:00', $turma['horas_pratica']); ?>
                         </p>
                         <p id="horasTeorica">
-                            <span class="fw-semibold">Horas Teórica:</span> <?php echo $turma['horas_teorica']; ?>
+                            <span class="fw-semibold">Horas Teórica:</span> <?php echo sprintf('%02d:00:00', $turma['horas_teorica']); ?>
                         </p>
                     </div>
                 </div>
@@ -200,48 +200,48 @@
             <div class="modal-body">
 
 
-            <div class="card-body">
-    <div class="table-responsive">
-        <table id="tabelaStudents" class="table table-hover table-striped table table-bordered" style="--bs-table-bg: transparent !important;">
-            <thead>
-                <tr>
-                    <th scope="col">Registro</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Frequência</th>
-                    <?php 
-                    $cargaHorariaTotal = $turma['carga_horaria'];
-                    $horasPorDia = 4;
-                    $dias = ceil($cargaHorariaTotal / $horasPorDia);
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tabelaStudents" class="table table-hover table-striped table table-bordered" style="--bs-table-bg: transparent !important;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Registro</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Frequência</th>
+                                    <?php
+                                    $cargaHorariaTotal = $turma['carga_horaria'];
+                                    $horasPorDia = 4;
+                                    $dias = ceil($cargaHorariaTotal / $horasPorDia);
 
-                    for ($i = 1; $i <= $dias; $i++) { ?>
-                        <th scope="col">Dia <?php echo $i; ?></th>
-                    <?php } ?>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider " >
-                <?php foreach ($alunosData as $index => $aluno) { ?>
-                    <tr class="data-row  align-middle " data-index="<?php echo $index; ?>">
-                        <th data-field="registro" class="text-right "><?php echo $aluno['numero_registro_empresa']; ?></th>
-                        <td data-field="nome_funcionario "><?php echo $aluno['nome_funcionario']; ?></td>
-                        <td data-field="frequencia "><?php echo $aluno['frequencia'];?></td>
-                        
-                        <?php for ($i = 1; $i <= $dias; $i++) { ?>
-                            <td class="p-4">
-                                <div class="form-check fs-5">
-                                    <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked>
-                                    <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
-                                </div>
-                            </td>
-                        <?php } ?>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+                                    for ($i = 1; $i <= $dias; $i++) { ?>
+                                        <th scope="col">Dia <?php echo $i; ?></th>
+                                    <?php } ?>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider ">
+                                <?php foreach ($alunosData as $index => $aluno) { ?>
+                                    <tr class="data-row  align-middle " data-index="<?php echo $index; ?>">
+                                        <th data-field="registro" class="text-right "><?php echo $aluno['numero_registro_empresa']; ?></th>
+                                        <td data-field="nome_funcionario "><?php echo $aluno['nome_funcionario']; ?></td>
+                                        <td data-field="frequencia "><?php echo $aluno['frequencia']; ?></td>
+
+                                        <?php for ($i = 1; $i <= $dias; $i++) { ?>
+                                            <td class="p-4">
+                                                <div class="form-check fs-5">
+                                                    <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked>
+                                                    <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
+                                                </div>
+                                            </td>
+                                        <?php } ?>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- Estilos customizados para os checkboxes -->
-                
+
 
 
             </div>

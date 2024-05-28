@@ -110,17 +110,17 @@ WHERE treinamento.id = :treinamentoId");
                         </div>
                         <div class="col-md-4 mt-3">
                             <label class="form-label" for="carga_horaria">Carga Horária</label>
-                            <input type="text" name="carga_horaria" value="<?php echo $treinamento['carga_horaria']; ?>" class="form-control cargaHorariaInputDinamic" placeholder="__:__:__">
+                            <input type="text" name="carga_horaria" value="<?php echo sprintf('%02d:00:00', $treinamento['carga_horaria']); ?>" class="form-control cargaHorariaInputDinamic" placeholder="__:__:__">
                         </div>
 
                         <div class="col-md-4 mt-3">
                             <label class="form-label" for="horas_teoricas">Horas Teóricas</label>
-                            <input type="text" name="horas_teorica" class="form-control horasTeoricaInputDinamic" value="<?php echo $treinamento['horas_teorica']; ?>" placeholder="__:__:__">
+                            <input type="text" name="horas_teorica" class="form-control horasTeoricaInputDinamic" value="<?php echo sprintf('%02d:00:00', $treinamento['horas_teorica']); ?>" placeholder="__:__:__">
                         </div>
 
                         <div class="col-md-4 mt-3">
                             <label class="form-label" for="horas_praticas">Horas Práticas</label>
-                            <input type="text" name="horas_pratica" class="form-control horasPraticaInputDinamic" value="<?php echo $treinamento['horas_pratica']; ?>" placeholder="__:__:__">
+                            <input type="text" name="horas_pratica" class="form-control horasPraticaInputDinamic" value="<?php echo sprintf('%02d:00:00', $treinamento['horas_pratica']); ?>" placeholder="__:__:__">
                         </div>
 
 

@@ -35,7 +35,7 @@ include '../../api/private/cript.php';
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['nomenclatura']; ?></td>
                     <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['razao_social']; ?></td>
                     <td class="editable-cell" data-field="colaborador_id_fk"><?php echo $turma['nome_usuario']; ?></td>
-                    <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['carga_horaria']; ?></td>
+                    <td class="editable-cell" data-field="treinamento_id"><?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?></td>
 
 
 
