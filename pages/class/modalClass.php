@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color:white;">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="me-2 fas fa-users"></i>Informações da Turma</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -79,7 +79,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
-                <h1 class="modal-title fs-5" id="studentsModalLabel"><i class="me-2 fas fa-users"></i>Alunos da Turma</h1>
+                <h1 class="modal-title fs-5" id="studentsModalLabel"><i class="me-2 fas fa-users"></i>Alunos da <?php echo $turma['nome_turma']; ?></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body " style="background-color: #f0f2f5 ;">
@@ -145,7 +145,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
-                <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da Turma - Notas</h1>
+                <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?>  - Notas</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -194,7 +194,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
-                <h1 class="modal-title fs-5" id="modalFrequenciaLabel"><i class="me-2 fas fa-users"></i>Informações da Turma - Frequência</h1>
+                <h1 class="modal-title fs-5" id="modalFrequenciaLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?> - Frequência</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -214,7 +214,7 @@
                                     $dias = ceil($cargaHorariaTotal / $horasPorDia);
 
                                     for ($i = 1; $i <= $dias; $i++) { ?>
-                                        <th scope="col">Dia <?php echo $i; ?></th>
+                                        <th scope="col-3">Dia <?php echo $i; ?></th>
                                     <?php } ?>
                                 </tr>
                             </thead>

@@ -4,15 +4,15 @@ $(document).ready(function () {
         var token = $(this).closest('tr').data('token');
         console.log('Token from table row:', token);
         
-        $('#modalDeleteClass').data('token', token);
-        console.log('Token set in modal:', $('#modalDeleteClass').data('token'));
+        $('#confirmDeleteBtn').data('token', token);
+        console.log('Token set in button:', $('#confirmDeleteBtn').data('token'));
 
         $('#modalDeleteClass').modal('show');
     });
 
     // Confirmar deleção e enviar o token para o servidor
     $('#confirmDeleteBtn').on('click', function () {
-        var token = $('#confirmDeleteBtn').data('token');
+        var token = $(this).data('token');
         console.log('Token to be sent to server:', token);
 
         $('#modalDeleteClass').modal('hide');
@@ -41,7 +41,7 @@ $(document).ready(function () {
                         url: '/IDEE-SGT/pages/class/tableClass.php',
                         success: function (newTableHTML) {
                             console.log('Table data received, updating HTML.');
-                            $('#tableClass').replaceWith(newTableHTML);
+                            $('#tableClass').html(newTableHTML);
                         },
                         error: function (error) {
                             console.error('Erro ao obter dados da tabela:', error);
@@ -63,3 +63,4 @@ $(document).ready(function () {
         });
     });
 });
+

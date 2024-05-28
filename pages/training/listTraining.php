@@ -45,11 +45,11 @@
 
         <h6 class="mt-2">Pré-requisitos:</h6><span id="preRequisitos"><?php echo $treinamento['pre_requisitos']; ?></span>
 
-        <h6 class="mt-2">Carga Horária</h6><span id="cargaHoraria"><?php echo $treinamento['carga_horaria']; ?></span>
+        <h6 class="mt-2">Carga Horária</h6><span id="cargaHoraria"><?php echo sprintf('%02d:00:00', $treinamento['carga_horaria']); ?></span>
 
-        <h6 class="mt-2">Horas-prática</h6><span id="horasPratica"> <?php echo $treinamento['horas_pratica']; ?></span>
+        <h6 class="mt-2">Horas-prática</h6><span id="horasPratica"> <?php echo sprintf('%02d:00:00', $treinamento['horas_pratica']); ?></span>
 
-        <h6 class="mt-2">Horas-teórica</h6><span id="horas-teorica"><?php echo $treinamento['horas_teorica']; ?></span>
+        <h6 class="mt-2">Horas-teórica</h6><span id="horas-teorica"><?php echo sprintf('%02d:00:00', $treinamento['horas_teorica']); ?></span>
 
 
         <div class="col-md-12 d-flex justify-content-end">
