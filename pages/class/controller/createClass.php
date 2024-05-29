@@ -111,7 +111,7 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
 
             $pdo->commit();
 
-            // Echo para imprimir o ID da turma cadastrada com sucesso
+          
             echo "ID da Turma cadastrada: " . $turmaId;
 
             return json_encode(['msg' => 'Turma registrada com sucesso', 'status' => 200, 'turma_id' => $turmaId]);
@@ -125,7 +125,7 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
 
 function studentRegister($connection, $funcionariosIds, $turmaId)
 {
-    echo ("entrou3");
+
 
     try {
         $funcionariosArray = json_decode($funcionariosIds, true);
@@ -174,7 +174,7 @@ function studentRegister($connection, $funcionariosIds, $turmaId)
 
 function getColaboradorId($connection, $treinamentoId)
 {
-    echo ("entrou1");
+   
 
     $stmt = $connection->connection()->prepare("SELECT `colaborador_id` FROM treinamento WHERE `id` = :treinamento_id");
     $stmt->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);

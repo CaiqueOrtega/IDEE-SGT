@@ -10,11 +10,20 @@
 
             <div class="modal-body">
 
+
+                <div class="alert alertSucesso">
+
+                </div>
+
+                <div class="alert alertErro">
+
+                </div>
+
                 <div class="row card mt-4 py-2  mx-1 rounded-1" style='margin-bottom: -10px;'>
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Treinamento Solicitado</h5>
-                        <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+                        <a href="#" id="btn-info" class="btn btn-colapse" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
                             <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
@@ -43,7 +52,7 @@
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Empresa Solicitante</h5>
-                        <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                        <a href="#" id="btn-info" class="btn btn-colapse" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
                             <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
@@ -72,7 +81,7 @@
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
                         <h5>Funcionários Inscritos</h5>
-                        <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
+                        <a href="#" id="btn-info" class="btn btn-colapse" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
                             <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
                         </a>
                     </div>
@@ -138,9 +147,20 @@
                 </div>
 
                 <div class="modal-footer d-flex justify-content-end mt-5">
-                    <button type="submit" class="btn btn-login" id="confirmarInsertClassBtn" data-token="<?php echo $tokenInscricao; ?>">Confirmar</button>
+                    <button type="submit" class="btn btn-login" id="confirmarInsertCompanyBtn">Confirmar</button>
+
+
+                    <button type="submit" class="btn btn-login" id="confirmarInsertClassBtn" data-token="<?php echo $tokenInscricao; ?>">Cadastrar Turma</button>
+
+
 
                     <script>
+                        $(document).ready(function() {
+                            $('#confirmarInsertCompanyBtn').on('click', function() {
+                                $('#modalInscriptionInfo').modal('hide');
+                            });
+                        });
+
                         $(document).ready(function() {
                             $('#confirmarInsertClassBtn').click(function() {
                                 var tokenFicha = $('#confirmarInsertClassBtn').data("token");
@@ -153,46 +173,12 @@
                                         tokenFicha: tokenFicha
                                     },
                                     success: function(response) {
-                                        console.log("sucess")
+                                       
                                     },
                                     error: function(xhr, status, error) {
                                         console.error(xhr.responseText);
                                     }
                                 });
-                            });
-                        });
-
-
-
-                        var buttons = document.querySelectorAll('.btn');
-
-                        // Itera sobre cada botão
-                        buttons.forEach(function(button) {
-                            // Adiciona um ouvinte de evento de clique a cada botão
-                            button.addEventListener('click', function() {
-                                var btn = this;
-                                var icon = btn.querySelector('.icon');
-
-                                // Desabilita o botão
-                                btn.disabled = true;
-
-                                // Verifica se as informações estão abertas ou fechadas
-                                var isExpanded = btn.getAttribute('aria-expanded') === 'true';
-
-                                // Muda a seta dependendo do estado das informações
-                                if (isExpanded) {
-                                    icon.classList.remove('bi-chevron-right');
-                                    icon.classList.add('bi-chevron-down');
-                                } else {
-                                    icon.classList.remove('bi-chevron-down');
-                                    icon.classList.add('bi-chevron-right');
-                                }
-
-                                // Aguarda 1 segundo para simular a animação
-                                setTimeout(function() {
-                                    // Reabilita o botão após a animação
-                                    btn.disabled = false;
-                                }, 1000);
                             });
                         });
                     </script>
@@ -269,3 +255,37 @@
 
     </div>
 </div>
+
+<script>
+    var buttons = document.querySelectorAll('.btn-colapse');
+
+    // Itera sobre cada botão
+    buttons.forEach(function(button) {
+        // Adiciona um ouvinte de evento de clique a cada botão
+        button.addEventListener('click', function() {
+            var btn = this;
+            var icon = btn.querySelector('.icon');
+
+            // Desabilita o botão
+            btn.disabled = true;
+
+            // Verifica se as informações estão abertas ou fechadas
+            var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+            // Muda a seta dependendo do estado das informações
+            if (isExpanded) {
+                icon.classList.remove('bi-chevron-right');
+                icon.classList.add('bi-chevron-down');
+            } else {
+                icon.classList.remove('bi-chevron-down');
+                icon.classList.add('bi-chevron-right');
+            }
+
+            // Aguarda 1 segundo para simular a animação
+            setTimeout(function() {
+                // Reabilita o botão após a animação
+                btn.disabled = false;
+            }, 1000);
+        });
+    });
+</script>
