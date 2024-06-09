@@ -51,11 +51,30 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-danger" id="confirmDeleteBtn" data-token="<?php echo $token ?>">Confirmar</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn" data-token="<?php echo $tokenTurma ?>">Confirmar</button>
       </div>
     </div>
   </div>
 </div>
 
+<div class="modal fade" id="modalUpdateClass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">Confirmar Edição em <span id="funcionarioNome"></span></h5>
+        <button type="button" class="btn-close btn-close-update" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <p>Você realmente deseja editar de <span class="fw-bold" id="campoNome"></span> para <span class="fw-bold" id=campoValue></span>?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-close-update" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-danger" id="confirmarUpdateBtn">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="../src/js/scriptClass.js"></script>
