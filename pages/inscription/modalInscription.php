@@ -156,7 +156,7 @@
 
                     <script>
                         $(document).ready(function() {
-                            $('#confirmarInsertCompanyBtn').on('click', function() {
+                            $('#confirmarInsertClassBtn').on('click', function() {
                                 $('#modalInscriptionInfo').modal('hide');
                             });
                         });
