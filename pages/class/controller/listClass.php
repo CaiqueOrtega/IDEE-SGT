@@ -38,7 +38,8 @@ function getCordenadorId($userId, $connection, $whereClause)
         treinamento.*, 
         empresa_cliente.id AS empresa_id,
         empresa_cliente.*,
-        login.nome AS nome_usuario
+        login.id AS colaborador_id ,
+        login.nome AS nome_colaborador
         FROM `turma`
         INNER JOIN `treinamento` ON turma.treinamento_id = treinamento.id
         INNER JOIN `empresa_cliente` ON turma.empresa_aluno = empresa_cliente.id
@@ -97,24 +98,19 @@ function getAlunosData($userId, $connection, $whereClause, $turmaId = null)
 
 
 
-function obterCargos($connection, $id, $userId, $whereClause)
+function obterColaborador($connection, $colaboradorId )
 {
-    $sql = "SELECT login.id, login.nome_usuario
-            FROM `login`
-            
-            INNER JOIN `usuario` 
-            ON empresa_cliente.usuario_id = usuario.id 
-            $whereClause AND empresa_cliente.id = :UserId";
+    $sql = "SELECT login.*, login.id AS login_id
+    FROM login
+    INNER JOIN permissao ON login.permissao_id = permissao.id
+    WHERE permissao.id = 2 AND login.id != :colaborador_id
+";
 
     $stmt = $connection->connection()->prepare($sql);
-    
-    if (strpos($whereClause, ':id') !== false) {
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-     
-    }
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+    $stmt->bindParam(':colaborador_id', $colaboradorId , PDO::PARAM_INT);
+
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-

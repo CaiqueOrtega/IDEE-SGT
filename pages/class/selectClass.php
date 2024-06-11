@@ -1,27 +1,21 @@
-<?php 
-
+<?php
 require_once('./controller/listClass.php');
-include('../../api/private/cript.php');
 
 
-
- ?>
-
+$colaboradorId = $_POST['colaborador_id'];
 
 
+$colaradores =  obterColaborador($connection, $colaboradorId)
 
 
+?>
 
-<div class="col-md-6 mt-3" >
-    <label class="form-label" for="colaborador">Colaborador</label>
-    <select class="form-select" name="colaborador" id="colaborador" aria-label="Default select example">
+    <select class="form-select"  name="colaborador" id="colaborador_selected" aria-label="Default select example">
         <option value="" selected>Selecione um colaborador......</option>
-        <?php foreach ($turmasData as $turma) { 
-            
-            $tokenTurma = encrypt_id($turma['turma_id'], $encryptionKey, $signatureKey); ?>
-            
-            <option value="<?php echo $tokenTurma; ?>"><?php echo $turma['nome_usuario']; ?></option>
+        <option value="" disabled><?php echo $_POST['colaborador_nome']  ?></option>
+        <?php foreach ($colaradores as $colaborador) { ?>
+
+
+            <option value="<?php echo $colaborador['login_id']; ?>"><?php echo $colaborador['nome']; ?></option>
         <?php } ?>
     </select>
-</div>
-

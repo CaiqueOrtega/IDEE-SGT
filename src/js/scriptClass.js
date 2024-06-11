@@ -3,7 +3,7 @@ $(document).ready(function () {
     $(document).on('click', '.openModalDeleteClass', function () {
         var token = $(this).closest('tr').data('token');
         console.log('Token from table row:', token);
-        
+
         $('#confirmDeleteBtn').data('token', token);
         console.log('Token set in button:', $('#confirmDeleteBtn').data('token'));
 
@@ -74,84 +74,12 @@ $(document).ready(function () {
     var selectedCell;
     var currentValue;
 
-    function habilitarEdicao() {
-        $('.editable-cell, .editable-cell-colaborador').on('click', function () {
-            var cell = $(this);
-            var tr = cell.closest('tr');
-
-            // Salva o valor original da célula apenas se ainda não foi salvo
-            if (!cell.data('original-value')) {
-                cell.data('original-value', cell.text().trim());
-            }
-
-            var originalValue = cell.data('original-value');
-
-            var inputField = cell.find('input');
-            var selectElement = cell.find('select');
-
-            if (cell.hasClass('editable-cell-colaborador')) {
-                if (selectElement.length === 0) {
-                    var tokenTurma = tr.data('token-turma');
-                    var selectId = cell.hasClass('editable-cell-colaborador') ? 'colaborador' : '';
-
-                    $.ajax({
-                        type: 'POST',
-                        url: 'class/selectClass.php',
-                        data: {
-                            token: tokenTurma
-                        },
-                        success: function (response) {
-                            var tempDiv = $('<div>').html(response);
-                            var specificSelect = tempDiv.find('#' + selectId);
-
-                            selectElement = $('<select>')
-                                .addClass('form-select')
-                                .attr('id', specificSelect.attr('id'))
-                                .html(specificSelect.html());
-
-                            selectElement.on('change', function () {
-                                currentValue = $('#' + selectId + ' option:selected').text();
-                                selectedCell = cell;
-
-                                updateCellAndSendData();
-                            });
-
-                            selectElement.on('blur', function (e) {
-                                if (!$(e.relatedTarget).closest('.editable-cell, .editable-cell-colaborador').length) {
-                                    cell.html(originalValue);
-                                }
-                            });
-
-                            selectElement.on('keydown', function (e) {
-                                if (e.key === 'Enter') {
-                                    cell.html(originalValue);
-                                }
-                            });
-                            // Substituir o conteúdo da célula pelo novo elemento select
-                            cell.html(selectElement);
-                            selectElement.focus();
-                        },
-                        error: function (error) {
-                            console.error('Erro na solicitação AJAX:', error);
-                        }
-                    });
-                } else {
-                    selectElement.focus();
-                }
-                
-            }
-        });
-    }
-
     function updateCellAndSendData() {
         var cell = selectedCell;
-        var token = cell.closest('tr').data('token');
-        var tokenTurma = cell.closest('tr').data('token-turma');
-        var inputField = cell.find('input');
+        var tokenTurma = cell.closest('tr').data('token');
         var selectElement = cell.find('select');
 
         var originalValue = cell.data('original-value'); // Obtém o valor original da célula
-        var dataField = cell.attr('data-field'); // Usamos attr() para obter o valor do atributo
         var newTextValue, newValue;
 
         if (selectElement.length > 0) {
@@ -183,7 +111,6 @@ $(document).ready(function () {
         console.log('Valor Original:', originalValue);
         console.log('Novo Valor (Texto):', newTextValue);
         console.log('Novo Valor (Banco):', newValue);
-        console.log('Data Field:', dataField);
 
         // Verifica se o valor foi realmente alterado
         if (originalValue !== newTextValue) {
@@ -196,12 +123,11 @@ $(document).ready(function () {
             // Atualiza os elementos no modal com o texto da opção selecionada
             $('#campoNome').text(originalValue);
             $('#campoValue').text(newTextValue);
-            $('#funcionarioNome').text(dataField);
 
             // Define o clique do botão de confirmação
             $('#confirmarUpdateBtn').off('click').on('click', function () {
                 // Chame a função para atualizar a tabela somente quando o botão de confirmação for clicado
-                updateTable(cell, token, newValue, tokenTurma);
+                updateTable(newValue, tokenTurma);
             });
         } else {
             // Se não houver alteração, restaura o valor original
@@ -248,26 +174,85 @@ $(document).ready(function () {
         }
     });
 
-    function updateTable(cell, token, newValue, tokenTurma) {
-        var dataField;
+    function habilitarEdicao() {
+        $('.editable-cell, .editable-cell-colaborador').on('click', function () {
+            var cell = $(this);
+            var tr = cell.closest('tr');
 
-        // Verifica se a célula é uma célula de seleção
-        if (cell.hasClass('editable-cell-cargo')) {
-            dataField = 'colaborador';
-        } else {
-            // Se não for uma célula de seleção, usa o data-field existente
-            dataField = cell.data('field');
-        }
+            // Salva o valor original da célula apenas se ainda não foi salvo
+            if (!cell.data('original-value')) {
+                cell.data('original-value', cell.text().trim());
+            }
 
-        console.log('CAMPO:' + dataField);
+            var originalValue = cell.data('original-value');
+            var selectElement = cell.find('select');
+
+            if (cell.hasClass('editable-cell-colaborador')) {
+                if (selectElement.length === 0) {
+                    var colaborador_id = tr.data('colaborador')
+                    var colaborador_nome = cell.text()
+                    var selectId = cell.hasClass('editable-cell-colaborador');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'class/selectClass.php',
+                        data: {
+                            colaborador_id: colaborador_id,
+                            colaborador_nome: colaborador_nome
+
+
+                        },
+                        success: function (response) {
+
+                            var tempDiv = $('<div>').html(response);
+
+                            var specificSelect = tempDiv.find('#colaborador_selected');
+
+                            selectElement = specificSelect;
+
+                            // Substituir o conteúdo da célula pelo novo elemento select
+                            cell.html(selectElement);
+                            selectElement.focus();
+                            selectElement.on('change', function () {
+                                currentValue = $('#' + selectId + ' option:selected').text();
+                                selectedCell = cell;
+
+                                updateCellAndSendData();
+                            });
+
+                            selectElement.on('blur', function (e) {
+                                if (!$(e.relatedTarget).closest('.editable-cell, .editable-cell-colaborador').length) {
+                                    cell.html(originalValue);
+                                }
+                            });
+
+                            selectElement.on('keydown', function (e) {
+                                if (e.key === 'Enter') {
+                                    cell.html(originalValue);
+                                }
+                            });
+
+                        },
+                        error: function (error) {
+                            console.error('Erro na solicitação AJAX:', error);
+                        }
+                    });
+                } else {
+                    selectElement.focus();
+                }
+
+            }
+        });
+    }
+
+
+    function updateTable(newValue, tokenTurma) {
         $.ajax({
             method: 'POST',
             url: 'class/controller/updateClass.php',
             data: {
-                field: dataField, // Use o data-field corrigido
-                token: token,
                 tokenTurma: tokenTurma,
-                value: newValue
+                colaborador_id: newValue
             },
             success: function (response) {
                 console.log(response);

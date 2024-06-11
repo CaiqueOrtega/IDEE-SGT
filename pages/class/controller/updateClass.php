@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 
 require('../../../api/private/connect.php');
-include('../../../api/validade/validate.php');
 include('../../../api/private/cript.php');
 
 $connection = new Database();
@@ -14,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $id = isset($_SESSION['login']['id']) ? $_SESSION['login']['id'] : null;
 
-if (isset($_POST['field'], $_POST['value'], $_POST['token'], $_POST['tokenEmpresa']) && $id !== null) {
+if (isset($_POST['field'], $_POST['value'], $_POST['token'], $_POST['tokenTurma']) && $id !== null) {
     $valid = isValid(['field', 'value', 'token']);
 
     if ($valid) {
@@ -24,11 +23,10 @@ if (isset($_POST['field'], $_POST['value'], $_POST['token'], $_POST['tokenEmpres
 
     
     $token = $_POST['token'];
-    $tokenEmpresa = $_POST['tokenEmpresa'];
+    $tokenTurma = $_POST['tokenTurma'];
 
     try{
-    $funcionarioId = decrypt_id($token, $encryptionKey, $signatureKey, 'Funcionario');
-    $empresaId = decrypt_id($tokenEmpresa, $encryptionKey, $signatureKey, 'Empresa');
+    $turmaId = decrypt_id($tokenTurma, $encryptionKey, $signatureKey, 'Turma');
     }catch(Exception $e){
         echo json_encode(['msg' => $e->getMessage(), 'status' => 400]);
         exit;
@@ -36,7 +34,7 @@ if (isset($_POST['field'], $_POST['value'], $_POST['token'], $_POST['tokenEmpres
     $campo = $_POST['field'];
     $valor = $_POST['value'];
 
-    $allowedFields = ['nome_funcionario', 'email', 'telefone', 'cpf', 'genero', 'numero_registro_empresa', 'cargo_id', 'departamento_id', 'empresa_id'];
+    $allowedFields = ['colaborador_id_fk'];
 
     if (!in_array($campo, $allowedFields)) {
         echo json_encode(['msg' => 'Campo não permitido para atualização', 'status' => 400]);
@@ -45,39 +43,6 @@ if (isset($_POST['field'], $_POST['value'], $_POST['token'], $_POST['tokenEmpres
             $pdo = $connection->connection();
 
             switch ($campo) {
-                case 'email':
-                    if (!isEmailFormatValid($valor)) {
-                        throw new Exception('Email inválido');
-                    }
-                    break;
-
-                case 'telefone':
-                    $valor = cleanAndValidatePhoneNumber('telefone', $valor);
-                    break;
-
-                case 'cpf':
-                    $valor = cleanAndValidateCpf($valor);
-                    if (isCpfAlreadyExists($pdo, $valor)) {
-                        throw new Exception('CPF já cadastrado');
-                    }
-                    break;
-
-                case 'numero_registro_empresa':
-                    $valor = cleanNumbersAndValidate('Número de Registro', $valor);
-                    if (isNumberRegisterAlreadyExists($pdo, $valor, $empresaId)) {
-                        throw new Exception('Número de Registro já cadastrado na empresa selecionada');
-                    } 
-                    break;
-
-                case 'nome_funcionario':
-                    $valor = cleanAndValidate($campo, $valor);
-                    break;
-
-                case 'genero':
-                    if (!in_array($valor, ['F', 'M'])) {
-                        throw new Exception('Valor de gênero inválido');
-                    }
-                    break;
 
                 default:
                 try{

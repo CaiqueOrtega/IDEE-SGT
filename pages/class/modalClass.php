@@ -23,7 +23,7 @@
                             <span class="fw-semibold">Treinamento:</span> <?php echo $turma['nomenclatura']; ?>
                         </p>
                         <p id="coordenador">
-                            <span class="fw-semibold">Coordenador:</span> <?php echo $turma['nome_usuario']; ?>
+                            <span class="fw-semibold">Coordenador:</span> <?php echo $turma['nome_colaborador']; ?>
                         </p>
                         <p id="objetivo">
                             <span class="fw-semibold">Objetivo:</span> <?php echo $turma['objetivo']; ?>

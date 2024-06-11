@@ -25,27 +25,19 @@ include '../../api/private/cript.php';
             foreach ($turmasData as $index => $turma) {
                 $turmaId = $turma['turma_id'];
                 $tokenTurma = encrypt_id($turma['turma_id'], $encryptionKey, $signatureKey);
-        
+
 
                 $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
-                
+
             ?>
 
-                <tr class="data-row" id="tableClassInfo" data-token="<?php echo $tokenTurma; ?>">
+                <tr class="data-row" id="tableClassInfo" data-colaborador="<?php echo $turma['colaborador_id'] ?>" data-token="<?php echo $tokenTurma; ?>">
 
                     <th class="editable-cell" data-field="turma"><?php echo $turma['nome_turma']; ?></th>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo $turma['nomenclatura']; ?></td>
                     <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['razao_social']; ?></td>
-
-
-                    <?php if (isset($turma['nome_usuario'])) { ?>
-                        <td class="editable-cell-colaborador" data-field="colaborador"><?php echo $turma['nome_usuario']; ?></td>
-                    <?php } else { ?>
-                        <td class="editable-cell-colaborador"></td>
-                    <?php } ?>
-
+                    <td class="editable-cell-colaborador" data-field="colaborador"><?php echo $turma['nome_colaborador']; ?></td>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?></td>
-
 
 
                     <td class="text-center">
