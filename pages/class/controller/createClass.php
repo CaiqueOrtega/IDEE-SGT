@@ -111,9 +111,6 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
 
             $pdo->commit();
 
-          
-            echo "ID da Turma cadastrada: " . $turmaId;
-
             return json_encode(['msg' => 'Turma registrada com sucesso', 'status' => 200, 'turma_id' => $turmaId]);
         }
     } catch (PDOException $e) {

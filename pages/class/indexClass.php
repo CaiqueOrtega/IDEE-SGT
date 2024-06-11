@@ -51,7 +51,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-danger" id="confirmDeleteBtn" data-token="<?php echo $tokenTurma ?>">Confirmar</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">Confirmar</button>
       </div>
     </div>
   </div>
@@ -78,3 +78,4 @@
 </div>
 
 <script src="../src/js/scriptClass.js"></script>
+<?php include('../errorAndSuccessModal.php'); ?>

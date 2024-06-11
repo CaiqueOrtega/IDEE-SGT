@@ -2,67 +2,56 @@ $(document).ready(function () {
     // Abrir modal de deleção e passar o token
     $(document).on('click', '.openModalDeleteClass', function () {
         var token = $(this).closest('tr').data('token');
-        console.log('Token from table row:', token);
 
-        $('#confirmDeleteBtn').data('token', token);
-        console.log('Token set in button:', $('#confirmDeleteBtn').data('token'));
+        $('#modalDeleteClass').data('token', token);
 
         $('#modalDeleteClass').modal('show');
     });
 
     // Confirmar deleção e enviar o token para o servidor
     $('#confirmDeleteBtn').on('click', function () {
-        var token = $(this).data('token');
-        console.log('Token to be sent to server:', token);
+        var token = $('#modalDeleteClass').data('token');
 
         $('#modalDeleteClass').modal('hide');
 
         $.ajax({
             type: 'POST',
-            url: '/IDEE-SGT/pages/class/controller/deleteClass.php',
+            url: 'class/controller/deleteClass.php',
             data: { token: token },
-            dataType: 'json',
             success: function (response) {
-                console.log('Server response:', response);
 
                 if (response.status === 400) {
                     var errorMessage = "Erro na solicitação: " + response.msg;
                     console.log(errorMessage);
-
                     $('#modalPermissao').css('z-index', 1040);
+
                     $("#errorMsg").text(response.msg);
                     var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
                     errorModal.show();
                 } else {
-                    console.log('Deletion successful, updating table...');
-
                     $.ajax({
                         type: 'GET',
-                        url: '/IDEE-SGT/pages/class/tableClass.php',
+                        url: 'class/tableClass.php',
                         success: function (newTableHTML) {
-                            console.log('Table data received, updating HTML.');
-                            $('#tableClass').html(newTableHTML);
+                            $('#tableClass').replaceWith(newTableHTML);
                         },
                         error: function (error) {
                             console.error('Erro ao obter dados da tabela:', error);
-                            var errorMessage = "Erro ao recarregar a tabela: " + error.statusText;
-                            $("#errorMsg").text(errorMessage);
-                            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-                            errorModal.show();
                         }
                     });
                 }
+
+                console.log('Delete successful');
+
             },
             error: function (error) {
-                console.error('Error deleting:', error);
-                var errorMessage = "Erro ao excluir: " + error.statusText;
-                $("#errorMsg").text(errorMessage);
-                var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-                errorModal.show();
+                console.error('Error deleting: ', error);
+
             }
         });
     });
 });
+
 
 
 
@@ -79,68 +68,49 @@ $(document).ready(function () {
         var tokenTurma = cell.closest('tr').data('token');
         var selectElement = cell.find('select');
 
-        var originalValue = cell.data('original-value'); // Obtém o valor original da célula
+        var originalValue = cell.data('original-value');
         var newTextValue, newValue;
 
         if (selectElement.length > 0) {
-            // Para elementos select, obtemos o texto e o valor da opção selecionada
             var selectedOptionText = selectElement.find('option:selected').text();
             var selectedOptionValue = selectElement.find('option:selected').val();
 
-            // Verifica se houve uma alteração no texto
             if (originalValue !== selectedOptionText) {
                 newTextValue = selectedOptionText;
                 newValue = selectedOptionValue;
             } else {
-                // Se não houver alteração no texto, restaura o valor original
                 cell.text(originalValue);
-                // Limpa a célula selecionada após a atualização
                 selectedCell = null;
                 return;
             }
         } else {
-            // Para outros elementos de entrada, obtemos o valor do campo de entrada
             newTextValue = inputField.val().trim();
-
-            // Verifica se houve uma alteração no texto
             newTextValue = (originalValue !== newTextValue) ? newTextValue : originalValue;
             newValue = newTextValue;
         }
 
-        // Adicione console.log para depuração
         console.log('Valor Original:', originalValue);
         console.log('Novo Valor (Texto):', newTextValue);
         console.log('Novo Valor (Banco):', newValue);
 
-        // Verifica se o valor foi realmente alterado
         if (originalValue !== newTextValue) {
-            // Atualiza o texto da célula com o novo valor
             cell.text(newTextValue);
 
-            // Mostra o modal
             $('#modalUpdateClass').modal('show');
-
-            // Atualiza os elementos no modal com o texto da opção selecionada
             $('#campoNome').text(originalValue);
             $('#campoValue').text(newTextValue);
 
-            // Define o clique do botão de confirmação
             $('#confirmarUpdateBtn').off('click').on('click', function () {
-                // Chame a função para atualizar a tabela somente quando o botão de confirmação for clicado
                 updateTable(newValue, tokenTurma);
             });
         } else {
-            // Se não houver alteração, restaura o valor original
             cell.text(originalValue);
         }
 
-        // Define o clique do botão de fechar
         $('.btn-close-update').on('click', function () {
-            // Restaura o valor original se o botão de fechar for clicado
             cell.text(originalValue);
         });
 
-        // Limpa a célula selecionada após a atualização
         selectedCell = null;
     }
 
@@ -153,23 +123,15 @@ $(document).ready(function () {
             modoEdicao = !modoEdicao;
 
             if (modoEdicao) {
-                // Modo de edição ativado
                 iconElement.removeClass().addClass('bi bi-box-arrow-right');
                 btnTexto.text('Sair da Edição ');
                 $('#alert').removeClass('d-none');
-
-                // Desvincula (unbind) os manipuladores de eventos existentes antes de adicionar novos
-                // Habilita a edição nas células
                 habilitarEdicao();
             } else {
-                // Modo de edição desativado
                 iconElement.removeClass().addClass('bi bi-pen-fill');
                 btnTexto.text('Editar ');
-
-                // Desvincula (unbind) todos os manipuladores de eventos nas células editáveis
                 $('.editable-cell, .editable-cell-colaborador').unbind('click');
-
-                selectedCell = null; // Limpa a célula selecionada ao sair do modo de edição
+                selectedCell = null;
             }
         }
     });
@@ -179,7 +141,6 @@ $(document).ready(function () {
             var cell = $(this);
             var tr = cell.closest('tr');
 
-            // Salva o valor original da célula apenas se ainda não foi salvo
             if (!cell.data('original-value')) {
                 cell.data('original-value', cell.text().trim());
             }
@@ -199,24 +160,16 @@ $(document).ready(function () {
                         data: {
                             colaborador_id: colaborador_id,
                             colaborador_nome: colaborador_nome
-
-
                         },
                         success: function (response) {
-
                             var tempDiv = $('<div>').html(response);
-
                             var specificSelect = tempDiv.find('#colaborador_selected');
-
                             selectElement = specificSelect;
-
-                            // Substituir o conteúdo da célula pelo novo elemento select
                             cell.html(selectElement);
                             selectElement.focus();
                             selectElement.on('change', function () {
                                 currentValue = $('#' + selectId + ' option:selected').text();
                                 selectedCell = cell;
-
                                 updateCellAndSendData();
                             });
 
@@ -240,11 +193,9 @@ $(document).ready(function () {
                 } else {
                     selectElement.focus();
                 }
-
             }
         });
     }
-
 
     function updateTable(newValue, tokenTurma) {
         $.ajax({
@@ -259,13 +210,11 @@ $(document).ready(function () {
                 if (response.status !== 200) {
                     var errorMessage = "Erro na solicitação: " + response.msg;
                     $('#modalUpdateClass').modal('hide');
-
                     console.log(errorMessage);
                     $("#errorMsg").text(response.msg);
                     var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
                     errorModal.show();
                 } else {
-                    // Assuming success: reload the table
                     $.ajax({
                         type: 'GET',
                         url: 'class/tableClass.php',
@@ -285,4 +234,5 @@ $(document).ready(function () {
             }
         });
     }
+    
 });

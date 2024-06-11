@@ -24,7 +24,7 @@
       <div class="d-flex flex-row justify-content-between">
         <p class="card-text nomenclaura" style="font-size: 18px; "><?php echo $treinamento['nomenclatura']; ?></p>
 
-        <a href="#" id="btn-info" class="btn btn" data-bs-toggle="collapse" data-bs-target="#<?php echo $colapsoId; ?>" aria-expanded="false" aria-controls="collapseExample">
+        <a href="#" id="btn-info" class="btn btnListTreinamento" data-bs-toggle="collapse" data-bs-target="#<?php echo $colapsoId; ?>" aria-expanded="false" aria-controls="collapseExample">
           <i class="icon bi bi-chevron-right fs-3" style="color:#58af9b;"></i>
 
         </a>
@@ -70,7 +70,7 @@ include('../errorAndSuccessModal.php');
 ?>
 
 <script>
-  var buttons = document.querySelectorAll('.btn');
+  var buttons = document.querySelectorAll('.btnListTreinamento');
 
   // Itera sobre cada botão
   buttons.forEach(function(button) {

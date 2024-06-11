@@ -10,15 +10,6 @@
 
             <div class="modal-body">
 
-
-                <div class="alert alertSucesso">
-
-                </div>
-
-                <div class="alert alertErro">
-
-                </div>
-
                 <div class="row card mt-4 py-2  mx-1 rounded-1" style='margin-bottom: -10px;'>
 
                     <div class="col-md-12 d-flex flex-row justify-content-between align-items-center">
@@ -147,7 +138,7 @@
                 </div>
 
                 <div class="modal-footer d-flex justify-content-end mt-5">
-                    <button type="submit" class="btn btn-login" id="confirmarInsertCompanyBtn">Confirmar</button>
+                    <button type="submit" class="btn btn-login" id="">Confirmar</button>
 
 
                     <button type="submit" class="btn btn-login" id="confirmarInsertClassBtn" data-token="<?php echo $tokenInscricao; ?>">Cadastrar Turma</button>
@@ -156,27 +147,49 @@
 
                     <script>
                         $(document).ready(function() {
+                            console.log("Document ready");
+
+                            // Fechar modal ao clicar no botão
                             $('#confirmarInsertClassBtn').on('click', function() {
                                 $('#modalInscriptionInfo').modal('hide');
                             });
-                        });
 
-                        $(document).ready(function() {
                             $('#confirmarInsertClassBtn').click(function() {
-                                var tokenFicha = $('#confirmarInsertClassBtn').data("token");
+                                var tokenFicha = $(this).data("token");
+                                console.log('Token from button:', tokenFicha);
 
                                 $.ajax({
+                                    type: 'POST',
                                     url: 'class/controller/createClass.php',
-                                    method: 'POST',
-                                    dataType: 'json',
                                     data: {
                                         tokenFicha: tokenFicha
                                     },
                                     success: function(response) {
-                                       
+                                        console.log('Response from createClass:', response);
+
+                                        if (response.status === 400) {
+                                            var errorMessage = "Erro na solicitação: " + response.msg;
+                                            console.log(errorMessage);
+                                            $('#modalPermissao').css('z-index', 1040);
+
+                                            $("#errorMsg").text(response.msg);
+                                            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                                            errorModal.show();
+                                        } else {
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: 'inscription/tableInscription.php',
+                                                success: function(newTableHTML) {
+                                                    $('#tabelaInscriptions').replaceWith(newTableHTML);
+                                                },
+                                                error: function(error) {
+                                                    console.error('Erro ao obter dados da tabela:', error);
+                                                }
+                                            });
+                                        }
                                     },
-                                    error: function(xhr, status, error) {
-                                        console.error(xhr.responseText);
+                                    error: function(error) {
+                                        console.error('Erro ao obter dados da tabela:', error);
                                     }
                                 });
                             });

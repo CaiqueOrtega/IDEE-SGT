@@ -42,8 +42,8 @@ include '../../api/private/cript.php';
 
                     <td class="text-center">
 
-                        <a href="#" class="ms-2 text-danger text-center" data-bs-toggle="modal" data-bs-target="#modalDeleteClass">
-                            <i class="bi bi-x-lg"></i>
+                    <a href="#" class="ms-2 text-danger text-center openModalDeleteClass">
+                            <i class="bi bi-trash3-fill"></i>
                         </a>
 
                     </td>
