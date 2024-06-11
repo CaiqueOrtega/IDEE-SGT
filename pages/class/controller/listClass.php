@@ -97,5 +97,24 @@ function getAlunosData($userId, $connection, $whereClause, $turmaId = null)
 
 
 
+function obterCargos($connection, $id, $userId, $whereClause)
+{
+    $sql = "SELECT login.id, login.nome_usuario
+            FROM `login`
+            
+            INNER JOIN `usuario` 
+            ON empresa_cliente.usuario_id = usuario.id 
+            $whereClause AND empresa_cliente.id = :UserId";
 
+    $stmt = $connection->connection()->prepare($sql);
+    
+    if (strpos($whereClause, ':id') !== false) {
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+     
+    }
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 

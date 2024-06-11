@@ -66,9 +66,7 @@ $(document).ready(function () {
 
 
 
-
-
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function () {
     var modoEdicao = false;
     var btnTexto = $('#editarBtn span');

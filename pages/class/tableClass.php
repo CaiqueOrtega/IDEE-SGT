@@ -28,6 +28,7 @@ include '../../api/private/cript.php';
         
 
                 $alunosData = getAlunosData($id, $connection, $whereAluno, $turmaId);
+                
             ?>
 
                 <tr class="data-row" id="tableClassInfo" data-token="<?php echo $tokenTurma; ?>">
