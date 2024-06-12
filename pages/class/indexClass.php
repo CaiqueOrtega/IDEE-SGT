@@ -1,5 +1,6 @@
-
-
+<?php 
+require('./controller/listClass.php');
+?>
 
 <div id="alert" class="d-none alert alert-warning alert-dismissible fade show" role="alert">
   <strong>Selecione</strong> qualquer campo na tabela que deseja editar!.
@@ -10,7 +11,11 @@
     <div class="col d-flex justify-content-between">
       <h3>Turmas</h3>
       <div class="d-flex">
-        <button class="btn btn-outline-primary d-flex" id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+
+        <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
+          <button class="btn btn-outline-primary d-flex" id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+        <?php } ?>
+
         <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
       </div>
     </div>
@@ -78,4 +83,5 @@
 </div>
 
 <script src="../src/js/scriptClass.js"></script>
-<?php include('../errorAndSuccessModal.php'); ?>
+<?php include('../errorAndSuccessModal.php');
+?>

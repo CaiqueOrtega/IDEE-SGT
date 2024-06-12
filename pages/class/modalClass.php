@@ -109,7 +109,10 @@
                                         <th scope="col">Nome</th>
                                         <th scope="col">Documento</th>
                                         <th scope="col">Gênero</th>
-                                        <th scope="col">Remover Aluno</th>
+                                        <th scope="col">Status Aluno</th>
+                                        <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
+                                            <th th scope="col" class="text-center">Modificar Status</th>
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody class="mt-1">
@@ -121,15 +124,72 @@
                                             <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
                                             <th data-field="cpf"><?php echo $aluno['cpf']; ?></th>
                                             <td data-field="genero"><?php echo $aluno['genero']; ?></td>
+                                            <td data-field="status"><?php echo $aluno['status']; ?></td>
 
+                                            <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
+                                                <td class="text-center">
+                                                    <a href="#" class="ms-2 text-primary text-center" id="openStatus-<?php echo $aluno['aluno_id']; ?>">
+                                                        <i class="bi bi-pencil-fill fs-6"></i>
+                                                    </a>
+                                                </td>
+                                            <?php } ?>
 
-                                            <td class="text-right">
-                                                <a href="#" class="ms-2 text-danger text-end/" data-bs-toggle="modal" data-bs-target="#modalDeleteStudents">
-                                                    <i class="bi bi-trash3-fill fs-6"></i>
-                                                </a>
+                                            <td>
+
+<!-- Modal de Status -->
+<div class="modal fade" id="modalStatus-<?php echo $aluno['aluno_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalStatusLabel-<?php echo $aluno['aluno_id']; ?>" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #58af9b; color:white;">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="me-2 fas fa-users"></i> Atualizar Status do Aluno <span id="cargooudepartamento"></span></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="company_insert" method="POST">
+                    <div class="row">
+                        <div class="msg d-none alert"></div>
+
+                        <div class="col-md-12">
+                            <hr>
+                            <span><span class="fw-bold">Nome do Aluno: </span> <?php echo $aluno['nome_funcionario']; ?></span>
+                            <br>
+                            <span id="statusAtual"><span class="fw-bold">Status Atual: </span><?php echo $aluno['status']; ?></span>
+                            <hr>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label" for="cargo">Status</label>
+                            <select id="permissao-select" class="form-select" name="permissao" aria-label="Default select example">
+                                <option value="" selected>Selecione a permissao...</option>
+                                <?php
+                                $statusAtual = $aluno['status'];
+                                if ($statusAtual == 'ativo') {
+                                    echo '<option value="Inativo">inativo</option>';
+                                } elseif ($statusAtual == 'inativo') {
+                                    echo '<option value="Ativo">ativo</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="submit" class="btn btn-login" id="confirmarUpdatePermissaoBtn" data-token="<?php echo $tokenTurma; ?>">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                            
                                             </td>
+
+
                                         </tr>
                                     <?php } ?>
+
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -140,12 +200,20 @@
     </div>
 </div>
 
+
+<?php foreach ($alunosData as $index => $aluno) {
+                                        $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
+                                    ?>
+
+
+<?php } ?>
+
 <!-- Modal de Notas -->
 <div class="modal fade" id="modalNotas-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNotasLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
-                <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?>  - Notas</h1>
+                <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?> - Notas</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -253,6 +321,8 @@
 </div>
 
 
+
+
 <script>
     $(document).ready(function() {
         // Função para abrir o modal secundário sem fechar o fullscreen modal
@@ -270,6 +340,7 @@
         // Aplicando a função para os modais de Notas e Frequência
         openSecondaryModal('#openNotas-<?php echo $turma['turma_id']; ?>', '#modalNotas-<?php echo $turma['turma_id']; ?>', '#modalStudents-<?php echo $turma['turma_id']; ?>');
         openSecondaryModal('#openFrequencia-<?php echo $turma['turma_id']; ?>', '#modalFrequencia-<?php echo $turma['turma_id']; ?>', '#modalStudents-<?php echo $turma['turma_id']; ?>');
+        openSecondaryModal('#openStatus-<?php echo $aluno['aluno_id']; ?>', '#modalStatus-<?php echo $aluno['aluno_id']; ?>', '#modalStudents-<?php echo $aluno['aluno_id']; ?>');
     });
 </script>
 

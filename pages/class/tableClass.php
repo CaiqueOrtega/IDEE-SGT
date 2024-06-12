@@ -1,6 +1,8 @@
 <?php
-require('./controller/listClass.php');
+
 include '../../api/private/cript.php';
+
+$permissao = $_SESSION['login']['permissao'];
 ?>
 
 
@@ -13,8 +15,10 @@ include '../../api/private/cript.php';
                 <th scope="col">Empresa</th>
                 <th scope="col">Colaborador</th>
                 <th scope="col">Carga Horaria</th>
-                <th class="text-center">Cancelar Turma</th>
-                <th class="text-end">Mais</th>
+                <?php if ($permissao == 1 || $permissao == 4) { ?>
+                <th scope="col" class="text-center">Cancelar Turma</th>
+                <?php } ?>
+                <th scope="col" class="text-end">Mais</th>
             </tr>
 
 
@@ -39,14 +43,14 @@ include '../../api/private/cript.php';
                     <td class="editable-cell-colaborador" data-field="colaborador"><?php echo $turma['nome_colaborador']; ?></td>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?></td>
 
+                    <?php if ($permissao == 1 || $permissao == 4) { ?>
+                        <td class="text-center">
+                            <a href="#" class="ms-2 text-danger text-center openModalDeleteClass">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
 
-                    <td class="text-center">
-
-                    <a href="#" class="ms-2 text-danger text-center openModalDeleteClass">
-                            <i class="bi bi-trash3-fill"></i>
-                        </a>
-
-                    </td>
+                        </td>
+                    <?php } ?>
 
                     <td class="text-end">
 
@@ -54,9 +58,8 @@ include '../../api/private/cript.php';
                             <i class="bi bi-eye"></i> <i class="bi bi-three-dots-vertical"></i>
                         </a>
 
-
-
                     </td>
+
 
                     <td>
 

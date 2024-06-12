@@ -157,7 +157,7 @@ function studentRegister($connection, $funcionariosIds, $turmaId)
 
             $pdo->commit();
 
-            return json_encode(['msg' => 'Alunos registrados com sucesso', 'status' => 200]);
+            return json_encode(['msg' => 'Turma e alunos registrados com sucesso', 'status' => 200]);
         } else {
             return json_encode(['msg' => 'Erro ao decodificar os IDs dos funcionários', 'status' => 400]);
         }

@@ -143,58 +143,73 @@
 
                     <button type="submit" class="btn btn-login" id="confirmarInsertClassBtn" data-token="<?php echo $tokenInscricao; ?>">Cadastrar Turma</button>
 
-
-
                     <script>
-                        $(document).ready(function() {
-                            console.log("Document ready");
 
-                            // Fechar modal ao clicar no botão
-                            $('#confirmarInsertClassBtn').on('click', function() {
-                                $('#modalInscriptionInfo').modal('hide');
-                            });
+                 $(document).ready(function() {
+    console.log("Document ready");
 
-                            $('#confirmarInsertClassBtn').click(function() {
-                                var tokenFicha = $(this).data("token");
-                                console.log('Token from button:', tokenFicha);
+    $('#confirmarInsertClassBtn').click(function() {
+        var tokenFicha = $(this).data("token");
+        console.log('Token from button:', tokenFicha);
 
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'class/controller/createClass.php',
-                                    data: {
-                                        tokenFicha: tokenFicha
-                                    },
-                                    success: function(response) {
-                                        console.log('Response from createClass:', response);
+        $.ajax({
+            type: 'POST',
+            url: 'class/controller/createClass.php',
+            data: {
+                tokenFicha: tokenFicha
+            },
+            success: function(response) {
+                // Fechar o modal de inscrição
+                var inscriptionInfoModal = bootstrap.Modal.getInstance(document.getElementById('modalInscriptionInfo'));
+                if (inscriptionInfoModal) {
+                    inscriptionInfoModal.hide();
+                }
 
-                                        if (response.status === 400) {
-                                            var errorMessage = "Erro na solicitação: " + response.msg;
-                                            console.log(errorMessage);
-                                            $('#modalPermissao').css('z-index', 1040);
+                if (response.status !== 200) {
+                    console.log("Erro na solicitação:", response.msg);
+                    $("#errorMsg").text(response.msg);
+                    var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                    errorModal.show();
+                } else {
+                    $.ajax({
+                        type: 'GET',
+                        url: 'inscription/tableInscription.php',
+                        data: {
+                            tokenFicha: tokenFicha
+                        },
+                        success: function(newTableHTML) {
+                            $('#tabelaInscriptions').replaceWith(newTableHTML);
+                        },
+                        error: function(error) {
+                            console.error('Erro ao atualizar a tabela:', error);
+                        }
+                    });
 
-                                            $("#errorMsg").text(response.msg);
-                                            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-                                            errorModal.show();
-                                        } else {
-                                            $.ajax({
-                                                type: 'GET',
-                                                url: 'inscription/tableInscription.php',
-                                                success: function(newTableHTML) {
-                                                    $('#tabelaInscriptions').replaceWith(newTableHTML);
-                                                },
-                                                error: function(error) {
-                                                    console.error('Erro ao obter dados da tabela:', error);
-                                                }
-                                            });
-                                        }
-                                    },
-                                    error: function(error) {
-                                        console.error('Erro ao obter dados da tabela:', error);
-                                    }
-                                });
-                            });
-                        });
+                    console.log("Solicitação bem-sucedida:", response.msg);
+                    $("#successMsg").text(response.msg);
+                    var successModal = new bootstrap.Modal(document.getElementById('statusSuccessModal'));
+                    successModal.show();
+                }
+            },
+            error: function(error) {
+                // Fechar o modal de inscrição
+                var inscriptionInfoModal = bootstrap.Modal.getInstance(document.getElementById('modalInscriptionInfo'));
+                if (inscriptionInfoModal) {
+                    inscriptionInfoModal.hide();
+                }
+
+                console.error('Erro na solicitação AJAX:', error);
+                $("#errorMsg").text("Erro ao processar a solicitação.");
+                var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                errorModal.show();
+            }
+        });
+    });
+});
+
+
                     </script>
+
                 </div>
             </div>
         </div>

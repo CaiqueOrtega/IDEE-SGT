@@ -9,10 +9,10 @@ $idPermissao = $_SESSION['login']['permissao'];
 try {
     if ($idPermissao == 1 || $idPermissao == 4) {
         $whereTurma = " WHERE 1=1";
-        $whereAluno = " WHERE aluno.turma_aluno_fk = :turmaId AND aluno.status = 'ativo'";
+        $whereAluno = " WHERE aluno.turma_aluno_fk = :turmaId AND (aluno.status = 'ativo' OR aluno.status = 'inativo')";
     } else {
         $whereTurma = " WHERE turma.colaborador_id_fk = :id";
-        $whereAluno = " WHERE aluno.turma_aluno_fk = :turmaId AND turma.colaborador_id_fk = :id";
+        $whereAluno = " WHERE aluno.turma_aluno_fk = :turmaId AND turma.colaborador_id_fk = :id AND aluno.status = 'ativo'";
     }
 
     $connection = new Database();
