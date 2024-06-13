@@ -1,10 +1,14 @@
 <?php
-require($_SERVER['DOCUMENT_ROOT'] . '/IDEE-SGT/api/private/connect.php');
+require('../../api/private/connect.php');
 
 
-session_start();
-$id = $_SESSION['login']['id'];
-$idPermissao = $_SESSION['login']['permissao'];
+
+if (!isset($idPermissao) && !isset($id)) {
+    session_start();
+    $idPermissao = $_SESSION['login']['permissao'];
+    $id = $_SESSION['login']['id'];
+}
+
 
 try {
     if ($idPermissao == 1 || $idPermissao == 4) {
@@ -98,7 +102,7 @@ function getAlunosData($userId, $connection, $whereClause, $turmaId = null)
 
 
 
-function obterColaborador($connection, $colaboradorId )
+function obterColaborador($connection, $colaboradorId)
 {
     $sql = "SELECT login.*, login.id AS login_id
     FROM login
@@ -108,7 +112,7 @@ function obterColaborador($connection, $colaboradorId )
 
     $stmt = $connection->connection()->prepare($sql);
 
-    $stmt->bindParam(':colaborador_id', $colaboradorId , PDO::PARAM_INT);
+    $stmt->bindParam(':colaborador_id', $colaboradorId, PDO::PARAM_INT);
 
     $stmt->execute();
 

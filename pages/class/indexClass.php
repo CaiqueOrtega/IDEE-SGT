@@ -1,5 +1,7 @@
 <?php 
-require('./controller/listClass.php');
+session_start();
+$idPermissao = $_SESSION['login']['permissao'];
+$id = $_SESSION['login']['id'];
 ?>
 
 <div id="alert" class="d-none alert alert-warning alert-dismissible fade show" role="alert">

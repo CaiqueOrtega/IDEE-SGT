@@ -1,8 +1,6 @@
-<?php
-
+<?php 
+require('./controller/listClass.php');
 include '../../api/private/cript.php';
-
-$permissao = $_SESSION['login']['permissao'];
 ?>
 
 
@@ -15,7 +13,7 @@ $permissao = $_SESSION['login']['permissao'];
                 <th scope="col">Empresa</th>
                 <th scope="col">Colaborador</th>
                 <th scope="col">Carga Horaria</th>
-                <?php if ($permissao == 1 || $permissao == 4) { ?>
+                <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                 <th scope="col" class="text-center">Cancelar Turma</th>
                 <?php } ?>
                 <th scope="col" class="text-end">Mais</th>
@@ -43,7 +41,7 @@ $permissao = $_SESSION['login']['permissao'];
                     <td class="editable-cell-colaborador" data-field="colaborador"><?php echo $turma['nome_colaborador']; ?></td>
                     <td class="editable-cell" data-field="treinamento_id"><?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?></td>
 
-                    <?php if ($permissao == 1 || $permissao == 4) { ?>
+                    <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                         <td class="text-center">
                             <a href="#" class="ms-2 text-danger text-center openModalDeleteClass">
                                 <i class="bi bi-trash3-fill"></i>
