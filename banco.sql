@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10/06/2024 às 21:46
+-- Tempo de geração: 14/06/2024 às 23:01
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -43,10 +43,12 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota_pratica`, `nota_teorica`, `nota_media`, `frequencia`, `status`) VALUES
-(115, 78, 109, 0.0, 0.0, 0.0, 100.0, 'ativo'),
-(116, 84, 109, 0.0, 0.0, 0.0, 100.0, 'ativo'),
-(128, 82, 115, 0.0, 0.0, 0.0, 100.0, 'ativo'),
-(129, 83, 116, 0.0, 0.0, 0.0, 100.0, 'ativo');
+(147, 78, 127, 0.0, 0.0, 0.0, 100.0, 'inativo'),
+(148, 84, 127, 0.0, 0.0, 0.0, 100.0, 'inativo'),
+(171, 79, 143, 0.0, 0.0, 0.0, 100.0, 'ativo'),
+(172, 80, 143, 0.0, 0.0, 0.0, 100.0, 'inativo'),
+(173, 81, 143, 0.0, 0.0, 0.0, 100.0, 'ativo'),
+(177, 82, 145, 0.0, 0.0, 0.0, 100.0, 'ativo');
 
 -- --------------------------------------------------------
 
@@ -168,6 +170,13 @@ CREATE TABLE `ficha_inscricao` (
   `data_realizacao` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `ficha_inscricao`
+--
+
+INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
+(332, '[{\"id\":\"79\"},{\"id\":\"80\"},{\"id\":\"81\"}]', 24, 118, '2024-06-14');
+
 -- --------------------------------------------------------
 
 --
@@ -190,7 +199,7 @@ INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `permissao_id`) VALUES
 (44, 'Admin', 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', 4),
 (45, 'Marcos Risson', 'darcos077@gmail.com', '1791962eadeadcd9001ce88815698370', 2),
 (46, 'Caique Ortega ', 'caique@caique.com', 'b9bb2af1b75e826fb82cedabd4f3fa8b', 2),
-(47, 'Geovana Pavesi', 'geovana@geovana.com', '698dc19d489c4e4db73e28a713eab07b', 3);
+(47, 'Geovana Pavesi', 'geovana@geovana.com', 'b9bb2af1b75e826fb82cedabd4f3fa8b', 3);
 
 -- --------------------------------------------------------
 
@@ -255,6 +264,7 @@ CREATE TABLE `turma` (
   `treinamento_id` int(11) UNSIGNED NOT NULL,
   `empresa_aluno` int(11) UNSIGNED NOT NULL,
   `colaborador_id_fk` int(10) UNSIGNED NOT NULL,
+  `data_inicio` date NOT NULL,
   `data_conclusao` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -262,10 +272,10 @@ CREATE TABLE `turma` (
 -- Despejando dados para a tabela `turma`
 --
 
-INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`, `data_conclusao`) VALUES
-(109, 'Turma A', 24, 117, 45, '0000-00-00'),
-(115, 'Turma B', 27, 119, 46, '0000-00-00'),
-(116, 'Turma C', 24, 120, 45, '0000-00-00');
+INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`, `data_inicio`, `data_conclusao`) VALUES
+(127, 'Turma A', 24, 117, 45, '0000-00-00', '0000-00-00'),
+(143, 'Turma B', 24, 118, 45, '0000-00-00', '0000-00-00'),
+(145, 'Turma C', 27, 119, 46, '2024-06-14', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -385,7 +395,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente`
@@ -415,7 +425,7 @@ ALTER TABLE `empresa_cliente_funcionario`
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=300;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -433,7 +443,7 @@ ALTER TABLE `treinamento`
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
