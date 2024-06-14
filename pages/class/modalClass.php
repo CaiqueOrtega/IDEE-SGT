@@ -28,6 +28,9 @@
                         <p id="objetivo">
                             <span class="fw-semibold">Objetivo:</span> <?php echo $turma['objetivo']; ?>
                         </p>
+                        <p id="data_inicio">
+                            <span class="fw-semibold">Data de Inicio:</span> <?php echo date('d-m-Y', strtotime ($turma['data_inicio'])); ?>
+                        </p>
                         <p id="cargaHoraria">
                             <span class="fw-semibold">Carga Horária:</span> <?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?>
                         </p>
@@ -111,48 +114,29 @@
                                         <th scope="col">Gênero</th>
                                         <th scope="col">Status Aluno</th>
                                         <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
-                                            <th th scope="col" class="text-center">Modificar Status</th>
+                                            <th scope="col" class="text-center">Modificar Status</th>
                                         <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody class="mt-1">
                                     <?php foreach ($alunosData as $index => $aluno) {
                                         $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey); ?>
-                                        <tr class="data-row" data-index="<?php echo $index; ?>">
+                                        <tr class="data-row" data-index="<?php echo $index; ?>" data-token="<?php echo $tokenAluno; ?>" data-colaborador="<?php echo $aluno['aluno_id'] ?>">
                                             <th data-field="registro" class="text-right"> <?php echo $aluno['numero_registro_empresa']; ?></th>
                                             <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
                                             <th data-field="cpf"><?php echo $aluno['cpf']; ?></th>
                                             <td data-field="genero"><?php echo $aluno['genero']; ?></td>
-                                            <td data-field="status"><?php echo $aluno['status']; ?></td>
+                                            <td class="editable-cell-colaborador" data-field="status"><?php echo $aluno['status']; ?></td>
 
                                             <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                                                 <td class="text-center">
-                                                    <a href="#" class="ms-2 text-primary text-center" id="openStatus-<?php echo $aluno['aluno_id'] . $turma['turma_id']; ?>">
+                                                    <a href="#" class="ms-2 text-primary text-center openModalStatus" data-bs-toggle="modal" data-bs-target="#modalStatus-<?php echo $aluno['aluno_id']; ?>" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-turmaid="<?php echo $turma['turma_id']; ?>">
                                                         <i class="bi bi-pencil-fill fs-6"></i>
                                                     </a>
-
                                                 </td>
                                             <?php } ?>
-
-
-                                            <td>
-
-
-
-
-
-
-                                            </td>
-
-
-
-
-
                                         </tr>
-
-
                                     <?php } ?>
-
                                 </tbody>
                             </table>
                         </div>
@@ -163,10 +147,10 @@
     </div>
 </div>
 
-<?php foreach ($alunosData as $index => $aluno) { ?>
-
-    <!-- Modal de Status -->
-    <div class="modal fade" id="modalStatus-<?php echo $aluno['aluno_id'] . $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalStatusLabel<?php echo $aluno['aluno_id'] . $turma['turma_id']; ?>" aria-hidden="true">
+<!-- Modais de Status -->
+<?php foreach ($alunosData as $index => $aluno) { 
+    $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey); ?>
+    <div class="modal fade modalStatus" id="modalStatus-<?php echo $aluno['aluno_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalStatusLabel" aria-hidden="true" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-turmaid="<?php echo $turma['turma_id']; ?>" data-token="<?php echo $tokenAluno; ?>">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #58af9b; color:white;">
@@ -186,51 +170,66 @@
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label" for="cargo">Status</label>
-                                <select id="permissao-select" class="form-select" name="permissao" aria-label="Default select example">
-                                    <option value="" selected>Selecione a permissao...</option>
-                                    <?php
-                                    $statusAtual = $aluno['status'];
-                                    if ($statusAtual == 'ativo') {
-                                        echo '<option value="Inativo">inativo</option>';
-                                    } elseif ($statusAtual == 'inativo') {
-                                        echo '<option value="Ativo">ativo</option>';
-                                    }
-                                    ?>
+                                <?php
+                                $statusAtual = $aluno['status'];
+                                $opcaoSelecionada = ($statusAtual == 'ativo') ? 'inativo' : 'ativo';
+                                ?>
+                                <select class="form-select status-select" name="permissao" aria-label="Default select example" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-turmaid="<?php echo $turma['turma_id']; ?>">
+                                    <option value="<?php echo $opcaoSelecionada; ?>"><?php echo ucfirst($opcaoSelecionada); ?></option>
                                 </select>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer d-flex justify-content-end">
-                    <button type="submit" class="btn btn-login" id="confirmarUpdatePermissaoBtn" data-token="<?php echo $tokenTurma; ?>">Confirmar</button>
+                    <button type="button" class="btn btn-login confirmarUpdateStatusBtn" data-token="<?php echo $tokenAluno; ?>" data-novostatus="<?php echo $opcaoSelecionada; ?>">Confirmar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            // Função para abrir o modal secundário sem fechar o fullscreen modal
-            function openSecondaryModal(trigger, modalToOpen, parentModal) {
-                $(trigger).on('click', function() {
-                    $(modalToOpen).modal('show');
-                    $(parentModal).css('z-index', '1040'); // Ajusta o z-index para manter o fullscreen modal no fundo
-                });
 
-                $(modalToOpen).on('hidden.bs.modal', function() {
-                    $(parentModal).css('z-index', '1055'); // Redefine o z-index quando o modal secundário é fechado
-                });
-            }
 
-            openSecondaryModal('#openStatus-<?php echo $aluno['aluno_id'] . $turma['turma_id']; ?>', '#modalStatus-<?php echo $aluno['aluno_id'] . $turma['turma_id']; ?>', '#modalStudents-<?php echo $turma['turma_id']; ?>');
-        });
-    </script>
+    
 
 <?php } ?>
 
+<script>
+    $(document).ready(function() {
+        // Função para abrir o modal secundário sem fechar o fullscreen modal
+        function openSecondaryModal(trigger) {
+            $(document).on('click', trigger, function() {
+                var alunoId = $(this).data('alunoid');
+                var turmaId = $(this).data('turmaid');
+
+                // Aqui você pode usar os valores de alunoId e turmaId conforme necessário
+                console.log('Aluno ID:', alunoId);
+                console.log('Turma ID:', turmaId);
+
+                var modalToOpen = '#modalStatus-' + alunoId;
+                var parentModal = '#modalStudents-' + turmaId;
+
+                $(modalToOpen).modal('show');
+                $(parentModal).css('z-index', '1040'); // Ajusta o z-index para manter o fullscreen modal no fundo
+            });
+
+            $(document).on('hidden.bs.modal', '.modalStatus', function() {
+                var turmaId = $(this).data('turmaid');
+                var parentModal = '#modalStudents-' + turmaId;
+                $(parentModal).css('z-index', '1055'); // Redefine o z-index quando o modal secundário é fechado
+            });
+        }
+
+        openSecondaryModal('.openModalStatus');
+        
+    });
+    </script>
+
+
+
 
 <!-- Modal de Notas -->
-<div class="modal fade" id="modalNotas-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNotasLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
+<div class="modal fade" id="modalNotas-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNotasLabel-<?php echo $turma['turma_id']; ?>" data-notas="<?php echo $turma['turma_id']; ?>" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #58af9b; color: white;">
@@ -239,6 +238,7 @@
             </div>
             <div class="modal-body">
 
+            
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
@@ -260,8 +260,9 @@
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
                                         <th class="editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica']; ?></th>
                                         <th class="editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica']; ?></th>
-                                        <th class="editable-cell" data-field="nota_media"><?php echo $aluno['nota_media']; ?></th>
+                                        <th data-field="nota_media"><?php echo $aluno['nota_media']; ?></th>
 
+                                        
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -271,12 +272,20 @@
 
 
             </div>
+
             <div class="modal-footer mt-3">
+
+                <button class="btn btn-outline-primary d-flex " id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+
                 <button type="button" class="btn btn-login" data-bs-dismiss="modal">Confirmar</button>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
 
 <!-- Modal de Frequência -->
 <div class="modal fade" id="modalFrequencia-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalFrequenciaLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">

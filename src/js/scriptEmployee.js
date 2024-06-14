@@ -347,11 +347,6 @@ $(document).ready(function () {
         });
     }
 
-
-
-
-
-
 });
 
 

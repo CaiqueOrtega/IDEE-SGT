@@ -13,11 +13,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $id = isset($_SESSION['login']['id']) ? $_SESSION['login']['id'] : null;
 
+// Atualização da turma
 if (isset($_POST['colaborador_id'], $_POST['tokenTurma']) && $id !== null) {
     $valid = isValid(['colaborador_id', 'tokenTurma']);
 
     if ($valid) {
-        echo $valid;
+        echo json_encode(['msg' => $valid, 'status' => 400]);
         exit();
     }
 
@@ -47,14 +48,61 @@ if (isset($_POST['colaborador_id'], $_POST['tokenTurma']) && $id !== null) {
         $stmt->bindParam(':id', $turmaId, PDO::PARAM_INT);
         $stmt->execute();
 
-        echo json_encode(['msg' => 'Atualização bem-sucedida!', 'status' => 200]);
+        echo json_encode(['msg' => 'Atualização da turma bem-sucedida!', 'status' => 200]);
 
     } catch (PDOException $e) {
-        echo json_encode(['msg' => 'Erro na atualização: ' . $e->getMessage(), 'status' => 500]);
+        echo json_encode(['msg' => 'Erro na atualização da turma: ' . $e->getMessage(), 'status' => 500]);
     } catch (Exception $e) {
         echo json_encode(['msg' => $e->getMessage(), 'status' => 500]);
     }
-} else {
-    echo json_encode(['msg' => 'Parâmetros ausentes na requisição.', 'status' => 500]);
+}
+
+
+
+
+
+
+
+// Atualização do status do aluno
+elseif (isset($_POST['tokenAluno'], $_POST['novoStatus'])) {
+    $tokenAluno = $_POST['tokenAluno'];
+    $novoStatus = $_POST['novoStatus'];
+
+    try {
+        $alunoId = decrypt_id($tokenAluno, $encryptionKey, $signatureKey, 'Aluno');
+    } catch (Exception $e) {
+        echo json_encode(['msg' => $e->getMessage(), 'status' => 400]);
+        exit;
+    }
+
+    $campo = 'status';
+    $status = $novoStatus;
+
+    if ($status === false) {
+        echo json_encode(['msg' => 'Status Campo Inválido', 'status' => 400]);
+        exit;
+    }
+
+    try {
+        $pdo = $connection->connection();
+
+        $sql = "UPDATE `aluno` SET $campo = :valor WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':valor', $status);
+        $stmt->bindParam(':id', $alunoId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        echo json_encode(['msg' => 'Atualização do status do aluno bem-sucedida!', 'status' => 200]);
+
+    } catch (PDOException $e) {
+        echo json_encode(['msg' => 'Erro na atualização do status do aluno: ' . $e->getMessage(), 'status' => 500]);
+    } catch (Exception $e) {
+        echo json_encode(['msg' => $e->getMessage(), 'status' => 500]);
+    }
+}
+
+// Se nenhum dos blocos anteriores for acionado, há parâmetros ausentes na requisição
+else {
+    echo json_encode(['msg' => 'Parâmetros ausentes na requisição.', 'status' => 400]);
 }
 ?>

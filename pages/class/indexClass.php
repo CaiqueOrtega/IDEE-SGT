@@ -24,20 +24,6 @@ $id = $_SESSION['login']['id'];
   </div>
 </div>
 
-<script>
-  $(document).ready(function() {
-    $("#relatorioBtnClass").click(function() {
-      if ($('#tableClass tbody tr').length === 0) {
-        $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
-        var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-        errorModal.show();
-      } else {
-        window.open('relatorio/indexClass.php', '_blank');
-      }
-    });
-  });
-</script>
-
 <div class="mt-3">
   <?php require('./tableClass.php'); ?>
 </div>

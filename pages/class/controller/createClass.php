@@ -98,13 +98,18 @@ function classRegister($connection, $treinamentoId, $empresaId, $colaboradorId)
             // Gere o nome da turma com base na próxima letra
             $nomeTurma = "Turma " . $proximaLetra;
 
+
+            $dataAtual = date('Y-m-d'); // Formato: Ano-Mês-Dia
+
+
             // Insira a nova turma no banco de dados
-            $stmtInsert = $pdo->prepare("INSERT INTO `turma` (`nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`) 
-                                VALUES (:nome_turma, :treinamento_id, :empresa_aluno, :colaborador_id)");
+            $stmtInsert = $pdo->prepare("INSERT INTO `turma` (`nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`,`data_inicio`) 
+                                VALUES (:nome_turma, :treinamento_id, :empresa_aluno, :colaborador_id , :data_inicio)");
             $stmtInsert->bindParam(':nome_turma', $nomeTurma, PDO::PARAM_STR);
             $stmtInsert->bindParam(':treinamento_id', $treinamentoId, PDO::PARAM_INT);
             $stmtInsert->bindParam(':empresa_aluno', $empresaId, PDO::PARAM_INT);
             $stmtInsert->bindParam(':colaborador_id', $colaboradorId, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':data_inicio', $dataAtual, PDO::PARAM_STR);
             $stmtInsert->execute();
 
             $turmaId = $pdo->lastInsertId();
