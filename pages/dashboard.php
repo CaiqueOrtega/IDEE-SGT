@@ -74,7 +74,7 @@ $permissao = $_SESSION['login']['permissao'];
 
                     </div>
 
-                    <a href="#" class="list-group-item list-group-item-action py-3" onclick="loadContent('/IDEE-SGT/pages/class/indexClass.php')" data-url="/IDEE-SGT/pages/class/indexClass.php">
+                    <a href="#" class="botao-menu-lateral-turmas list-group-item list-group-item-action py-3" onclick="loadContent('/IDEE-SGT/pages/class/indexClass.php')" data-url="/IDEE-SGT/pages/class/indexClass.php">
                         <i class="bi bi-book fa-fw me-3"></i>Turmas
                     </a>
 

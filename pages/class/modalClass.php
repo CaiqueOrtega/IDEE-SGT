@@ -194,7 +194,7 @@
 
 <?php } ?>
 
-<script>
+<!-- <script>
     $(document).ready(function() {
         // Função para abrir o modal secundário sem fechar o fullscreen modal
         function openSecondaryModal(trigger) {
@@ -223,7 +223,7 @@
         openSecondaryModal('.openModalStatus');
         
     });
-    </script>
+    </script> -->
 
 
 
@@ -241,7 +241,7 @@
             
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
+                        <table id="tabelaNota" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
                             <thead>
                                 <tr>
                                     <th scope="col">Registro</th>
@@ -252,18 +252,18 @@
                                 </tr>
                             </thead>
                             <tbody class="mt-1">
+                                <?php $aluno_ids =[]; ?>
                                 <?php foreach ($alunosData as $index => $aluno) {
                                     $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
                                 ?>
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"> <?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <th class="editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica']; ?></th>
-                                        <th class="editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica']; ?></th>
+                                        <th class="nota_pratica-<?php echo $aluno['aluno_id']; ?> editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica']; ?></th>
+                                        <th class="nota_teorica-<?php echo $aluno['aluno_id']; ?> editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica']; ?></th>
                                         <th data-field="nota_media"><?php echo $aluno['nota_media']; ?></th>
-
-                                        
                                     </tr>
+                                <?php array_push($aluno_ids, $aluno['aluno_id']); ?>
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -275,9 +275,9 @@
 
             <div class="modal-footer mt-3">
 
-                <button class="btn btn-outline-primary d-flex " id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+                <button class="btn btn-outline-primary d-flex editarBtnNota"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
 
-                <button type="button" class="btn btn-login" data-bs-dismiss="modal">Confirmar</button>
+                <button data-turmaid="<?php echo $turma['turma_id']; ?>" data-aluno_ids="<?php echo join(',', $aluno_ids); ?>" type="button" class="btn btn-login confirmCompanyUpdateBtnNota">Confirmar</button>
             </div>
         </div>
     </div>
