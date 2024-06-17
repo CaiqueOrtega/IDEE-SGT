@@ -29,7 +29,7 @@
                             <span class="fw-semibold">Objetivo:</span> <?php echo $turma['objetivo']; ?>
                         </p>
                         <p id="data_inicio">
-                            <span class="fw-semibold">Data de Inicio:</span> <?php echo date('d-m-Y', strtotime ($turma['data_inicio'])); ?>
+                            <span class="fw-semibold">Data de Inicio:</span> <?php echo date('d-m-Y', strtotime($turma['data_inicio'])); ?>
                         </p>
                         <p id="cargaHoraria">
                             <span class="fw-semibold">Carga Horária:</span> <?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?>
@@ -148,7 +148,7 @@
 </div>
 
 <!-- Modais de Status -->
-<?php foreach ($alunosData as $index => $aluno) { 
+<?php foreach ($alunosData as $index => $aluno) {
     $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey); ?>
     <div class="modal fade modalStatus" id="modalStatus-<?php echo $aluno['aluno_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalStatusLabel" aria-hidden="true" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-turmaid="<?php echo $turma['turma_id']; ?>" data-token="<?php echo $tokenAluno; ?>">
         <div class="modal-dialog">
@@ -190,7 +190,7 @@
 
 
 
-    
+
 
 <?php } ?>
 
@@ -238,7 +238,7 @@
             </div>
             <div class="modal-body">
 
-            
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="tabelaNota" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
@@ -252,18 +252,18 @@
                                 </tr>
                             </thead>
                             <tbody class="mt-1">
-                                <?php $aluno_ids =[]; ?>
+                                <?php $aluno_ids = []; ?>
                                 <?php foreach ($alunosData as $index => $aluno) {
                                     $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
                                 ?>
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"> <?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <th class="nota_pratica-<?php echo $aluno['aluno_id']; ?> editable-cell" data-field="nota_pratica"><?php echo $aluno['nota_pratica']; ?></th>
-                                        <th class="nota_teorica-<?php echo $aluno['aluno_id']; ?> editable-cell" data-field="nota_teorica"><?php echo $aluno['nota_teorica']; ?></th>
-                                        <th data-field="nota_media"><?php echo $aluno['nota_media']; ?></th>
+                                        <th class="nota_pratica-<?php echo $aluno['aluno_id']; ?> editable-cell" data-field="nota_pratica"><?php echo number_format($aluno['nota_pratica'], 1, ',', ''); ?></th>
+                                        <th class="nota_teorica-<?php echo $aluno['aluno_id']; ?> editable-cell" data-field="nota_teorica"><?php echo number_format($aluno['nota_teorica'], 1, ',', ''); ?></th>
+                                        <th data-field="nota_media"><?php echo number_format($aluno['nota_media'], 1, ',', ''); ?></th>
                                     </tr>
-                                <?php array_push($aluno_ids, $aluno['aluno_id']); ?>
+                                    <?php array_push($aluno_ids, $aluno['aluno_id']); ?>
                                 <?php } ?>
                             </tbody>
                         </table>

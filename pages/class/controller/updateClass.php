@@ -103,7 +103,7 @@ elseif (isset($_POST['tokenAluno'], $_POST['novoStatus'])) {
 //----------------------------------------------------------------------------------------------------------
 
 
-// Atualização do status do aluno
+// Atualização da nota do aluno
 if (isset($_POST['notas'])) {
     try {
         $notas = isset($_POST["notas"]) ? $_POST["notas"] : [];
@@ -113,7 +113,22 @@ if (isset($_POST['notas'])) {
             $nota_pratica = $nota["nota_pratica"];
             $nota_teorica = $nota["nota_teorica"];
 
-            $nota_media = 10;
+            // Verificar se uma das notas é 10
+            if ($nota_pratica == '10' || $nota_teorica == '10') {
+                // Se uma das notas for 10, aceitar a entrada sem aplicar a máscara
+                $nota_pratica = $nota_pratica == '10' ? '10' : validateNotaNumbers('nota_pratica', $nota_pratica);
+                $nota_teorica = $nota_teorica == '10' ? '10' : validateNotaNumbers('nota_teorica', $nota_teorica);
+            } else {
+                // Se nenhuma das notas for 10, aplicar a validação da máscara
+                $nota_pratica = validateNotaNumbers('nota_pratica', $nota_pratica);
+                $nota_teorica = validateNotaNumbers('nota_teorica', $nota_teorica);
+            }
+
+            // Converter valores para float para cálculos
+            $nota_pratica = str_replace(',', '.', $nota_pratica);
+            $nota_teorica = str_replace(',', '.', $nota_teorica);
+
+            $nota_media = ($nota_pratica * 0.3) + ($nota_teorica * 0.7);
 
             $pdo = $connection->connection();
 
@@ -134,6 +149,7 @@ if (isset($_POST['notas'])) {
     }
 }
 
+
 function validateNotaNumbers($fieldName, $value)
 {
     // Remove espaços em branco no início e fim da string
@@ -150,3 +166,4 @@ function validateNotaNumbers($fieldName, $value)
 
     return $filteredData;
 }
+

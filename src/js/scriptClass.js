@@ -580,6 +580,7 @@ $(document).ready(function () {
 
                 if (cell.data('field') === 'nota_pratica') {
                     cell.html('<input id="nota_praticaInput" type="text" class="form-control" placeholder=" __._ " value="' + currentValue + '">');
+                    
 
                 } else if (cell.data('field') === 'nota_teorica') {
                     cell.html('<input id="nota_teoricaInput" type="text" class="form-control" placeholder=" __._ " value="' + currentValue + '">');
@@ -684,7 +685,7 @@ $(document).ready(function () {
 
                     errorModal.show();
                 } else {
-                    location.replace(`?modalNotas=modalNotas-${turmaid}`)
+                    location.replace(`?modalStudents=modalStudents-${turmaid}`)
                 }
 
             },
