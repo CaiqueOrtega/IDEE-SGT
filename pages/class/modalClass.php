@@ -100,6 +100,8 @@
                             <button class="btn btn-outline-primary d-flex align-items-center py-2" id="openFrequencia-<?php echo $turma['turma_id']; ?>">
                                 <i class="bi bi-calendar2-date me-1"></i><span class="d-none d-md-block">Frequência</span>
                             </button>
+
+                            <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnStudents"><i class="fa-solid fa-file-pdf text-center"></i></button>
                         </div>
                     </div>
 
@@ -296,11 +298,9 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tabelaStudents" class="table table-hover table-striped table table-bordered" style="--bs-table-bg: transparent !important;">
+                        <table id="tabelaStudents" class="table table-hover table-striped table-bordered" style="--bs-table-bg: transparent !important;">
                             <thead>
                                 <tr>
                                     <th scope="col">Registro</th>
@@ -316,17 +316,16 @@
                                     <?php } ?>
                                 </tr>
                             </thead>
-                            <tbody class="table-group-divider ">
+                            <tbody class="table-group-divider">
                                 <?php foreach ($alunosData as $index => $aluno) { ?>
-                                    <tr class="data-row  align-middle " data-index="<?php echo $index; ?>">
-                                        <th data-field="registro" class="text-right "><?php echo $aluno['numero_registro_empresa']; ?></th>
-                                        <td data-field="nome_funcionario "><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <td data-field="frequencia "><?php echo $aluno['frequencia']; ?></td>
-
+                                    <tr class="data-row align-middle" data-index="<?php echo $index; ?>">
+                                        <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
+                                        <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
+                                        <td data-field="frequencia"><?php echo $aluno['frequencia']; ?></td>
                                         <?php for ($i = 1; $i <= $dias; $i++) { ?>
                                             <td class="p-4">
                                                 <div class="form-check fs-5">
-                                                    <input class="form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked>
+                                                    <input class="frequencia-<?php echo $aluno['aluno_id']; ?> form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked disabled>
                                                     <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
                                                 </div>
                                             </td>
@@ -337,14 +336,15 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- Estilos customizados para os checkboxes -->
-
-
-
             </div>
             <div class="modal-footer mt-3">
-                <button type="button" class="btn btn-login" data-bs-dismiss="modal">Confirmar</button>
+
+            
+            <button class="btn btn-outline-primary d-flex editarBtnFrequencia"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+
+            <button data-turmaidfrequencia="<?php echo $turma['turma_id']; ?>" data-aluno_ids_frequencia="<?php echo join(',', $aluno_ids); ?>" type="button" class="btn btn-login confirmStudentUpdateBtnFrequencia">Confirmar</button>
+
+
             </div>
         </div>
     </div>
@@ -401,3 +401,4 @@
         });
     });
 </script>
+

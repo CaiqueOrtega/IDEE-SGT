@@ -167,3 +167,29 @@ function validateNotaNumbers($fieldName, $value)
     return $filteredData;
 }
 
+//---------------------------------------------------------------------------------------------------------------------------
+
+if (isset($_POST['frequencias'])) {
+    try {
+        $frequencias = $_POST['frequencias'];
+        $pdo = $connection->connection();
+
+        $sql = "UPDATE `aluno` SET `frequencia` = :frequencia WHERE `id` = :id";
+        $stmt = $pdo->prepare($sql);
+
+        foreach ($frequencias as $frequenciaAluno) {
+            $aluno_id = $frequenciaAluno["aluno_id"];
+            $frequenciaIndividual = $frequenciaAluno["frequencia"];
+
+            $stmt->bindParam(':id', $aluno_id, PDO::PARAM_INT);
+            $stmt->bindParam(':frequencia', $frequenciaIndividual, PDO::PARAM_STR);
+
+            $stmt->execute();
+        }
+
+        echo json_encode(['msg' => 'Dados das notas atualizados com sucesso.', 'status' => 200]);
+    } catch (Exception $e) {
+        error_log('Erro na atualização: ' . $e->getMessage());
+        echo json_encode(['msg' => $e->getMessage(), 'status' => 400]);
+    }
+}

@@ -44,7 +44,7 @@ $permissao = $_SESSION['login']['permissao'];
                 <hr id="logo-sidebar" class=" ms-3 me-3">
 
                 <div class="list-group list-group-flush mx-2 mt-4">
-                    <a href="#" class="list-group-item list-group-item-action py-3 " onclick="loadContent('/IDEE-SGT/pages/')" data-url="">
+                    <a href="#" class="list-group-item list-group-item-action py-3 " onclick="loadContent('/IDEE-SGT/pages/home/indexHome.php')" data-url="/IDEE-SGT/pages/home/indexHome.php">
                         <i class="bi-house fa-fw me-3"></i>Pagina Inicial
                     </a>
 

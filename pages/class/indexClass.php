@@ -26,6 +26,7 @@ $id = $_SESSION['login']['id'];
 
 <div class="mt-3">
   <?php require('./tableClass.php'); ?>
+  <?php include('../errorAndSuccessModal.php');?>
 </div>
 
 
@@ -71,5 +72,4 @@ $id = $_SESSION['login']['id'];
 </div>
 
 <script src="../src/js/scriptClass.js"></script>
-<?php include('../errorAndSuccessModal.php');
-?>
+

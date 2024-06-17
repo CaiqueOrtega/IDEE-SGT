@@ -542,6 +542,8 @@ $(document).ready(function () {
 
 });
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+//relatorio de turmas e treinamentos
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
 
@@ -561,6 +563,29 @@ $(document).ready(function () {
 });
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+//relatorio de notas e Frequencia dos Alunos
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+$(document).ready(function () {
+
+    $("#relatorioBtnStudents").click(function () {
+
+        if ($('#tabelaStudents tbody tr').length === 0) {
+
+            $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+
+            errorModal.show();
+        } else {
+
+            window.open('relatorio/indexStudents.php', '_blank');
+        }
+    });
+});
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 $(document).ready(function () {
     var modoEdicao = false;
@@ -571,7 +596,7 @@ $(document).ready(function () {
         $('.editable-cell').on('click', function () {
             var cell = $(this);
             var tr = cell.closest('tr');
-            var token = tr.data('token');
+
 
 
             var inputField = cell.find('input');
@@ -695,3 +720,135 @@ $(document).ready(function () {
         });
     }
 });
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ready(function () {
+    var modoEdicao = false;
+    var btnTexto = $('.editarBtnFrequencia span');
+    var iconElement = $('.editarBtnFrequencia i');
+    var dias = $('#dias-container').data('dias'); // Recupera o valor de dias do atributo de dados
+
+    function habilitarEdicao() {
+        // Habilita os checkboxes para edição
+        $('.form-check-input').prop('disabled', false);
+    }
+
+    function desabilitarEdicao() {
+        // Desabilita os checkboxes após edição
+        $('.form-check-input').prop('disabled', true);
+    }
+
+    $('.editarBtnFrequencia').on('click', function () {
+        modoEdicao = !modoEdicao;
+
+        if (modoEdicao) {
+            // Modo de edição ativado
+            iconElement.removeClass().addClass('bi bi-box-arrow-right');
+            btnTexto.text('Sair da Edição');
+            $('#alert').removeClass('d-none');
+
+            // Habilita a edição nas células
+            habilitarEdicao();
+        } else {
+            // Modo de edição desativado
+            iconElement.removeClass().addClass('bi bi-pen-fill');
+            btnTexto.text('Editar');
+            $('#alert').addClass('d-none');
+
+            // Desabilita a edição nos checkboxes
+            desabilitarEdicao();
+        }
+    });
+
+    // Evento para capturar a alteração nos checkboxes
+    $('.form-check-input').on('change', function () {
+        var checkbox = $(this);
+        var isChecked = checkbox.is(':checked');
+
+        // Aqui você pode realizar ações adicionais quando o checkbox é marcado ou desmarcado
+        console.log('Checkbox ' + checkbox.attr('id') + ' está ' + (isChecked ? 'marcado' : 'desmarcado'));
+
+        // Você pode adicionar lógica para enviar dados ou atualizar a interface conforme necessário
+    });
+
+    // Botão de confirmação
+    $('.confirmStudentUpdateBtnFrequencia').on('click', function () {
+        var turmaId = $(this).data('turmaidfrequencia');
+        var alunoIds = $(this).data('aluno_ids_frequencia').split(',');
+
+        var frequencias = [];
+        alunoIds.forEach(function (alunoId) {
+            var frequenciaPorAluno = [];
+            for (var i = 1; i <= dias; i++) { // Use a variável dias aqui
+                var checkboxId = '#frequencia-' + alunoId + '-dia-' + i;
+                var isChecked = $(checkboxId).is(':checked');
+                frequenciaPorAluno.push({
+                    dia: i,
+                    presente: isChecked
+                });
+            }
+            frequencias.push({
+                aluno_id: alunoId,
+                frequencias: frequenciaPorAluno
+            });
+        });
+
+        console.log('Frequências atualizadas:', frequencias);
+        // Aqui você pode adicionar lógica para enviar os dados para o servidor ou atualizar a tabela conforme necessário
+
+        updateTableNota(frequencias, turmaId);
+    });
+
+    function updateTableNota(frequencias, turmaid) {
+        $.ajax({
+            method: 'POST',
+            url: 'class/controller/updateClass.php',
+            data: { frequencias },
+            success: function (response) {
+                console.log(response);
+                if (response.status !== 200) {
+                    var errorMessage = "Erro na solicitação: " + response.msg;
+
+                    console.log(errorMessage);
+                    $("#errorMsg").text(response.msg);
+
+                    errorModal.show();
+                } else {
+                    location.replace(`?modalStudents=modalStudents-${turmaid}`)
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    $('.editarBtnNota').on('click', function () {
+        if ($('#tabelaNota tbody tr').length === 0) {
+            $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
+            errorModal.show();
+        } else {
+            modoEdicao = !modoEdicao;
+
+            if (modoEdicao) {
+                // Modo de edição ativado
+                iconElement.removeClass().addClass('bi bi-box-arrow-right');
+                btnTexto.text('Sair da Edição');
+                $('#alert').removeClass('d-none');
+
+                // Habilita a edição nas células
+                habilitarEdicao();
+            } else {
+                // Modo de edição desativado
+                iconElement.removeClass().addClass('bi bi-pen-fill');
+                btnTexto.text('Editar');
+                $('#alert').addClass('d-none');
+
+                // Remova qualquer lógica associada ao clique nas células durante o modo de edição
+                $('.editable-cell').off('click');
+            }
+        }
+    });
+});
+
