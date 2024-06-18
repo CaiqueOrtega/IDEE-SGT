@@ -546,42 +546,41 @@ $(document).ready(function () {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
-
     $("#relatorioBtnClass").click(function () {
-
         if ($('#tableClass tbody tr').length === 0) {
-
             $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-
             errorModal.show();
         } else {
-
-            window.open('relatorio/indexClass.php', '_blank');
+            // Substitua 'treinamento1' ou 'treinamento2' pelo valor correspondente ao filtro desejado
+            window.open('relatorio/indexClass.php?filtro=treinamento1', '_blank');
         }
     });
 });
-
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //relatorio de notas e Frequencia dos Alunos
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
+    // Usar um evento de clique específico para os botões dentro do modal
+    $(document).on("click", ".relatorioBtnStudents", function () {
+        // Obter o ID da turma associado ao botão clicado
+        var turmaId = $(this).data('turmarelatorioid');
 
-    $("#relatorioBtnStudents").click(function () {
-
-        if ($('#tabelaStudents tbody tr').length === 0) {
-
+        // Verificar se há dados na tabela dentro do modal atual
+        if ($(this).closest('.modal-content').find('#tabelaStudents tbody tr').length === 0) {
+            // Se não houver dados, exibir uma mensagem de erro
             $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-
             errorModal.show();
         } else {
-
-            window.open('relatorio/indexStudents.php', '_blank');
+            // Se houver dados, abrir o relatório para a turma específica
+            window.open('relatorio/indexStudents.php?turma_id=' + turmaId, '_blank');
         }
     });
 });
+
+
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 

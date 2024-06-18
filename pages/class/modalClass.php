@@ -101,7 +101,9 @@
                                 <i class="bi bi-calendar2-date me-1"></i><span class="d-none d-md-block">Frequência</span>
                             </button>
 
-                            <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnStudents"><i class="fa-solid fa-file-pdf text-center"></i></button>
+                            <button class="btn btn-outline-danger fs-4 d-flex ms-2 relatorioBtnStudents" data-turmarelatorioid="<?php echo $turma['turma_id']; ?>">
+                            <i class="fa-solid fa-file-pdf text-center"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -115,9 +117,11 @@
                                         <th scope="col">Documento</th>
                                         <th scope="col">Gênero</th>
                                         <th scope="col">Status Aluno</th>
+                                       
                                         <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                                             <th scope="col" class="text-center">Modificar Status</th>
                                         <?php } ?>
+                                        <th scope="col" class="text-center">Gerar Certificado</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mt-1">
@@ -136,8 +140,20 @@
                                                         <i class="bi bi-pencil-fill fs-6"></i>
                                                     </a>
                                                 </td>
+
+                                                <td class="text-center">
+                                                    <a href="#" class="ms-2 text-success text-center certificadoBtnStudents">
+                                                    <i class="bi bi-file-earmark-check-fill"></i>
+                                                    </a>
+                                                    
+                                                </td>
+
+
                                             <?php } ?>
                                         </tr>
+
+                                                
+
                                     <?php } ?>
                                 </tbody>
                             </table>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 $idPermissao = $_SESSION['login']['permissao'];
 $id = $_SESSION['login']['id'];
@@ -18,7 +18,9 @@ $id = $_SESSION['login']['id'];
           <button class="btn btn-outline-primary d-flex" id="editarBtn"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
         <?php } ?>
 
-        <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
+
+       
+
       </div>
     </div>
   </div>
@@ -26,8 +28,31 @@ $id = $_SESSION['login']['id'];
 
 <div class="mt-3">
   <?php require('./tableClass.php'); ?>
-  <?php include('../errorAndSuccessModal.php');?>
+  <?php include('../errorAndSuccessModal.php'); ?>
 </div>
+
+
+<div class="input-group mb-3">
+    <select class="form-select" id="filtroSelect">
+        <?php
+        $treinamentosAdicionados = array(); // Array para armazenar os IDs dos treinamentos já adicionados
+        foreach ($turmasData as $turma) {
+            // Verifica se o ID do treinamento já foi adicionado
+            if (!in_array($turma['treinamento_id'], $treinamentosAdicionados)) {
+                // Se não foi adicionado, adiciona ao <select>
+                ?>
+                <option value="<?php echo $turma['treinamento_id']; ?>"><?php echo $turma['nomenclatura']; ?></option>
+                <?php
+                // Adiciona o ID do treinamento ao array de treinamentos adicionados
+                $treinamentosAdicionados[] = $turma['treinamento_id'];
+            }
+        }
+        ?>
+    </select>
+    <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
+</div>
+
+
 
 
 
@@ -72,4 +97,3 @@ $id = $_SESSION['login']['id'];
 </div>
 
 <script src="../src/js/scriptClass.js"></script>
-
