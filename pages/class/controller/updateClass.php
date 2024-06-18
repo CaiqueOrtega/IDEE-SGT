@@ -113,16 +113,9 @@ if (isset($_POST['notas'])) {
             $nota_pratica = $nota["nota_pratica"];
             $nota_teorica = $nota["nota_teorica"];
 
-            // Verificar se uma das notas é 10
-            if ($nota_pratica == '10' || $nota_teorica == '10') {
-                // Se uma das notas for 10, aceitar a entrada sem aplicar a máscara
-                $nota_pratica = $nota_pratica == '10' ? '10' : validateNotaNumbers('nota_pratica', $nota_pratica);
-                $nota_teorica = $nota_teorica == '10' ? '10' : validateNotaNumbers('nota_teorica', $nota_teorica);
-            } else {
-                // Se nenhuma das notas for 10, aplicar a validação da máscara
-                $nota_pratica = validateNotaNumbers('nota_pratica', $nota_pratica);
-                $nota_teorica = validateNotaNumbers('nota_teorica', $nota_teorica);
-            }
+            // Verificar se as notas estão no formato correto
+            $nota_pratica = validateNotaNumbers('nota_pratica', $nota_pratica);
+            $nota_teorica = validateNotaNumbers('nota_teorica', $nota_teorica);
 
             // Converter valores para float para cálculos
             $nota_pratica = str_replace(',', '.', $nota_pratica);
@@ -149,41 +142,84 @@ if (isset($_POST['notas'])) {
     }
 }
 
-
 function validateNotaNumbers($fieldName, $value)
 {
     // Remove espaços em branco no início e fim da string
     $value = trim($value);
 
-    // Verifica se o valor está no formato X,X ou XX,X
-    if (!preg_match('/^\d{1,2},\d$/', $value)) {
-        echo json_encode(['msg' => "Campo '$fieldName' deve estar no formato X,X ou XX,X.", 'status' => 400]);
+    // Verifica se o valor está no formato X,X ou XX,X ou é um número inteiro de 0 a 10
+    if (!preg_match('/^\d{1,2}(\,\d)?$/', $value)) {
+        echo json_encode(['msg' => "Campo '$fieldName' deve estar no formato X,X, XX,X, ou um número inteiro de 0 a 10.", 'status' => 400]);
         exit;
     }
 
-    // Filtra apenas os números (opcional, depende do uso posterior)
+    // Se o valor for um número inteiro de 0 a 10, adiciona ",0"
+    if (preg_match('/^\d{1,2}$/', $value) && $value <= 10) {
+        $value .= ',0';
+    }
+
+    // Filtra apenas os números e a vírgula
     $filteredData = preg_replace('/[^0-9,]/', '', $value);
 
     return $filteredData;
 }
 
+
 //---------------------------------------------------------------------------------------------------------------------------
 
-if (isset($_POST['frequencias'])) {
+if (isset($_POST['alunos'])) {
     try {
-        $frequencias = $_POST['frequencias'];
+        $alunos = $_POST['alunos'];
+
         $pdo = $connection->connection();
 
-        $sql = "UPDATE `aluno` SET `frequencia` = :frequencia WHERE `id` = :id";
-        $stmt = $pdo->prepare($sql);
+        foreach ($alunos as $aluno) {
+            $aluno_id = $aluno['aluno_id'];
+            $turma_id = $aluno['turma_id'];
+            $presencas = $aluno['presencas'];
 
-        foreach ($frequencias as $frequenciaAluno) {
-            $aluno_id = $frequenciaAluno["aluno_id"];
-            $frequenciaIndividual = $frequenciaAluno["frequencia"];
+            $totalFaltas = 0;
+            $totalDias = count($presencas);
+            foreach ($presencas as $presenca) {
+                $dia = $presenca["dia"];
+                $presenca = $presenca["presenca"];
 
+                $sqlDelete = ("DELETE FROM `frequencia_aluno` WHERE `aluno_id_fk` = :aluno_id_fk AND `turma_id_fk` = :turma_id_fk AND `dia` = :dia");
+                $stmtDelete = $pdo->prepare($sqlDelete);
+                $stmtDelete->bindValue(":aluno_id_fk", $aluno_id, PDO::PARAM_INT);
+                $stmtDelete->bindValue(":turma_id_fk", $turma_id, PDO::PARAM_INT);
+                $stmtDelete->bindValue(":dia", $dia, PDO::PARAM_INT);
+                $stmtDelete->execute();
+
+                if ($presenca == "N") {
+                    $totalFaltas++;
+                    $sqlInsert = ("INSERT INTO `frequencia_aluno` (`aluno_id_fk`, `turma_id_fk`, `dia`) VALUES (:aluno_id_fk, :turma_id_fk, :dia)");
+                    $stmtInsert = $pdo->prepare($sqlInsert);
+                    $stmtInsert->bindValue(":aluno_id_fk", $aluno_id, PDO::PARAM_INT);
+                    $stmtInsert->bindValue(":turma_id_fk", $turma_id, PDO::PARAM_INT);
+                    $stmtInsert->bindValue(":dia", $dia, PDO::PARAM_INT);
+                    $stmtInsert->execute();
+                }
+            }
+
+            if ($totalFaltas > 0) {
+                $valor = 100;
+                $percentual = ($totalFaltas * 100) / $totalDias;
+                $valor_final = $valor - ($percentual * $valor);
+
+                $total = 100;
+                $pctm = $percentual;
+
+                $frequencia = $total - ($total * $pctm * 0.01);
+            } else {
+                $frequencia = 100;
+            }
+
+            $sql = "UPDATE `aluno` SET `frequencia` = :frequencia WHERE `id` = :id AND `turma_aluno_fk` = :turma_aluno_fk";
+            $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':id', $aluno_id, PDO::PARAM_INT);
-            $stmt->bindParam(':frequencia', $frequenciaIndividual, PDO::PARAM_STR);
-
+            $stmt->bindParam(':turma_aluno_fk', $turma_id, PDO::PARAM_INT);
+            $stmt->bindParam(':frequencia', $frequencia, PDO::PARAM_STR);
             $stmt->execute();
         }
 

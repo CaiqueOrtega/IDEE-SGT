@@ -591,6 +591,13 @@ $(document).ready(function () {
     var modoEdicao = false;
     var btnTexto = $('.editarBtnNota span');
     var iconElement = $('.editarBtnNota i');
+    $('#nota_praticaInput').inputmask('0,0', {
+        showMask: false
+    });
+
+    $('#nota_teoricaInput').mask('0,0', {
+        showMask: false
+    });
 
     function habilitarEdicao() {
         $('.editable-cell').on('click', function () {
@@ -605,11 +612,15 @@ $(document).ready(function () {
 
                 if (cell.data('field') === 'nota_pratica') {
                     cell.html('<input id="nota_praticaInput" type="text" class="form-control" placeholder=" __._ " value="' + currentValue + '">');
-                    
+                    $('#nota_praticaInput').mask('00,0', {
+                        showMask: false
+                    });
 
                 } else if (cell.data('field') === 'nota_teorica') {
                     cell.html('<input id="nota_teoricaInput" type="text" class="form-control" placeholder=" __._ " value="' + currentValue + '">');
-
+                    $('#nota_teoricaInput').mask('00,0', {
+                        showMask: false
+                    });
                 } else {
                     cell.html('<input type="text" class="form-control" value="' + currentValue + '">');
                 }
@@ -774,39 +785,55 @@ $(document).ready(function () {
 
     // Botão de confirmação
     $('.confirmStudentUpdateBtnFrequencia').on('click', function () {
-        var turmaId = $(this).data('turmaidfrequencia');
-        var alunoIds = $(this).data('aluno_ids_frequencia').split(',');
+        let turmaid = $(this).data("turmaid");
+        let inputs = $(`.frequencia-aluno-${turmaid}`);
 
-        var frequencias = [];
-        alunoIds.forEach(function (alunoId) {
-            var frequenciaPorAluno = [];
-            for (var i = 1; i <= dias; i++) { // Use a variável dias aqui
-                var checkboxId = '#frequencia-' + alunoId + '-dia-' + i;
-                var isChecked = $(checkboxId).is(':checked');
-                frequenciaPorAluno.push({
-                    dia: i,
-                    presente: isChecked
-                });
+        let frequencias = [];
+        let alunos = [];
+        for (let input of inputs) {
+            let checado = input.checked;
+
+            let turma_id = input.dataset.turmaid;
+            let aluno_id = input.dataset.alunoid;
+            let dia = input.dataset.dia;
+
+            frequencias.push({ aluno_id, turma_id, dia, presenca: checado ? "S" : "N" });
+
+            if (!alunos.includes(aluno_id)) {
+                alunos.push(aluno_id);
             }
-            frequencias.push({
-                aluno_id: alunoId,
-                frequencias: frequenciaPorAluno
+        }
+
+        let alunosPresencao = [];
+
+        for (let aluno_id of alunos) {
+            let presencas = [];
+            let turma_id = null;
+            for (let frequencia of frequencias) {
+                let { presenca, dia } = frequencia;
+                turma_id = frequencia.turma_id;
+                if (frequencia.aluno_id == aluno_id) {
+                    presencas.push({ presenca, dia });
+                }
+            }
+
+            alunosPresencao.push({
+                aluno_id,
+                turma_id,
+                presencas
             });
-        });
+        }
 
-        console.log('Frequências atualizadas:', frequencias);
-        // Aqui você pode adicionar lógica para enviar os dados para o servidor ou atualizar a tabela conforme necessário
-
-        updateTableNota(frequencias, turmaId);
+        updateTableFrequencia({ alunos: alunosPresencao }, turmaid);
     });
 
-    function updateTableNota(frequencias, turmaid) {
+    function updateTableFrequencia(data, turmaid) {
+        console.log(data);
         $.ajax({
             method: 'POST',
             url: 'class/controller/updateClass.php',
-            data: { frequencias },
+            data,
             success: function (response) {
-                console.log(response);
                 if (response.status !== 200) {
                     var errorMessage = "Erro na solicitação: " + response.msg;
 

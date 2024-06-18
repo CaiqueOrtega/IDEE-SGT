@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 14/06/2024 às 23:01
--- Versão do servidor: 10.4.28-MariaDB
--- Versão do PHP: 8.2.4
+-- Tempo de geração: 18-Jun-2024 às 02:17
+-- Versão do servidor: 10.4.32-MariaDB
+-- versão do PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `aluno`
+-- Estrutura da tabela `aluno`
 --
 
 CREATE TABLE `aluno` (
@@ -39,21 +39,21 @@ CREATE TABLE `aluno` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `aluno`
+-- Extraindo dados da tabela `aluno`
 --
 
 INSERT INTO `aluno` (`id`, `id_funcionario_fk`, `turma_aluno_fk`, `nota_pratica`, `nota_teorica`, `nota_media`, `frequencia`, `status`) VALUES
-(147, 78, 127, 0.0, 0.0, 0.0, 100.0, 'inativo'),
-(148, 84, 127, 0.0, 0.0, 0.0, 100.0, 'inativo'),
-(171, 79, 143, 0.0, 0.0, 0.0, 100.0, 'ativo'),
-(172, 80, 143, 0.0, 0.0, 0.0, 100.0, 'inativo'),
-(173, 81, 143, 0.0, 0.0, 0.0, 100.0, 'ativo'),
-(177, 82, 145, 0.0, 0.0, 0.0, 100.0, 'ativo');
+(179, 78, 147, 0.0, 0.0, 0.0, 100.0, 'ativo'),
+(180, 84, 147, 0.0, 0.0, 0.0, 100.0, 'ativo'),
+(181, 79, 148, 10.0, 10.0, 10.0, 80.0, 'ativo'),
+(182, 80, 148, 1.0, 3.0, 2.4, 100.0, 'ativo'),
+(183, 81, 148, 0.0, 2.0, 1.4, 100.0, 'ativo'),
+(184, 85, 149, 10.0, 7.0, 10.0, 100.0, 'ativo');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `empresa_cliente`
+-- Estrutura da tabela `empresa_cliente`
 --
 
 CREATE TABLE `empresa_cliente` (
@@ -67,20 +67,20 @@ CREATE TABLE `empresa_cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `empresa_cliente`
+-- Extraindo dados da tabela `empresa_cliente`
 --
 
 INSERT INTO `empresa_cliente` (`id`, `razao_social`, `nome_fantasia`, `email`, `cnpj`, `telefone`, `usuario_id`) VALUES
-(117, 'Mpl industria e comercio de roupas ltda', 'Paco nine dado e m pollo', 'klarissaqueiroz@gestaoapice.com.br', '08.007.677/0004-06', '(62) 3277-9900', 44),
+(117, 'Mpl industria e comercio de roupas ltda', 'Paco nine dado', 'klarissaqueiroz@gestaoapice.com.br', '08.007.677/0004-06', '(62) 3277-9900', 44),
 (118, 'Ocw saude e seguranca do trabalho ltda', 'Idee saude e seguranca do trabalho', 'ortegaengseg@outlook.com', '45.221.565/0001-37', '(44) 9914-7571', 45),
-(119, 'Textil canatiba ltda', 'Canatiba', 'canatiba@canatiba.com', '56.723.091/0001-48', '(19) 3459-4000', 44),
+(119, 'Textil canatiba ltda', 'Canatiba1', 'canatiba@canatiba.com', '56.723.091/0001-48', '(19) 3459-4000', 44),
 (120, 'Sancris linhas e fios ltda', 'Sancris linhas e fios ltda', 'siscon@siscon.cnt.br', '80.446.990/0010-16', '(44) 3024-9373', 44),
 (121, 'Honda automoveis do brasil ltda', 'Honda', 'hab_fiscal@honda.com.br', '01.192.333/0001-22', '(19) 3864-4400', 44);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `empresa_cliente_cargo`
+-- Estrutura da tabela `empresa_cliente_cargo`
 --
 
 CREATE TABLE `empresa_cliente_cargo` (
@@ -90,7 +90,7 @@ CREATE TABLE `empresa_cliente_cargo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `empresa_cliente_cargo`
+-- Extraindo dados da tabela `empresa_cliente_cargo`
 --
 
 INSERT INTO `empresa_cliente_cargo` (`id`, `nome`, `empresa_id`) VALUES
@@ -103,7 +103,7 @@ INSERT INTO `empresa_cliente_cargo` (`id`, `nome`, `empresa_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `empresa_cliente_departamento`
+-- Estrutura da tabela `empresa_cliente_departamento`
 --
 
 CREATE TABLE `empresa_cliente_departamento` (
@@ -113,7 +113,7 @@ CREATE TABLE `empresa_cliente_departamento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `empresa_cliente_departamento`
+-- Extraindo dados da tabela `empresa_cliente_departamento`
 --
 
 INSERT INTO `empresa_cliente_departamento` (`id`, `nome`, `empresa_id`) VALUES
@@ -126,7 +126,7 @@ INSERT INTO `empresa_cliente_departamento` (`id`, `nome`, `empresa_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `empresa_cliente_funcionario`
+-- Estrutura da tabela `empresa_cliente_funcionario`
 --
 
 CREATE TABLE `empresa_cliente_funcionario` (
@@ -143,7 +143,7 @@ CREATE TABLE `empresa_cliente_funcionario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `empresa_cliente_funcionario`
+-- Extraindo dados da tabela `empresa_cliente_funcionario`
 --
 
 INSERT INTO `empresa_cliente_funcionario` (`id`, `empresa_id`, `nome_funcionario`, `email`, `telefone`, `genero`, `cpf`, `numero_registro_empresa`, `cargo_id`, `departamento_id`) VALUES
@@ -159,7 +159,7 @@ INSERT INTO `empresa_cliente_funcionario` (`id`, `empresa_id`, `nome_funcionario
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `ficha_inscricao`
+-- Estrutura da tabela `ficha_inscricao`
 --
 
 CREATE TABLE `ficha_inscricao` (
@@ -171,16 +171,37 @@ CREATE TABLE `ficha_inscricao` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `ficha_inscricao`
+-- Extraindo dados da tabela `ficha_inscricao`
 --
 
 INSERT INTO `ficha_inscricao` (`id`, `funcionarios`, `treinamento_id`, `empresa_id`, `data_realizacao`) VALUES
-(332, '[{\"id\":\"79\"},{\"id\":\"80\"},{\"id\":\"81\"}]', 24, 118, '2024-06-14');
+(337, '[{\"id\":\"85\"}]', 27, 121, '2024-06-15');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `login`
+-- Estrutura da tabela `frequencia_aluno`
+--
+
+CREATE TABLE `frequencia_aluno` (
+  `id` int(11) NOT NULL,
+  `aluno_id_fk` int(11) NOT NULL,
+  `turma_id_fk` int(10) UNSIGNED NOT NULL,
+  `dia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `frequencia_aluno`
+--
+
+INSERT INTO `frequencia_aluno` (`id`, `aluno_id_fk`, `turma_id_fk`, `dia`) VALUES
+(127, 181, 148, 1),
+(128, 181, 148, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `login`
 --
 
 CREATE TABLE `login` (
@@ -192,7 +213,7 @@ CREATE TABLE `login` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `login`
+-- Extraindo dados da tabela `login`
 --
 
 INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `permissao_id`) VALUES
@@ -204,7 +225,7 @@ INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `permissao_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `permissao`
+-- Estrutura da tabela `permissao`
 --
 
 CREATE TABLE `permissao` (
@@ -213,7 +234,7 @@ CREATE TABLE `permissao` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `permissao`
+-- Extraindo dados da tabela `permissao`
 --
 
 INSERT INTO `permissao` (`id`, `nome`) VALUES
@@ -225,7 +246,7 @@ INSERT INTO `permissao` (`id`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `treinamento`
+-- Estrutura da tabela `treinamento`
 --
 
 CREATE TABLE `treinamento` (
@@ -245,7 +266,7 @@ CREATE TABLE `treinamento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `treinamento`
+-- Extraindo dados da tabela `treinamento`
 --
 
 INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `carga_horaria`, `horas_pratica`, `horas_teorica`, `ementa`, `pre_requisitos`, `normas_referencia`, `material`, `reciclagem`, `nr`) VALUES
@@ -255,7 +276,7 @@ INSERT INTO `treinamento` (`id`, `colaborador_id`, `nomenclatura`, `objetivo`, `
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `turma`
+-- Estrutura da tabela `turma`
 --
 
 CREATE TABLE `turma` (
@@ -269,18 +290,18 @@ CREATE TABLE `turma` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `turma`
+-- Extraindo dados da tabela `turma`
 --
 
 INSERT INTO `turma` (`id`, `nome_turma`, `treinamento_id`, `empresa_aluno`, `colaborador_id_fk`, `data_inicio`, `data_conclusao`) VALUES
-(127, 'Turma A', 24, 117, 45, '0000-00-00', '0000-00-00'),
-(143, 'Turma B', 24, 118, 45, '0000-00-00', '0000-00-00'),
-(145, 'Turma C', 27, 119, 46, '2024-06-14', '0000-00-00');
+(147, 'Turma D', 27, 117, 45, '2024-06-15', '0000-00-00'),
+(148, 'Turma E', 24, 118, 45, '2024-06-15', '0000-00-00'),
+(149, 'Turma F', 27, 121, 45, '2024-06-15', '0000-00-00');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario`
+-- Estrutura da tabela `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -292,7 +313,7 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `usuario`
+-- Extraindo dados da tabela `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `data_nascimento`, `cpf`, `telefone`, `genero`) VALUES
@@ -306,7 +327,7 @@ INSERT INTO `usuario` (`id`, `data_nascimento`, `cpf`, `telefone`, `genero`) VAL
 --
 
 --
--- Índices de tabela `aluno`
+-- Índices para tabela `aluno`
 --
 ALTER TABLE `aluno`
   ADD PRIMARY KEY (`id`),
@@ -314,7 +335,7 @@ ALTER TABLE `aluno`
   ADD KEY `turma_id_aluno_fk` (`turma_aluno_fk`);
 
 --
--- Índices de tabela `empresa_cliente`
+-- Índices para tabela `empresa_cliente`
 --
 ALTER TABLE `empresa_cliente`
   ADD PRIMARY KEY (`id`),
@@ -322,21 +343,21 @@ ALTER TABLE `empresa_cliente`
   ADD KEY `idx_empresa_cliente_id` (`id`);
 
 --
--- Índices de tabela `empresa_cliente_cargo`
+-- Índices para tabela `empresa_cliente_cargo`
 --
 ALTER TABLE `empresa_cliente_cargo`
   ADD PRIMARY KEY (`id`),
   ADD KEY `empresa_id_cargo_fk` (`empresa_id`);
 
 --
--- Índices de tabela `empresa_cliente_departamento`
+-- Índices para tabela `empresa_cliente_departamento`
 --
 ALTER TABLE `empresa_cliente_departamento`
   ADD PRIMARY KEY (`id`),
   ADD KEY `empresa_cliente_departamento_id_fk` (`empresa_id`);
 
 --
--- Índices de tabela `empresa_cliente_funcionario`
+-- Índices para tabela `empresa_cliente_funcionario`
 --
 ALTER TABLE `empresa_cliente_funcionario`
   ADD PRIMARY KEY (`id`),
@@ -345,7 +366,7 @@ ALTER TABLE `empresa_cliente_funcionario`
   ADD KEY `departamento_id_fk` (`departamento_id`);
 
 --
--- Índices de tabela `ficha_inscricao`
+-- Índices para tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
   ADD PRIMARY KEY (`id`),
@@ -353,27 +374,35 @@ ALTER TABLE `ficha_inscricao`
   ADD KEY `treinamento_id_inscricao_fk` (`treinamento_id`);
 
 --
--- Índices de tabela `login`
+-- Índices para tabela `frequencia_aluno`
+--
+ALTER TABLE `frequencia_aluno`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `frequencia_turma_id_fk` (`turma_id_fk`),
+  ADD KEY `frequencia_aluno_id_fk` (`aluno_id_fk`);
+
+--
+-- Índices para tabela `login`
 --
 ALTER TABLE `login`
   ADD PRIMARY KEY (`id`),
   ADD KEY `permissao_id_fk` (`permissao_id`);
 
 --
--- Índices de tabela `permissao`
+-- Índices para tabela `permissao`
 --
 ALTER TABLE `permissao`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `treinamento`
+-- Índices para tabela `treinamento`
 --
 ALTER TABLE `treinamento`
   ADD PRIMARY KEY (`id`),
   ADD KEY `permissao_colaborador_fk` (`colaborador_id`);
 
 --
--- Índices de tabela `turma`
+-- Índices para tabela `turma`
 --
 ALTER TABLE `turma`
   ADD PRIMARY KEY (`id`),
@@ -382,20 +411,20 @@ ALTER TABLE `turma`
   ADD KEY `empresa_id_turma_fk` (`empresa_aluno`);
 
 --
--- Índices de tabela `usuario`
+-- Índices para tabela `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
 
 --
 -- AUTO_INCREMENT de tabela `empresa_cliente`
@@ -425,7 +454,13 @@ ALTER TABLE `empresa_cliente_funcionario`
 -- AUTO_INCREMENT de tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
+
+--
+-- AUTO_INCREMENT de tabela `frequencia_aluno`
+--
+ALTER TABLE `frequencia_aluno`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT de tabela `permissao`
@@ -437,13 +472,13 @@ ALTER TABLE `permissao`
 -- AUTO_INCREMENT de tabela `treinamento`
 --
 ALTER TABLE `treinamento`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de tabela `turma`
 --
 ALTER TABLE `turma`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
@@ -452,36 +487,36 @@ ALTER TABLE `usuario`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
--- Restrições para tabelas despejadas
+-- Restrições para despejos de tabelas
 --
 
 --
--- Restrições para tabelas `aluno`
+-- Limitadores para a tabela `aluno`
 --
 ALTER TABLE `aluno`
   ADD CONSTRAINT `funcionario_id_fk` FOREIGN KEY (`id_funcionario_fk`) REFERENCES `empresa_cliente_funcionario` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `turma_id_aluno_fk` FOREIGN KEY (`turma_aluno_fk`) REFERENCES `turma` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `empresa_cliente`
+-- Limitadores para a tabela `empresa_cliente`
 --
 ALTER TABLE `empresa_cliente`
   ADD CONSTRAINT `usuario_id_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
 
 --
--- Restrições para tabelas `empresa_cliente_cargo`
+-- Limitadores para a tabela `empresa_cliente_cargo`
 --
 ALTER TABLE `empresa_cliente_cargo`
   ADD CONSTRAINT `empresa_id_cargo_fk` FOREIGN KEY (`empresa_id`) REFERENCES `empresa_cliente` (`id`);
 
 --
--- Restrições para tabelas `empresa_cliente_departamento`
+-- Limitadores para a tabela `empresa_cliente_departamento`
 --
 ALTER TABLE `empresa_cliente_departamento`
   ADD CONSTRAINT `empresa_cliente_departamento_id_fk` FOREIGN KEY (`empresa_id`) REFERENCES `empresa_cliente` (`id`);
 
 --
--- Restrições para tabelas `empresa_cliente_funcionario`
+-- Limitadores para a tabela `empresa_cliente_funcionario`
 --
 ALTER TABLE `empresa_cliente_funcionario`
   ADD CONSTRAINT `cargo_id_fk` FOREIGN KEY (`cargo_id`) REFERENCES `empresa_cliente_cargo` (`id`) ON DELETE SET NULL,
@@ -489,27 +524,34 @@ ALTER TABLE `empresa_cliente_funcionario`
   ADD CONSTRAINT `empresa_id_fk` FOREIGN KEY (`empresa_id`) REFERENCES `empresa_cliente` (`id`);
 
 --
--- Restrições para tabelas `ficha_inscricao`
+-- Limitadores para a tabela `ficha_inscricao`
 --
 ALTER TABLE `ficha_inscricao`
   ADD CONSTRAINT `empresa_id_inscricao_fk` FOREIGN KEY (`empresa_id`) REFERENCES `empresa_cliente` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `treinamento_id_inscricao_fk` FOREIGN KEY (`treinamento_id`) REFERENCES `treinamento` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `login`
+-- Limitadores para a tabela `frequencia_aluno`
+--
+ALTER TABLE `frequencia_aluno`
+  ADD CONSTRAINT `frequencia_aluno_id_fk` FOREIGN KEY (`aluno_id_fk`) REFERENCES `aluno` (`id`),
+  ADD CONSTRAINT `frequencia_turma_id_fk` FOREIGN KEY (`turma_id_fk`) REFERENCES `turma` (`id`);
+
+--
+-- Limitadores para a tabela `login`
 --
 ALTER TABLE `login`
   ADD CONSTRAINT `id_login_pfk` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`),
   ADD CONSTRAINT `permissao_id_fk` FOREIGN KEY (`permissao_id`) REFERENCES `permissao` (`id`);
 
 --
--- Restrições para tabelas `treinamento`
+-- Limitadores para a tabela `treinamento`
 --
 ALTER TABLE `treinamento`
   ADD CONSTRAINT `permissao_colaborador_fk` FOREIGN KEY (`colaborador_id`) REFERENCES `usuario` (`id`);
 
 --
--- Restrições para tabelas `turma`
+-- Limitadores para a tabela `turma`
 --
 ALTER TABLE `turma`
   ADD CONSTRAINT `empresa_id_turma_fk` FOREIGN KEY (`empresa_aluno`) REFERENCES `empresa_cliente` (`id`) ON DELETE CASCADE,

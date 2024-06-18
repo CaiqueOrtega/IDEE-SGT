@@ -286,8 +286,7 @@
 </div>
 
 
-
-
+<?php $pdo = $connection->connection(); ?>
 
 <!-- Modal de Frequência -->
 <div class="modal fade" id="modalFrequencia-<?php echo $turma['turma_id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalFrequenciaLabel-<?php echo $turma['turma_id']; ?>" aria-hidden="true">
@@ -323,9 +322,18 @@
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
                                         <td data-field="frequencia"><?php echo $aluno['frequencia']; ?></td>
                                         <?php for ($i = 1; $i <= $dias; $i++) { ?>
+                                            <?php
+                                            $sqlExisteFrequencia = ("SELECT * FROM `frequencia_aluno` WHERE `aluno_id_fk` = :aluno_id_fk AND `turma_id_fk` = :turma_id_fk AND `dia` = :dia LIMIT 1");
+                                            $stmtFrequenciaAluno = $pdo->prepare($sqlExisteFrequencia);
+                                            $stmtFrequenciaAluno->bindValue(":aluno_id_fk", $aluno['aluno_id'], PDO::PARAM_INT);
+                                            $stmtFrequenciaAluno->bindValue(":turma_id_fk", $turma['turma_id'], PDO::PARAM_INT);
+                                            $stmtFrequenciaAluno->bindValue(":dia", $i, PDO::PARAM_INT);
+                                            $stmtFrequenciaAluno->execute();
+                                            $frequenciaAluno = $stmtFrequenciaAluno->fetch(PDO::FETCH_OBJ);
+                                            ?>
                                             <td class="p-4">
                                                 <div class="form-check fs-5">
-                                                    <input class="frequencia-<?php echo $aluno['aluno_id']; ?> form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[<?php echo $aluno['aluno_id']; ?>][]" value="dia-<?php echo $i; ?>" checked disabled>
+                                                    <input data-turmaid="<?php echo $turma['turma_id']; ?>" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-dia="<?php echo $i; ?>" class="frequencia-aluno-<?php echo $turma['turma_id']; ?> frequencia-<?php echo $aluno['aluno_id']; ?> form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[]" value="dia-<?php echo $i; ?>" <?php echo !$frequenciaAluno ? 'checked' : ''; ?> disabled>
                                                     <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
                                                 </div>
                                             </td>
@@ -339,10 +347,10 @@
             </div>
             <div class="modal-footer mt-3">
 
-            
-            <button class="btn btn-outline-primary d-flex editarBtnFrequencia"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
 
-            <button data-turmaidfrequencia="<?php echo $turma['turma_id']; ?>" data-aluno_ids_frequencia="<?php echo join(',', $aluno_ids); ?>" type="button" class="btn btn-login confirmStudentUpdateBtnFrequencia">Confirmar</button>
+                <button class="btn btn-outline-primary d-flex editarBtnFrequencia"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
+
+                <button data-turmaid="<?php echo $turma['turma_id']; ?>" type="button" class="btn btn-login confirmStudentUpdateBtnFrequencia">Confirmar</button>
 
 
             </div>
@@ -401,4 +409,3 @@
         });
     });
 </script>
-
