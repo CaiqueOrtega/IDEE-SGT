@@ -34,13 +34,16 @@ $id = $_SESSION['login']['id'];
 
 <div class="input-group mb-3">
     <select class="form-select" id="filtroSelect">
+    <option value="" >Selecione um filtro</option>
         <?php
         $treinamentosAdicionados = array(); // Array para armazenar os IDs dos treinamentos já adicionados
         foreach ($turmasData as $turma) {
             // Verifica se o ID do treinamento já foi adicionado
             if (!in_array($turma['treinamento_id'], $treinamentosAdicionados)) {
                 // Se não foi adicionado, adiciona ao <select>
-                ?>
+                  ?>
+                 
+               
                 <option value="<?php echo $turma['treinamento_id']; ?>"><?php echo $turma['nomenclatura']; ?></option>
                 <?php
                 // Adiciona o ID do treinamento ao array de treinamentos adicionados
@@ -49,11 +52,8 @@ $id = $_SESSION['login']['id'];
         }
         ?>
     </select>
-    <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"><i class="fa-solid fa-file-pdf text-center"></i></button>
+    <button class="btn btn-outline-danger fs-4 d-flex ms-2" id="relatorioBtnClass"  data-filtrorelatorio="<?php echo $turma['treinamento_id']; ?>"><i class="fa-solid fa-file-pdf text-center"></i></button>
 </div>
-
-
-
 
 
 <div class="modal fade" id="modalDeleteClass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

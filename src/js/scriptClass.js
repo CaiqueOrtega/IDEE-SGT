@@ -546,17 +546,26 @@ $(document).ready(function () {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
+    // Atualizar o atributo data-filtrorelatorio do botão quando a seleção mudar
+    $('#filtroSelect').change(function () {
+        var selectedValue = $(this).val();
+        $('#relatorioBtnClass').data('filtrorelatorio', selectedValue);
+    });
+
     $("#relatorioBtnClass").click(function () {
         if ($('#tableClass tbody tr').length === 0) {
             $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
             errorModal.show();
         } else {
-            // Substitua 'treinamento1' ou 'treinamento2' pelo valor correspondente ao filtro desejado
-            window.open('relatorio/indexClass.php?filtro=treinamento1', '_blank');
+            // Obter o valor do atributo data-filtrorelatorio
+            var filtro = $(this).data('filtrorelatorio');
+            // Abrir o relatório com o filtro correspondente
+            window.open('relatorio/indexClass.php?filtro=' + filtro, '_blank');
         }
     });
 });
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //relatorio de notas e Frequencia dos Alunos
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -581,11 +590,23 @@ $(document).ready(function () {
 });
 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//certificado de conclusao
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ready(function () {
+    $(".certificadoBtnStudents").click(function () {
+        if ($('#tabelaStudents tbody tr').length === 0) {
+            $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+            errorModal.show();
+        } else {
+            // Substitua 'treinamento1' ou 'treinamento2' pelo valor correspondente ao filtro desejado
+            window.open('relatorio/indexClass.php', '_blank');
+        }
+    });
+});
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 $(document).ready(function () {
     var modoEdicao = false;
     var btnTexto = $('.editarBtnNota span');

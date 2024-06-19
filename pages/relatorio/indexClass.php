@@ -4,6 +4,9 @@ require '../../src/libs/dompdf-master/vendor/autoload.php';
 
 $pdo = $connection->connection();
 
+// Capturar o valor do filtro da URL
+$filtro = isset($_GET['filtro']) ? $_GET['filtro'] : null;
+
 $sql = "SELECT * FROM `usuario`
         INNER JOIN `login`
         ON usuario.id = login.id 
@@ -17,8 +20,23 @@ $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $genero = ($usersData[0]['genero'] === 'F') ? 'Feminino' : 'Masculino';
 
+// Adicionar aqui a lógica para filtrar os treinamentos
+$turmasSql = "SELECT * FROM `turma`
+              INNER JOIN `treinamento`
+              ON turma.treinamento_id = treinamento.id
+              WHERE turma.treinamento_id = :filtro";
+
+$turmasStmt = $pdo->prepare($turmasSql);
+$turmasStmt->bindParam(':filtro', $filtro, PDO::PARAM_INT);
+$turmasStmt->execute();
+
+$treinamentoData = $turmasStmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
+
+// Continuar com o restante do código...
 
 $options = new Options();
 $options->setDefaultFont('Helvetica');
@@ -93,8 +111,6 @@ foreach ($turmasData as $turma) {
 $html .= '</tbody>';
 $html .= '</table>';
 
-// Comentando a parte adicional para simplificar
-
 $html .= '<h2 style="display: inline-block;"><span style="font-weight: bold; font-size: 23px;">2.</span> Inscrições:</h2>';
 $html .= '<p style="font-size: 16px; text-align: justify; margin-bottom: 10px;">.</p>';
 
@@ -127,37 +143,8 @@ foreach ($turmasData as $key => $turma) {
     $html .= '</tr>';
     $html .= '</tbody>';
     $html .= '</table>';
+    
 }
-
-
-
-// $html .= '<div style="width: 100%; border: 1px solid black; margin-bottom: -20px; margin-top: 0px; text-align: left;">';
-// $html .= '<h3 style="margin-left: 20px;">Funcionário Inscritos</h3>';
-// $html .= '</div>';
-// $html .= '<table style="width: 100%;">';
-// $html .= '<thead>';
-// $html .= '<tr>';
-// $html .= '<th>Registro</th>';
-// $html .= '<th>Nome</th>';
-// $html .= '<th>Documento</th>';
-// $html .= '<th>Gênero</th>';
-// $html .= '<th>Cargo</th>';
-// $html .= '<th>Status Aluno</th>';
-// $html .= '</tr>';
-// $html .= '</thead>';
-// $html .= '<tbody>';
-// foreach ($alunosData as $aluno) {
-//     $html .= '<tr>';
-//     $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . $aluno['numero_registro_empresa'] . '</td>';
-//     $html .= '<td style="max-width: 70px; word-wrap: break-word;">' . $aluno['nome_funcionario'] . '</td>';
-//     $html .= '<td style="max-width: 70px; word-wrap: break-word;">' . $aluno['cpf'] . '</td>';
-//     $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . $aluno['genero'] . '</td>';
-//     $html .= '<td style="max-width: 10px; word-wrap: break-word;">' . $aluno['status'] . '</td>';
-//     $html .= '</tr>';
-// }
-// $html .= '</tbody>';
-// $html .= '</table>';
-
 
 $html .= '<style>';
 $html .= '  .footer {';
@@ -176,8 +163,6 @@ $html .= '  <span>' . $usersData[0]['cpf'] . '</span><br>';
 $html .= '  <span>' . date('d/m/Y') . '</span>';
 $html .= '</div>';
 
-// Removendo o script PHP do HTML
-
 $html .= '<script type="text/php">';
 $html .= '  if ( isset($pdf) ) {';
 $html .= '    $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");';
@@ -187,10 +172,10 @@ $html .= '    $pdf->text(510, 800, $pageText, $font, $size);';
 $html .= '  }';
 $html .= '</script>';
 
-
 $html .= '</body></html>';
 
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream('documento.pdf', array('Attachment' => 0));
+
