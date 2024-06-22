@@ -236,10 +236,6 @@ $(document).ready(function () {
 
 });
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
 //Atualizar Status Aluno
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -355,7 +351,6 @@ $(document).ready(function () {
     });
 });
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
 $(document).ready(function () {
 
     $(".botao-menu-lateral-turmas").on("click", function () {
@@ -549,6 +544,7 @@ $(document).ready(function () {
     // Atualizar o atributo data-filtrorelatorio do botão quando a seleção mudar
     $('#filtroSelect').change(function () {
         var selectedValue = $(this).val();
+
         $('#relatorioBtnClass').data('filtrorelatorio', selectedValue);
     });
 
@@ -571,91 +567,145 @@ $(document).ready(function () {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
-    // Usar um evento de clique específico para os botões dentro do modal
-    $(document).on("click", ".relatorioBtnStudents", function () {
-        // Obter o ID da turma associado ao botão clicado
-        var turmaId = $(this).data('turmarelatorioid');
+    // Atualizar o atributo data-filtrorelatorio do botão quando a seleção mudar
+    $('#filtroSelectStudents').change(function () {
+        var selectedValue = $(this).val();
+        $('.relatorioBtnStudents').data('filtrorelatorio', selectedValue);
+    });
 
-        // Verificar se há dados na tabela dentro do modal atual
-        if ($(this).closest('.modal-content').find('#tabelaStudents tbody tr').length === 0) {
-            // Se não houver dados, exibir uma mensagem de erro
+    // Usar um evento de clique específico para os botões dentro do modal
+    $(".relatorioBtnStudents").click(function () {
+        if ($('#tableClass tbody tr').length === 0) {
             $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
             errorModal.show();
         } else {
-            // Se houver dados, abrir o relatório para a turma específica
-            window.open('relatorio/indexStudents.php?turma_id=' + turmaId, '_blank');
+            // Obter o valor do atributo data-filtrorelatorio
+            var filtro = $(this).data('filtrorelatorio');
+            var turmaId = $(this).data('turmarelatorioid');
+            // Abrir o relatório com o filtro correspondente
+            window.open('relatorio/indexStudents.php?turma_id=' + turmaId + '&filtro=' + filtro, '_blank');
         }
     });
 });
+
+
 
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //certificado de conclusao
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
 $(document).ready(function () {
-    $(".certificadoBtnStudents").click(function () {
-        if ($('#tabelaStudents tbody tr').length === 0) {
-            $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
+
+    $(document).on("click", ".certificadoBtnStudents", function () {
+        var alunoId = $(this).data('alunocertificadoid');
+        var turmaId = $(this).data('turmacertificadoid');
+        var alunoMedia = $(this).data('alunomedia');
+        var alunoFrequencia = $(this).data('alunofrequencia');
+        var alunostaus = $(this).data('alunostatus'); // Certifique-se de que este é o atributo correto
+        var turmaDataConclusao = $(this).data('turmadataconclusao');
+
+        console.log('id do aluno:', alunoId);
+        console.log('id da turma:', turmaId);
+        console.log('media do aluno:', alunoMedia);
+        console.log('frequencia do aluno:', alunoFrequencia);
+        console.log('data de conclusao da turma:', turmaDataConclusao);
+        console.log('status do aluno:', alunostaus);
+
+        // Verificar se o status do aluno é diferente de "ativo"
+        if (alunostaus !== 'ativo') {
+            $("#errorMsg").text('O status do aluno não é ativo. Não é possível gerar o certificado.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
             errorModal.show();
-        } else {
-            // Substitua 'treinamento1' ou 'treinamento2' pelo valor correspondente ao filtro desejado
-            window.open('relatorio/indexClass.php', '_blank');
+            return; // Impedir que o código continue
         }
+
+        // Verificar se a média do aluno é menor que 6
+        if (alunoMedia < 6) {
+            $("#errorMsg").text('A média do aluno é menor que 6. Não é possível gerar o certificado.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+            errorModal.show();
+            return; // Impedir que o código continue
+        }
+
+        // Verificar se a frequência do aluno é menor que 60
+        if (alunoFrequencia < 60) {
+            $("#errorMsg").text('A frequência do aluno é menor que 60%. Não é possível gerar o certificado.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+            errorModal.show();
+            return; // Impedir que o código continue
+        }
+
+        // Fazer a solicitação AJAX se as verificações passarem
+        $.ajax({
+            url: 'class/controller/updateClass.php',
+            type: 'POST',
+            data: {
+                turmaId: turmaId,
+                turmaDataConclusao: turmaDataConclusao
+            },
+            success: function (response) {
+                // Supondo que a resposta do back-end contenha o URL do certificado gerado
+                window.open('relatorio/indexCertificado.php?turmaId='  + turmaId + '&aluno=' + alunoId, '_blank');
+                location.replace(`?modalStudents=modalStudents-${turmaId}`);
+            },
+            error: function (xhr, status, error) {
+                // Exibir uma mensagem de erro se a solicitação AJAX falhar
+                $("#errorMsg").text('Ocorreu um erro ao gerar o certificado. Por favor, tente novamente.');
+                var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                errorModal.show();
+            }
+        });
     });
+
 });
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//Atulizar Notas dos Alunos
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function () {
     var modoEdicao = false;
     var btnTexto = $('.editarBtnNota span');
     var iconElement = $('.editarBtnNota i');
-    $('#nota_praticaInput').inputmask('0,0', {
-        showMask: false
-    });
-
-    $('#nota_teoricaInput').mask('0,0', {
-        showMask: false
-    });
 
     function habilitarEdicao() {
         $('.editable-cell').on('click', function () {
             var cell = $(this);
             var tr = cell.closest('tr');
 
-
-
             var inputField = cell.find('input');
             if (inputField.length === 0) {
                 var currentValue = cell.text().trim();
+                var inputId = '';
+                var inputMask = '9[9],9'; // Define a máscara como '9[9],9' para permitir notas de 0,0 a 10,0
 
                 if (cell.data('field') === 'nota_pratica') {
-                    cell.html('<input id="nota_praticaInput" type="text" class="form-control" placeholder=" __._ " value="' + currentValue + '">');
-                    $('#nota_praticaInput').mask('00,0', {
-                        showMask: false
-                    });
-
+                    inputId = 'nota_praticaInput';
+                    cell.html('<input id="' + inputId + '" type="text" class="form-control" placeholder="__._" value="' + currentValue + '">');
                 } else if (cell.data('field') === 'nota_teorica') {
-                    cell.html('<input id="nota_teoricaInput" type="text" class="form-control" placeholder=" __._ " value="' + currentValue + '">');
-                    $('#nota_teoricaInput').mask('00,0', {
-                        showMask: false
-                    });
+                    inputId = 'nota_teoricaInput';
+                    cell.html('<input id="' + inputId + '" type="text" class="form-control" placeholder="__._" value="' + currentValue + '">');
                 } else {
                     cell.html('<input type="text" class="form-control" value="' + currentValue + '">');
                 }
+
                 inputField = cell.find('input');
+                inputField.inputmask(inputMask, {
+                    showMaskOnHover: false,
+                    showMaskOnFocus: false,
+                    rightAlign: false,
+                    removeMaskOnSubmit: true
+                });
 
                 function updateCellAndSendData() {
                     var newValue = inputField.val().trim();
-
 
                     if (currentValue !== newValue) {
                         cell.text(newValue);
 
                         $('#campName').text(cell.data('field'));
                         $('#campValue').text(newValue);
-
 
                         $('.confirmCompanyUpdateBtnNota').off('click').on('click', function () {
                             let aluno_ids = $(this).data('aluno_ids');
@@ -667,17 +717,14 @@ $(document).ready(function () {
                             for (let aluno_id of array_aluno_ids) {
                                 let nota_pratica = $(`.nota_pratica-${aluno_id}`).text();
                                 let nota_teorica = $(`.nota_teorica-${aluno_id}`).text();
-                                notas.push({ aluno_id, nota_pratica, nota_teorica })
+                                notas.push({ aluno_id, nota_pratica, nota_teorica });
                             }
 
-                            // Chame a função para atualizar a tabela somente quando o botão de confirmação for clicado
                             updateTableNota(notas, turmaid);
                         });
                     } else {
                         cell.text(currentValue); // Restaura o valor original se não houve alteração
                     }
-
-
                 }
 
                 inputField.on('blur', function () {
@@ -689,22 +736,16 @@ $(document).ready(function () {
                         updateCellAndSendData();
                     }
                 });
-            }
 
-            inputField.focus();
+                inputField.focus();
+            }
         });
     }
 
-
     $('.editarBtnNota').on('click', function () {
         if ($('#tabelaNota tbody tr').length === 0) {
-
-            $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
-
-            errorModal.show();
+            $("#error-container").text('A tabela não contém dados. Não é possível editar.').removeClass('d-none');
         } else {
-
-
             modoEdicao = !modoEdicao;
 
             if (modoEdicao) {
@@ -731,27 +772,25 @@ $(document).ready(function () {
             method: 'POST',
             url: 'class/controller/updateClass.php',
             data: { notas },
+            dataType: 'json',
             success: function (response) {
-                console.log(response);
                 if (response.status !== 200) {
                     var errorMessage = "Erro na solicitação: " + response.msg;
-
-                    console.log(errorMessage);
-                    $("#errorMsg").text(response.msg);
-
-                    errorModal.show();
+                    $("#error-container").text(response.msg).removeClass('d-none');
                 } else {
-                    location.replace(`?modalStudents=modalStudents-${turmaid}`)
+                    $("#successMsg").text(response.msg);
+                    var successModal = new bootstrap.Modal(document.getElementById('statusSuccessModal'));
+                    successModal.show();
+                    location.replace(`?modalStudents=modalStudents-${turmaid}`);
                 }
-
             },
             error: function (error) {
                 console.error(error);
+                $("#error-container").text('Ocorreu um erro ao tentar atualizar as notas.').removeClass('d-none');
             }
         });
     }
 });
-
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function () {

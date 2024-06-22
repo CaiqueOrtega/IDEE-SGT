@@ -29,7 +29,7 @@
                             <span class="fw-semibold">Objetivo:</span> <?php echo $turma['objetivo']; ?>
                         </p>
                         <p id="data_inicio">
-                            <span class="fw-semibold">Data de Inicio:</span> <?php echo date('d-m-Y', strtotime($turma['data_inicio'])); ?>
+                            <span class="fw-semibold">Data de Inicio:</span> <?php echo date('d/m/Y', strtotime($turma['data_inicio'])); ?>
                         </p>
                         <p id="cargaHoraria">
                             <span class="fw-semibold">Carga Horária:</span> <?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?>
@@ -89,22 +89,38 @@
                 <div class="container card border shadow">
                     <div class="row py-3 bg-light  border rounded-top align-items-center">
                         <div class="col d-flex align-items-center">
+
                             <h3 class="text-start mb-0">Alunos</h3>
+
                         </div>
                         <div class="col d-flex justify-content-end align-items-center">
-                            <!-- Botão para Modal de Notas -->
-                            <button class="btn btn-outline-success me-2 d-flex align-items-center py-2" id="openNotas-<?php echo $turma['turma_id']; ?>">
-                                <i class="bi bi-clipboard2-check me-1"></i><span class="d-none d-md-block">Notas</span>
-                            </button>
-                            <!-- Botão para Modal de Frequência -->
-                            <button class="btn btn-outline-primary d-flex align-items-center py-2" id="openFrequencia-<?php echo $turma['turma_id']; ?>">
-                                <i class="bi bi-calendar2-date me-1"></i><span class="d-none d-md-block">Frequência</span>
-                            </button>
+                            <div class="d-flex flex-grow-1 justify-content-end">
+                                <!-- Botão para Modal de Notas -->
+                                <button class="btn btn-outline-success me-2 d-flex align-items-center " id="openNotas-<?php echo $turma['turma_id']; ?>">
+                                    <i class="bi bi-clipboard2-check me-1"></i><span class="d-none d-md-block">Notas</span>
+                                </button>
+                                <!-- Botão para Modal de Frequência -->
+                                <button class="btn btn-outline-primary d-flex align-items-center " id="openFrequencia-<?php echo $turma['turma_id']; ?>">
+                                    <i class="bi bi-calendar2-date me-1"></i><span class="d-none d-md-block">Frequência</span>
+                                </button>
 
-                            <button class="btn btn-outline-danger fs-4 d-flex ms-2 relatorioBtnStudents" data-turmarelatorioid="<?php echo $turma['turma_id']; ?>">
-                            <i class="fa-solid fa-file-pdf text-center"></i>
-                            </button>
+                                <div class="input-group ms-3 w-100">
+                                    <select class="form-select filtroSelectStudents" id="filtroSelectStudents">
+                                        <option value="" disabled selected>Selecione um filtro</option>
+                                        <option value="">Sem filtro</option>
+                                        <option value="azul">Media Azul</option>
+                                        <option value="vermelha">Media Vermelha</option>
+                                    </select>
+                                    <button class="btn btn-outline-danger fs-4 ms-2 relatorioBtnStudents" data-turmarelatorioid="<?php echo $turma['turma_id']; ?>" data-filtrorelatorio="">
+                                        <i class="fa-solid fa-file-pdf text-center"></i>
+                                    </button>
+                                </div>
+
+                            </div>
                         </div>
+
+
+
                     </div>
 
                     <div class="card-body">
@@ -117,7 +133,7 @@
                                         <th scope="col">Documento</th>
                                         <th scope="col">Gênero</th>
                                         <th scope="col">Status Aluno</th>
-                                       
+
                                         <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                                             <th scope="col" class="text-center">Modificar Status</th>
                                         <?php } ?>
@@ -140,19 +156,22 @@
                                                         <i class="bi bi-pencil-fill fs-6"></i>
                                                     </a>
                                                 </td>
-
+                                                <?php } ?>
                                                 <td class="text-center">
-                                                    <a href="#" class="ms-2 text-success text-center certificadoBtnStudents">
-                                                    <i class="bi bi-file-earmark-check-fill"></i>
+                                                    <a href="#" class="ms-2 text-success text-center certificadoBtnStudents" data-alunocertificadoid="<?php echo $aluno['aluno_id']; ?>" data-turmacertificadoid="<?php echo $turma['turma_id']; ?>" data-alunomedia="<?php echo $aluno['nota_media']; ?>" data-alunofrequencia="<?php echo $aluno['frequencia']; ?>" data-turmadataconclusao="<?php echo $turma['data_conclusao']; ?>" data-alunostatus="<?php echo $aluno['status']; ?>">
+                                                        <i class="bi bi-file-earmark-check-fill"></i>
                                                     </a>
-                                                    
+
                                                 </td>
 
 
-                                            <?php } ?>
+                                           
                                         </tr>
 
-                                                
+                                        <script>
+
+
+                                        </script>
 
                                     <?php } ?>
                                 </tbody>
@@ -193,6 +212,8 @@
                                 $opcaoSelecionada = ($statusAtual == 'ativo') ? 'inativo' : 'ativo';
                                 ?>
                                 <select class="form-select status-select" name="permissao" aria-label="Default select example" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-turmaid="<?php echo $turma['turma_id']; ?>">
+                                    <option value="" selected>Selecione o Status do Aluno</option>
+                                    <option value="" disabled><?php echo $aluno['status']  ?></option>
                                     <option value="<?php echo $opcaoSelecionada; ?>"><?php echo ucfirst($opcaoSelecionada); ?></option>
                                 </select>
                             </div>
@@ -254,9 +275,8 @@
                 <h1 class="modal-title fs-5" id="modalNotasLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?> - Notas</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div id="error-container" class="alert alert-danger d-none" role="alert"></div>
             <div class="modal-body">
-
-
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="tabelaNota" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
@@ -272,6 +292,11 @@
                             <tbody class="mt-1">
                                 <?php $aluno_ids = []; ?>
                                 <?php foreach ($alunosData as $index => $aluno) {
+                                    // Verificar se o aluno está ativo
+                                    if ($aluno['status'] !== 'ativo') {
+                                        continue; // Pular para o próximo aluno se o status não for ativo
+                                    }
+
                                     $tokenAluno = encrypt_id($aluno['aluno_id'], $encryptionKey, $signatureKey);
                                 ?>
                                     <tr class="data-row" data-index="<?php echo $index; ?>">
@@ -287,19 +312,15 @@
                         </table>
                     </div>
                 </div>
-
-
             </div>
-
             <div class="modal-footer mt-3">
-
                 <button class="btn btn-outline-primary d-flex editarBtnNota"><i class="bi bi-pen-fill"> </i><span class="d-none d-md-block">Editar</span></button>
-
                 <button data-turmaid="<?php echo $turma['turma_id']; ?>" data-aluno_ids="<?php echo join(',', $aluno_ids); ?>" type="button" class="btn btn-login confirmCompanyUpdateBtnNota">Confirmar</button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <?php $pdo = $connection->connection(); ?>
@@ -332,7 +353,12 @@
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                                <?php foreach ($alunosData as $index => $aluno) { ?>
+                                <?php foreach ($alunosData as $index => $aluno) {
+                                     if ($aluno['status'] !== 'ativo') {
+                                        continue; // Pular para o próximo aluno se o status não for ativo
+                                    }
+                                    
+                                    ?>
                                     <tr class="data-row align-middle" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>

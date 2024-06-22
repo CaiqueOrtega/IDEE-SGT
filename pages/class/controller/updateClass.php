@@ -147,22 +147,36 @@ function validateNotaNumbers($fieldName, $value)
     // Remove espaços em branco no início e fim da string
     $value = trim($value);
 
-    // Verifica se o valor está no formato X,X ou XX,X ou é um número inteiro de 0 a 10
+    // Verifica se o valor está vazio
+    if (empty($value)) {
+        echo json_encode(['msg' => "Campo '$fieldName' não pode ser vazio.", 'status' => 400]);
+        exit;
+    }
+
+    // Verifica se o valor está no formato correto
     if (!preg_match('/^\d{1,2}(\,\d)?$/', $value)) {
         echo json_encode(['msg' => "Campo '$fieldName' deve estar no formato X,X, XX,X, ou um número inteiro de 0 a 10.", 'status' => 400]);
         exit;
     }
 
+    // Converte o valor para float para validação do intervalo
+    $valueNumeric = floatval(str_replace(',', '.', $value));
+
+    // Verifica se o valor está dentro do intervalo permitido
+    if ($valueNumeric < 0 || $valueNumeric > 10) {
+        echo json_encode(['msg' => "Campo '$fieldName' deve ser um número entre 0 e 10.", 'status' => 400]);
+        exit;
+    }
+
     // Se o valor for um número inteiro de 0 a 10, adiciona ",0"
-    if (preg_match('/^\d{1,2}$/', $value) && $value <= 10) {
+    if (preg_match('/^\d{1,2}$/', $value)) {
         $value .= ',0';
     }
 
     // Filtra apenas os números e a vírgula
-    $filteredData = preg_replace('/[^0-9,]/', '', $value);
-
-    return $filteredData;
+    return preg_replace('/[^0-9,]/', '', $value);
 }
+
 
 
 //---------------------------------------------------------------------------------------------------------------------------
@@ -228,4 +242,55 @@ if (isset($_POST['alunos'])) {
         error_log('Erro na atualização: ' . $e->getMessage());
         echo json_encode(['msg' => $e->getMessage(), 'status' => 400]);
     }
+}
+
+
+
+
+
+// Supondo que $connection é um objeto de conexão existente.
+
+
+
+// Verificar se os dados foram recebidos corretamente via POST
+if (isset($_POST['turmaId']) && isset($_POST['turmaDataConclusao'])) {
+    try {
+       $turmaId = $_POST['turmaId'];
+        $data_conclusao = $_POST['turmaDataConclusao'];
+
+    $pdo = $connection->connection();
+
+    
+    
+    // Verificar se os valores recebidos não estão vazios
+    if (empty($turmaId) || empty($data_conclusao)) {
+        echo json_encode(['status' => 'error', 'message' => 'Dados inválidos.']);
+        exit;
+    }
+
+    // Verificar se a data de conclusão é '0000-00-00'
+    if ($data_conclusao == '0000-00-00') {
+        // Atualizar a data de conclusão com a data atual
+        $nova_data_conclusao = date('Y-m-d');
+        
+        // Ajustar o nome da coluna conforme necessário. Aqui assumimos que a coluna correta é 'id'.
+        $sql = "UPDATE turma SET data_conclusao = :nova_data_conclusao WHERE id = :turma_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':nova_data_conclusao', $nova_data_conclusao);
+        $stmt->bindParam(':turma_id', $turmaId);
+
+        // Executar a consulta e verificar o resultado
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Data de conclusão atualizada com sucesso.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao atualizar a data de conclusão.']);
+        }
+    } else {
+        echo json_encode(['status' => 'no_change', 'message' => 'Data de conclusão já está definida. Nenhuma atualização necessária.']);
+    }
+}catch (Exception $e) {
+    error_log('Erro na atualização: ' . $e->getMessage());
+    echo json_encode(['msg' => $e->getMessage(), 'status' => 400]);
+}
+
 }
