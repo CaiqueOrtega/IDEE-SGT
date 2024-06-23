@@ -61,12 +61,24 @@ $alunosSql = "SELECT aluno.*,
         INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
         WHERE aluno.turma_aluno_fk = :turma_id AND aluno.id = :aluno_Id" ;
 
-$alunosStmt = $pdo->prepare($alunosSql);
+$alunosStmt = $pdo->query($alunosSql);
+if ($alunosStmt->rowCount() > 0) {
+    $dados = $alunosStmt->fetch(PDO::FETCH_OBJ);
+} else {
+    echo "Nenhum registro encontrado.";
+}
 $alunosStmt->bindParam(':turma_id', $turmaModal, PDO::PARAM_INT);
 $alunosStmt->bindParam(':aluno_Id', $filtro, PDO::PARAM_INT);
+
 $alunosStmt->execute();
 
 $alunosData = $alunosStmt->fetchAll(PDO::FETCH_ASSOC);
+
+print_r($turmasData);
+
+
+
+print_r($alunosData);
 
 
 

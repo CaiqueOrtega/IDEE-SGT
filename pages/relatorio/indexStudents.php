@@ -20,16 +20,9 @@ $stmt->execute();
 
 $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$genero = ($usersData[0]['genero'] === 'F') ? 'Feminino' : 'Masculino';
+$turmaModal = isset($_GET['turmaId']) ? $_GET['turmaId'] : null;
+$filtro = isset($_GET['aluno']) ? $_GET['aluno'] : null;
 
-
-
-// Capturar o valor do filtro da URL
-$turmaModal = isset($_GET['turma_id']) ? $_GET['turma_id'] : null;
-$filtro = isset($_GET['filtro']) ? $_GET['filtro'] : null;
-
-
-// Adicionar aqui a lógica para filtrar os treinamentos
 $turmasSql = "SELECT turma.*, 
 turma.id AS turma_id,
 treinamento.*, 
@@ -40,21 +33,13 @@ FROM `turma`
 INNER JOIN `login` ON turma.colaborador_id_fk = login.id
 INNER JOIN `empresa_cliente` ON turma.empresa_aluno = empresa_cliente.id
 INNER JOIN `treinamento` ON turma.treinamento_id = treinamento.id
-WHERE turma.id =  :turma_id";
+WHERE turma.id = :turma_id";
 
 $turmasStmt = $pdo->prepare($turmasSql);
 $turmasStmt->bindParam(':turma_id', $turmaModal, PDO::PARAM_INT);
 $turmasStmt->execute();
 
 $turmasData = $turmasStmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-$filtroNota = '';
-if ($filtro === 'azul') {
-    $filtroNota = ' AND aluno.nota_media >= 6.0';
-} elseif ($filtro === 'vermelha') {
-    $filtroNota = ' AND aluno.nota_media < 6.0';
-}
 
 $alunosSql = "SELECT aluno.*, 
         aluno.id AS aluno_id,
@@ -63,14 +48,14 @@ $alunosSql = "SELECT aluno.*,
         FROM aluno
         INNER JOIN turma ON aluno.turma_aluno_fk = turma.id 
         INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
-        WHERE aluno.turma_aluno_fk = :turma_id" . $filtroNota;
+        WHERE aluno.turma_aluno_fk = :turma_id AND aluno.id = :aluno_Id";
 
 $alunosStmt = $pdo->prepare($alunosSql);
 $alunosStmt->bindParam(':turma_id', $turmaModal, PDO::PARAM_INT);
+$alunosStmt->bindParam(':aluno_Id', $filtro, PDO::PARAM_INT);
 $alunosStmt->execute();
 
 $alunosData = $alunosStmt->fetchAll(PDO::FETCH_ASSOC);
-
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -97,18 +82,18 @@ $imagePath = realpath(__DIR__ . '/../../src/img/logo3.png');
 $html .= '<table style="width: 100%;">';
 $html .= '<tr>';
 $html .= '<td style="width: 20%; text-align: right;"><img src="data:image/png;base64,' . base64_encode(file_get_contents($imagePath)) . '" style="width: 120px;"></td>';
-$html .= '<td style="width: 80%; text-align: center;"><h2>Relatório de Inscrições Pendentes</h2></td>';
+$html .= '<td style="width: 80%; text-align: center;"><h2>Relatório de Notas e Frequencias</h2></td>';
 $html .= '</tr>';
 $html .= '</table>';
 
 $html .= '<div style="text-align: justify;">';
-$html .= '<p>Este relatório tem como objetivo oferecer uma perspectiva abrangente sobre as inscrições pendentes em treinamentos para as empresas registradas pelo cliente responsável. A compilação destas informações visa apresentar detalhes fundamentais sobre as inscrições de treinamento, tanto a nível individual das empresas quanto de maneira geral para todas as inscrições pendentes vinculadas às empresas. Além de destacar aspectos essenciais sobre as inscrições, focando exclusivamente nas informações relacionadas aos funcionários, suas respectivas empresas e os treinamentos associados.</p>';
+$html .= '<p>Este relatório tem como objetivo oferecer uma perspectiva abrangente sobre as notas e a frequência dos alunos nos treinamentos para as empresas registradas pelo cliente responsável. A compilação destas informações visa apresentar detalhes fundamentais sobre o desempenho acadêmico e a assiduidade dos alunos, tanto a nível individual das empresas quanto de maneira geral para todas as avaliações e frequências vinculadas às empresas. Além de destacar aspectos essenciais sobre o desempenho acadêmico e a presença, focando exclusivamente nas informações relacionadas aos funcionários, suas respectivas empresas e os treinamentos associados.</p>';
 $html .= '<p> </p>';
 $html .= '</div>';
 
 $html .= '<br>';
 $html .= '<hr>';
-$html .= '<div style="width: 100%; text-align: center; margin-bottom: -24px;  margin-top: -24px;">';
+$html .= '<div style="width: 100%; text-align: center; margin-bottom: -9px;  margin-top: -24px;">';
 $html .= '<h3 style="display: inline-block;">Usuário Solicitante</h3>';
 $html .= '</div>';
 $html .= '<hr>';
@@ -127,10 +112,10 @@ if (!empty($usersData)) {
 
 $html .= '<hr>';
 
-// $html .= '<h2 style="display: inline-block;"><span style="font-weight: bold; font-size: 23px;">1.</span>Inscrições Pendentes:</h2>';
-// $html .= '<p style="font-size: 16px; text-align: justify; margin-bottom: 10px;">Nesta parte do relatório, concentraremos nossa atenção nas inscrições pendentes em treinamentos, oferecendo uma visão detalhada das solicitações aguardando confirmação. Aqui, você encontrará informações específicas sobre os cursos, datas de inscrição e as empresas envolvidas</p>';
+$html .= '<h2 style="display: inline-block;"><span style="font-weight: bold; font-size: 23px; ">1.</span>Turma:</h2>';
+$html .= '<p style="font-size: 16px; text-align: justify; margin: 0;"></p>';  // Aqui removi a margem inferior do parágrafo vazio
 
-$html .= '<table style="margin-top: 60px; width: 100%;">';
+$html .= '<table style="margin-top: -15px; width: 100%;">';
 $html .= '<thead>';
 $html .= '<tr>';
 $html .= '<th>Turma</th>';
@@ -157,8 +142,8 @@ foreach ($turmasData as $turma) {
 $html .= '</tbody>';
 $html .= '</table>';
 
-$html .= '<h2 style="display: inline-block;"><span style="font-weight: bold; font-size: 23px;">2.</span>Inscrições:</h2>';
-$html .= '<p style="font-size: 16px; text-align: justify; margin-bottom: 10px;"></p>';
+$html .= '<h2 style="display: inline-block;"><span style="font-weight: bold; font-size: 23px;">2.</span>Alunos:</h2>';
+$html .= '<p style="font-size: 16px; text-align: justify; margin-bottom: -10px;"></p>';
 
 // Iterar sobre os dados das turmas e adicionar ao relatório
 $count = count($turmasData);
