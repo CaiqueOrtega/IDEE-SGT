@@ -35,7 +35,7 @@ $id = $_SESSION['login']['id'];
   <div class="input-group ms-3 position-absolute w-25" style="right: 13%; top: 6%">
     <select class="form-select" id="filtroSelect">
         <option value="" disabled selected>Selecione um filtro</option> <!-- Opção desativada e selecionada -->
-        <option value="" >Sem filtro</option> <!-- Opção desativada e selecionada -->
+        <option value=" " >Sem filtro</option> <!-- Opção desativada e selecionada -->
         <?php
         $treinamentosAdicionados = array(); // Array para armazenar os IDs dos treinamentos já adicionados
         foreach ($turmasData as $turma) {

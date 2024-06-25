@@ -107,7 +107,7 @@
                                 <div class="input-group ms-3 w-100">
                                     <select class="form-select filtroSelectStudents" id="filtroSelectStudents">
                                         <option value="" disabled selected>Selecione um filtro</option>
-                                        <option value="">Sem filtro</option>
+                                        <option value=" ">Sem filtro</option>
                                         <option value="azul">Media Azul</option>
                                         <option value="vermelha">Media Vermelha</option>
                                     </select>
@@ -128,7 +128,7 @@
                             <table id="tabelaStudents" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Registro</th>
+                                        <th scope="col">Ra</th>
                                         <th scope="col">Nome</th>
                                         <th scope="col">Documento</th>
                                         <th scope="col">Gênero</th>
@@ -282,7 +282,7 @@
                         <table id="tabelaNota" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
                             <thead>
                                 <tr>
-                                    <th scope="col">Registro</th>
+                                    <th scope="col">Ra</th>
                                     <th scope="col">Nome</th>
                                     <th scope="col">Nota Pratica</th>
                                     <th scope="col">Nota Teorica</th>
@@ -339,7 +339,7 @@
                         <table id="tabelaStudents" class="table table-hover table-striped table-bordered" style="--bs-table-bg: transparent !important;">
                             <thead>
                                 <tr>
-                                    <th scope="col">Registro</th>
+                                    <th scope="col">Ra</th>
                                     <th scope="col">Nome</th>
                                     <th scope="col">Frequência</th>
                                     <?php

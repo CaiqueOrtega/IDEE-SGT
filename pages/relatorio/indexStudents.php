@@ -20,9 +20,16 @@ $stmt->execute();
 
 $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$turmaModal = isset($_GET['turmaId']) ? $_GET['turmaId'] : null;
-$filtro = isset($_GET['aluno']) ? $_GET['aluno'] : null;
+$genero = ($usersData[0]['genero'] === 'F') ? 'Feminino' : 'Masculino';
 
+
+
+// Capturar o valor do filtro da URL
+$turmaModal = isset($_GET['turma_id']) ? $_GET['turma_id'] : null;
+$filtro = isset($_GET['filtro']) ? $_GET['filtro'] : null;
+
+
+// Adicionar aqui a lógica para filtrar os treinamentos
 $turmasSql = "SELECT turma.*, 
 turma.id AS turma_id,
 treinamento.*, 
@@ -33,13 +40,21 @@ FROM `turma`
 INNER JOIN `login` ON turma.colaborador_id_fk = login.id
 INNER JOIN `empresa_cliente` ON turma.empresa_aluno = empresa_cliente.id
 INNER JOIN `treinamento` ON turma.treinamento_id = treinamento.id
-WHERE turma.id = :turma_id";
+WHERE turma.id =  :turma_id";
 
 $turmasStmt = $pdo->prepare($turmasSql);
 $turmasStmt->bindParam(':turma_id', $turmaModal, PDO::PARAM_INT);
 $turmasStmt->execute();
 
 $turmasData = $turmasStmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$filtroNota = '';
+if ($filtro === 'azul') {
+    $filtroNota = ' AND aluno.nota_media >= 6.0';
+} elseif ($filtro === 'vermelha') {
+    $filtroNota = ' AND aluno.nota_media < 6.0';
+}
 
 $alunosSql = "SELECT aluno.*, 
         aluno.id AS aluno_id,
@@ -48,14 +63,14 @@ $alunosSql = "SELECT aluno.*,
         FROM aluno
         INNER JOIN turma ON aluno.turma_aluno_fk = turma.id 
         INNER JOIN empresa_cliente_funcionario ON aluno.id_funcionario_fk = empresa_cliente_funcionario.id
-        WHERE aluno.turma_aluno_fk = :turma_id AND aluno.id = :aluno_Id";
+        WHERE aluno.turma_aluno_fk = :turma_id" . $filtroNota;
 
 $alunosStmt = $pdo->prepare($alunosSql);
 $alunosStmt->bindParam(':turma_id', $turmaModal, PDO::PARAM_INT);
-$alunosStmt->bindParam(':aluno_Id', $filtro, PDO::PARAM_INT);
 $alunosStmt->execute();
 
 $alunosData = $alunosStmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -106,7 +121,7 @@ if (!empty($usersData)) {
     $html .= '<span style="float: left;">Gênero: ' . $genero . '</span>';
     $html .= '<br><br>';
     $html .= '<span style="float: right;">Telefone: ' . $usersData[0]['telefone'] . '</span>';
-    $html .= '<span style="float: left;">Data de Nascimento: ' . date('d-m-Y', strtotime($usersData[0]['data_nascimento'])) . '</span>';
+    $html .= '<span style="float: left;">Data de Nascimento: ' . date('d/m/Y', strtotime($usersData[0]['data_nascimento'])) . '</span>';
     $html .= '<br>';
 }
 
@@ -135,7 +150,7 @@ foreach ($turmasData as $turma) {
     $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $turma['nomenclatura'] . '</td>';
     $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $turma['nome_colaborador'] . '</td>';
     $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $turma['carga_horaria'] . '</td>';
-    $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . date('d-m-Y', strtotime($turma['data_inicio'])) . '</td>';
+    $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . date('d/m/Y', strtotime($turma['data_inicio'])) . '</td>';
     $html .= '</tr>';
 }
 
@@ -185,7 +200,7 @@ foreach ($turmasData as $key => $turma) {
     $html .= '<table style="width: 100%;">';
     $html .= '<thead>';
     $html .= '<tr>';
-    $html .= '<th>Registro</th>';
+    $html .= '<th>Ra</th>';
     $html .= '<th>Nome</th>';
     $html .= '<th style="width: 120px;">Documento</th>';
     $html .= '<th>Gênero</th>';
@@ -199,13 +214,14 @@ foreach ($turmasData as $key => $turma) {
     // Iterar sobre os dados dos alunos e adicionar ao relatório
     foreach ($alunosData as $aluno) {
         $html .= '<tr>';
-        $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . $aluno['numero_registro_empresa'] . '</td>';
+        $html .= '<td style="max-width: 20px; word-wrap: break-word;">' . $aluno['numero_registro_empresa'] . '</td>';
         $html .= '<td style="max-width: 70px; word-wrap: break-word;">' . $aluno['nome_funcionario'] . '</td>';
         $html .= '<td style="max-width: 90px; word-wrap: break-word;">' . $aluno['cpf'] . '</td>';
         $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . $aluno['genero'] . '</td>';
         $html .= '<td style="max-width: 10px; word-wrap: break-word;">' . $aluno['status'] . '</td>';
         $html .= '<td style="max-width: 10px; word-wrap: break-word;">' . $aluno['nota_media'] . '</td>';
-        $html .= '<td style="max-width: 10px; word-wrap: break-word;">' . $aluno['frequencia'] . '</td>';
+        $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $aluno['frequencia'] . '%</td>';
+
         $html .= '</tr>';
     }
     $html .= '</tbody>';

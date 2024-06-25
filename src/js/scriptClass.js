@@ -238,7 +238,6 @@ $(document).ready(function () {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //Atualizar Status Aluno
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
 $(document).ready(function () {
     // Abrir modal e passar o token
     $(document).on('click', '.openModalStatus', function () {
@@ -250,19 +249,38 @@ $(document).ready(function () {
         $('.confirmarUpdateStatusBtn').data('alunoid', alunoId);
         $('.confirmarUpdateStatusBtn').data('turmaid', turmaId);
         $('.confirmarUpdateStatusBtn').data('novostatus', novoStatus); // Defina o novo status
-        $('#modalStatus-' + alunoId).modal('show');
+
+        var statusModal = $('#modalStatus-' + alunoId);
+        var studentsModal = $('#modalStudents-' + turmaId);
+
+        statusModal.modal('show');
+        statusModal.css('z-index', parseInt(studentsModal.css('z-index')) + 10); // Ajusta o z-index para manter o students modal no fundo
+
+        // Manter o backdrop ativo para o modal de students
+        $('.modal-backdrop').last().css('z-index', parseInt(statusModal.css('z-index')) - 1);
+
+        // Verificar o valor selecionado no select de status
+        var statusSelect = statusModal.find('.status-select');
+        var confirmarButton = $('.confirmarUpdateStatusBtn');
+
+        // Desabilitar o botão de confirmar inicialmente
+        confirmarButton.prop('disabled', true);
+
+        // Evento de mudança no select de status
+        statusSelect.on('change', function () {
+            var selectedValue = $(this).val();
+            if (selectedValue) {
+                confirmarButton.prop('disabled', false); // Habilitar o botão de confirmar
+            } else {
+                confirmarButton.prop('disabled', true); // Desabilitar o botão de confirmar
+            }
+        });
+
+        // Evento para reabrir o modal de students quando o modal de status é fechado
+        statusModal.on('hidden.bs.modal', function () {
+            studentsModal.modal('show');
+        });
     });
-
-    function openSecondaryModal(trigger, modalToOpen, parentModal) {
-        $(trigger).on('click', function () {
-            $(modalToOpen).modal('show');
-            $(parentModal).css('z-index', '1040'); // Ajusta o z-index para manter o fullscreen modal no fundo
-        });
-
-        $(modalToOpen).on('hidden.bs.modal', function () {
-            $(parentModal).css('z-index', '1055'); // Redefine o z-index quando o modal secundário é fechado
-        });
-    }
 
     // Evento clique no botão "Confirmar" para atualizar o status
     $(document).on('click', '.confirmarUpdateStatusBtn', function () {
@@ -294,33 +312,8 @@ $(document).ready(function () {
                     var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
                     errorModal.show();
                 } else {
-                    // $.ajax({
-                    //     type: 'GET',
-                    //     url: 'class/tableClass.php',
-                    //     success: function (newTableHTML) {
-                    //         $('#tableClass').replaceWith(newTableHTML);
-                    //     },
-                    //     error: function (error) {
-                    //         console.error('Erro ao obter dados da tabela:', error);
-                    //     }
-                    // });
-
                     location.replace(`?modalStudents=modalStudents-${turmaId}`);
                 }
-
-                // $('#modalStatus-' + alunoId).modal('hide');
-                // $('#modalStudents-' + turmaId).modal('show');
-
-                // var modalToOpen = '#modalStatus-' + alunoId;
-                // var parentModal = '#modalStudents-' + turmaId;
-
-                // openSecondaryModal('#modalStudents-' + turmaId);
-                // openSecondaryModal(`#openNotas-${turmaId}`, `#modalNotas-${turmaId}`, `#modalStudents-${turmaId}`);
-                // openSecondaryModal(`#openFrequencia-${turmaId}`, `#modalFrequencia-${turmaId}`, `#modalStudents-${turmaId}`);
-
-
-                // $(modalToOpen).modal('show');
-                // $(parentModal).css('z-index', '1055'); // Ajusta o z-index para manter o fullscreen modal no fundo
             },
             error: function (error) {
                 console.error('Error updating: ', error);
@@ -350,6 +343,9 @@ $(document).ready(function () {
         $(this).removeData('token'); // Limpar o token após fechar o modal
     });
 });
+
+
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function () {
 
@@ -541,21 +537,41 @@ $(document).ready(function () {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
+    var relatorioBtn = $('#relatorioBtnClass');
+
+    // Desabilitar o botão inicialmente
+    relatorioBtn.prop('disabled', true);
+
     // Atualizar o atributo data-filtrorelatorio do botão quando a seleção mudar
     $('#filtroSelect').change(function () {
         var selectedValue = $(this).val();
 
         $('#relatorioBtnClass').data('filtrorelatorio', selectedValue);
+
+        // Habilitar o botão se uma opção for selecionada, desabilitar se não
+        if (selectedValue) {
+            relatorioBtn.prop('disabled', false);
+        } else {
+            relatorioBtn.prop('disabled', true);
+        }
     });
 
+    // Evento de clique no botão de relatório
     $("#relatorioBtnClass").click(function () {
+        var filtro = $(this).data('filtrorelatorio');
+
+        if (!filtro) {
+            $("#errorMsg").text('Por favor, selecione uma opção para gerar o relatório.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+            errorModal.show();
+            return;
+        }
+
         if ($('#tableClass tbody tr').length === 0) {
             $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
             errorModal.show();
         } else {
-            // Obter o valor do atributo data-filtrorelatorio
-            var filtro = $(this).data('filtrorelatorio');
             // Abrir o relatório com o filtro correspondente
             window.open('relatorio/indexClass.php?filtro=' + filtro, '_blank');
         }
@@ -567,28 +583,46 @@ $(document).ready(function () {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(document).ready(function () {
+    // Desabilitar o botão inicialmente
+    var relatorioBtn = $('.relatorioBtnStudents');
+    relatorioBtn.prop('disabled', true);
+
     // Atualizar o atributo data-filtrorelatorio do botão quando a seleção mudar
     $('#filtroSelectStudents').change(function () {
         var selectedValue = $(this).val();
         $('.relatorioBtnStudents').data('filtrorelatorio', selectedValue);
+
+        // Habilitar o botão se uma opção for selecionada, desabilitar se não
+        if (selectedValue) {
+            relatorioBtn.prop('disabled', false);
+        } else {
+            relatorioBtn.prop('disabled', true);
+        }
     });
 
     // Usar um evento de clique específico para os botões dentro do modal
     $(".relatorioBtnStudents").click(function () {
-        if ($('#tableClass tbody tr').length === 0) {
+        var filtro = $(this).data('filtrorelatorio');
+        
+        if (!filtro) {
+            $("#errorMsg").text('Por favor, selecione uma opção para gerar o relatório.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+            errorModal.show();
+            return;
+        }
+
+        if ($('#tabelaStudents tbody tr').length === 0) {
             $("#errorMsg").text('A tabela não contém dados. Não é possível gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
             errorModal.show();
         } else {
             // Obter o valor do atributo data-filtrorelatorio
-            var filtro = $(this).data('filtrorelatorio');
             var turmaId = $(this).data('turmarelatorioid');
             // Abrir o relatório com o filtro correspondente
             window.open('relatorio/indexStudents.php?turma_id=' + turmaId + '&filtro=' + filtro, '_blank');
         }
     });
 });
-
 
 
 
@@ -779,9 +813,10 @@ $(document).ready(function () {
                     $("#error-container").text(response.msg).removeClass('d-none');
                 } else {
                     $("#successMsg").text(response.msg);
+                    
+                    location.replace(`?modalStudents=modalStudents-${turmaid}`);
                     var successModal = new bootstrap.Modal(document.getElementById('statusSuccessModal'));
                     successModal.show();
-                    location.replace(`?modalStudents=modalStudents-${turmaid}`);
                 }
             },
             error: function (error) {
@@ -798,6 +833,7 @@ $(document).ready(function () {
     var btnTexto = $('.editarBtnFrequencia span');
     var iconElement = $('.editarBtnFrequencia i');
     var dias = $('#dias-container').data('dias'); // Recupera o valor de dias do atributo de dados
+    var alteracoesFeitas = false; // Variável para rastrear alterações
 
     function habilitarEdicao() {
         // Habilita os checkboxes para edição
@@ -839,11 +875,17 @@ $(document).ready(function () {
         // Aqui você pode realizar ações adicionais quando o checkbox é marcado ou desmarcado
         console.log('Checkbox ' + checkbox.attr('id') + ' está ' + (isChecked ? 'marcado' : 'desmarcado'));
 
-        // Você pode adicionar lógica para enviar dados ou atualizar a interface conforme necessário
+        // Marca que houve alteração
+        alteracoesFeitas = true;
     });
 
     // Botão de confirmação
     $('.confirmStudentUpdateBtnFrequencia').on('click', function () {
+        if (!alteracoesFeitas) {
+            // Se não houver alterações, não faça nada
+            return;
+        }
+
         let turmaid = $(this).data("turmaid");
         let inputs = $(`.frequencia-aluno-${turmaid}`);
 
@@ -887,6 +929,7 @@ $(document).ready(function () {
     });
 
     function updateTableFrequencia(data, turmaid) {
+      
         console.log(data);
         $.ajax({
             method: 'POST',
@@ -910,10 +953,10 @@ $(document).ready(function () {
         });
     }
 
-    $('.editarBtnNota').on('click', function () {
-        if ($('#tabelaNota tbody tr').length === 0) {
-            $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
-            errorModal.show();
+    $('.editarBtnFrequencia').on('click', function () {
+     
+        if ($('#modalFrequencia tbody tr').length === 0) {
+    
         } else {
             modoEdicao = !modoEdicao;
 
@@ -937,4 +980,5 @@ $(document).ready(function () {
         }
     });
 });
+
 
