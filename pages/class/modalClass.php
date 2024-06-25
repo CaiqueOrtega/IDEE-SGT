@@ -333,10 +333,11 @@
                 <h1 class="modal-title fs-5" id="modalFrequenciaLabel"><i class="me-2 fas fa-users"></i>Informações da <?php echo $turma['nome_turma']; ?> - Frequência</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div id="error-containerFrequencia" class="alert alert-danger d-none" role="alert"></div>
             <div class="modal-body">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tabelaStudents" class="table table-hover table-striped table-bordered" style="--bs-table-bg: transparent !important;">
+                        <table id="tabelaFrequencia" class="table table-hover table-striped table-bordered" style="--bs-table-bg: transparent !important;">
                             <thead>
                                 <tr>
                                     <th scope="col">Ra</th>

@@ -50,6 +50,13 @@ $turmasData = $turmasStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Adicionar aqui a lógica para filtrar os treinamentos
 
+function truncateText($text, $maxLength = 20) {
+    if (strlen($text) > $maxLength) {
+        return substr($text, 0, $maxLength) . '...';
+    } else {
+        return $text;
+    }
+}
 
 
 
@@ -59,7 +66,6 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 // Continuar com o restante do código...
-
 $options = new Options();
 $options->setDefaultFont('Helvetica');
 $options->set('isHtml5ParserEnabled', true);
@@ -131,8 +137,8 @@ foreach ($turmasData as $key => $turma) {
     $html .= '</thead>';
     $html .= '<tbody>';
     $html .= '<tr>';
-    $html .= '<td style="max-width: 10px; word-wrap: break-word;  font-size: 14px;">' . $turma['nome_turma'] . '</td>';
-    $html .= '<td style="max-width: 100px; word-wrap: break-word;">' . $turma['nomenclatura'] . '</td>';
+    $html .= '<td style="max-width: 10px; word-wrap: break-word;  font-size: 14px;">' . ($turma['nome_turma']) . '</td>';
+    $html .= '<td style="max-width: 100px; word-wrap: break-word;">' . truncateText($turma['nomenclatura']) . '</td>';
     $html .= '<td style="max-width: 180px; word-wrap: break-word;">' . $turma['razao_social'] . '</td>';
     $html .= '<td style="max-width: 2px; word-wrap: break-word;">' . $turma['nome_colaborador'] . '</td>';
     $html .= '<td style="max-width: 2px; word-wrap: break-word; ">' . $turma['carga_horaria'] . '</td>';
@@ -169,10 +175,7 @@ $html .= '</script>';
 
 $html .= '</body></html>';
 
-
-
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream('documento.pdf', array('Attachment' => 0));
-

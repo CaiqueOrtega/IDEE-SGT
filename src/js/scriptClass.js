@@ -116,9 +116,9 @@ $(document).ready(function () {
 
     $('#editarBtn').on('click', function () {
         if ($('#tableClass tbody tr').length === 0) {
-            $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
-            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-            errorModal.show();
+            // $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
+            // var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+            // errorModal.show();
         } else {
             modoEdicao = !modoEdicao;
 
@@ -216,7 +216,7 @@ $(document).ready(function () {
                 } else {
                     $.ajax({
                         type: 'GET',
-                        url: 'class/tableClass.php',
+                        url: 'class/indexClass.php',
                         success: function (newTableHTML) {
                             $('#tableClass').replaceWith(newTableHTML);
                             habilitarEdicao();
@@ -588,7 +588,7 @@ $(document).ready(function () {
     relatorioBtn.prop('disabled', true);
 
     // Atualizar o atributo data-filtrorelatorio do botão quando a seleção mudar
-    $('#filtroSelectStudents').change(function () {
+    $('.filtroSelectStudents').change(function () {
         var selectedValue = $(this).val();
         $('.relatorioBtnStudents').data('filtrorelatorio', selectedValue);
 
@@ -603,7 +603,7 @@ $(document).ready(function () {
     // Usar um evento de clique específico para os botões dentro do modal
     $(".relatorioBtnStudents").click(function () {
         var filtro = $(this).data('filtrorelatorio');
-        
+
         if (!filtro) {
             $("#errorMsg").text('Por favor, selecione uma opção para gerar o relatório.');
             var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
@@ -681,7 +681,7 @@ $(document).ready(function () {
             },
             success: function (response) {
                 // Supondo que a resposta do back-end contenha o URL do certificado gerado
-                window.open('relatorio/indexCertificado.php?turmaId='  + turmaId + '&aluno=' + alunoId, '_blank');
+                window.open('relatorio/indexCertificado.php?turmaId=' + turmaId + '&aluno=' + alunoId, '_blank');
                 location.replace(`?modalStudents=modalStudents-${turmaId}`);
             },
             error: function (xhr, status, error) {
@@ -778,7 +778,10 @@ $(document).ready(function () {
 
     $('.editarBtnNota').on('click', function () {
         if ($('#tabelaNota tbody tr').length === 0) {
-            $("#error-container").text('A tabela não contém dados. Não é possível editar.').removeClass('d-none');
+            $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
+            var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+      
+            errorModal.show();
         } else {
             modoEdicao = !modoEdicao;
 
@@ -810,10 +813,13 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status !== 200) {
                     var errorMessage = "Erro na solicitação: " + response.msg;
+                    $("#errorMsg").text(response.msg);
+                    var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                    errorModal.show();
                     $("#error-container").text(response.msg).removeClass('d-none');
                 } else {
                     $("#successMsg").text(response.msg);
-                    
+
                     location.replace(`?modalStudents=modalStudents-${turmaid}`);
                     var successModal = new bootstrap.Modal(document.getElementById('statusSuccessModal'));
                     successModal.show();
@@ -846,24 +852,31 @@ $(document).ready(function () {
     }
 
     $('.editarBtnFrequencia').on('click', function () {
-        modoEdicao = !modoEdicao;
+        if ($('#tabelaFrequencia tbody tr').length === 0) {
+            $("#errorMsg").text('A tabela não contém dados. Não é possível editar.');
+      var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
 
-        if (modoEdicao) {
-            // Modo de edição ativado
-            iconElement.removeClass().addClass('bi bi-box-arrow-right');
-            btnTexto.text('Sair da Edição');
-            $('#alert').removeClass('d-none');
-
-            // Habilita a edição nas células
-            habilitarEdicao();
+      errorModal.show();
         } else {
-            // Modo de edição desativado
-            iconElement.removeClass().addClass('bi bi-pen-fill');
-            btnTexto.text('Editar');
-            $('#alert').addClass('d-none');
+            modoEdicao = !modoEdicao;
 
-            // Desabilita a edição nos checkboxes
-            desabilitarEdicao();
+            if (modoEdicao) {
+                // Modo de edição ativado
+                iconElement.removeClass().addClass('bi bi-box-arrow-right');
+                btnTexto.text('Sair da Edição');
+                $('#alert').removeClass('d-none');
+
+                // Habilita a edição nas células
+                habilitarEdicao();
+            } else {
+                // Modo de edição desativado
+                iconElement.removeClass().addClass('bi bi-pen-fill');
+                btnTexto.text('Editar');
+                $('#alert').addClass('d-none');
+
+                // Desabilita a edição nos checkboxes
+                desabilitarEdicao();
+            }
         }
     });
 
@@ -929,7 +942,7 @@ $(document).ready(function () {
     });
 
     function updateTableFrequencia(data, turmaid) {
-      
+
         console.log(data);
         $.ajax({
             method: 'POST',
@@ -940,7 +953,9 @@ $(document).ready(function () {
                     var errorMessage = "Erro na solicitação: " + response.msg;
 
                     console.log(errorMessage);
-                    $("#errorMsg").text(response.msg);
+                    // $("#errorMsg").text(response.msg);
+                    // var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                    // errorModal.show();
 
                     errorModal.show();
                 } else {
@@ -954,9 +969,9 @@ $(document).ready(function () {
     }
 
     $('.editarBtnFrequencia').on('click', function () {
-     
+
         if ($('#modalFrequencia tbody tr').length === 0) {
-    
+
         } else {
             modoEdicao = !modoEdicao;
 

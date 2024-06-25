@@ -72,6 +72,15 @@ $alunosStmt->execute();
 $alunosData = $alunosStmt->fetchAll(PDO::FETCH_ASSOC);
 
 
+
+function truncateText($text, $maxLength = 20) {
+    if (strlen($text) > $maxLength) {
+        return substr($text, 0, $maxLength) . '...';
+    } else {
+        return $text;
+    }
+}
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -147,7 +156,7 @@ foreach ($turmasData as $turma) {
     
     $html .= '<tr>';
     $html .= '<td style="max-width: 300px; word-wrap: break-word;">' . $turma['nome_turma'] . '</td>';
-    $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $turma['nomenclatura'] . '</td>';
+    $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . truncateText($turma['nomenclatura']) . '</td>';
     $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $turma['nome_colaborador'] . '</td>';
     $html .= '<td style="max-width: 150px; word-wrap: break-word;">' . $turma['carga_horaria'] . '</td>';
     $html .= '<td style="max-width: 50px; word-wrap: break-word;">' . date('d/m/Y', strtotime($turma['data_inicio'])) . '</td>';
@@ -163,36 +172,6 @@ $html .= '<p style="font-size: 16px; text-align: justify; margin-bottom: -10px;"
 // Iterar sobre os dados das turmas e adicionar ao relatório
 $count = count($turmasData);
 foreach ($turmasData as $key => $turma) {
-  
-
-    // $html .= '<table style="margin-bottom: -20px; width: 100%;">';
-    // $html .= '<tr>';
-    // $html .= '<td style="width: 80%;"><h3>Treinamento Solicitado pela ' . $turma['razao_social'] . '</h3></td>';
-    // $html .= '<td style="width: 20%; text-align: center;"><h3>Data<br>' . date('d-m-Y', strtotime($turma['data_inicio'])) . '</h3></td>';
-    // $html .= '</tr>';
-    // $html .= '</table>';
-
-    // $html .= '<table style="width: 100%;">';
-    // $html .= '<thead>';
-    // $html .= '<tr>';
-    // $html .= '<th>NR</th>';
-    // $html .= '<th>Nomenclatura</th>';
-    // $html .= '<th>Objetivo</th>';
-    // $html .= '<th>Carga Horaria</th>';
-    // $html .= '<th>Horas Praticas</th>';
-    // $html .= '<th>Horas Teoricas</th>';
-    // $html .= '</tr>';
-    // $html .= '</thead>';
-    // $html .= '<tbody>';
-    // $html .= '<tr>';
-    // $html .= '<td style="max-width: 10px; word-wrap: break-word;">' . $turma['nome_turma'] . '</td>';
-    // $html .= '<td style="max-width: 100px; word-wrap: break-word;">' . $turma['nomenclatura'] . '</td>';
-    // $html .= '<td style="max-width: 180px; word-wrap: break-word;">' . $turma['nome_colaborador'] . '</td>';
-    // $html .= '<td style="max-width: 2px; word-wrap: break-word;">' . $turma['carga_horaria'] . '</td>';
-    // $html .= '<td style="max-width: 2px; word-wrap: break-word;">' . date('d-m-Y', strtotime($turma['data_inicio'])) . '</td>';
-    // $html .= '</tr>';
-    // $html .= '</tbody>';
-    // $html .= '</table>';
 
     $html .= '<div style="width: 100%; border: 1px solid black; margin-bottom: -20px; margin-top: 0px; text-align: left;">';
     $html .= '<h3 style="margin-left: 20px;">Funcionário Inscritos</h3>';
