@@ -1,5 +1,7 @@
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 //Deletar Turma
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
 $(document).ready(function () {
     // Abrir modal de deleção e passar o token
     $(document).on('click', '.openModalDeleteClass', function () {
@@ -53,9 +55,10 @@ $(document).ready(function () {
         });
     });
 });
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 //Atualizar Turma
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
 $(document).ready(function () {
     var modoEdicao = false;
     var btnTexto = $('#editarBtn span');
@@ -216,9 +219,9 @@ $(document).ready(function () {
                 } else {
                     $.ajax({
                         type: 'GET',
-                        url: 'class/indexClass.php',
+                        url: 'class/tableClass.php',
                         success: function (newTableHTML) {
-                            $('#tableClass').replaceWith(newTableHTML);
+                            $('.tableClass').replaceWith(newTableHTML);
                             habilitarEdicao();
                             $('#modalUpdateClass').modal('hide');
                         },
@@ -814,8 +817,8 @@ $(document).ready(function () {
                 if (response.status !== 200) {
                     var errorMessage = "Erro na solicitação: " + response.msg;
                     $("#errorMsg").text(response.msg);
-                    var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
-                    errorModal.show();
+                    // var errorModal = new bootstrap.Modal(document.getElementById('statusErrorsModal'));
+                    // errorModal.show();
                     $("#error-container").text(response.msg).removeClass('d-none');
                 } else {
                     $("#successMsg").text(response.msg);
@@ -833,6 +836,9 @@ $(document).ready(function () {
     }
 });
 
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//Atualizar Frequencia
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 $(document).ready(function () {
     var modoEdicao = false;

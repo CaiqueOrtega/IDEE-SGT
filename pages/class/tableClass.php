@@ -5,7 +5,7 @@ include '../../api/private/cript.php';
 
 
 <div class="table-responsive">
-    <table id="tableClass" class="table table-hover table-striped" style="--bs-table-bg: transparent !important;">
+    <table id="tableClass" class="table table-hover table-striped tableClass" style="--bs-table-bg: transparent !important;">
         <thead>
             <tr>
                 <th scope="col">Turma</th>

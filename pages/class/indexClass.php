@@ -32,19 +32,18 @@ $id = $_SESSION['login']['id'];
   </div>
 
 
-  <div class="input-group ms-3 w-25 position-absolute " style="right: 13%; top: 4%">
-    <select class="form-select " id="filtroSelect">
+  <div class="input-group ms-3 w-25 position-absolute" style="right: 13%; top: 4%">
+    <select class="form-select" id="filtroSelect">
         <option value="" disabled selected>Selecione um filtro</option> <!-- Opção desativada e selecionada -->
-        <option value=" " >Sem filtro</option> <!-- Opção desativada e selecionada -->
+        <option value=" ">Sem filtro</option> <!-- Opção desativada e selecionada -->
         <?php
         $treinamentosAdicionados = array(); // Array para armazenar os IDs dos treinamentos já adicionados
         foreach ($turmasData as $turma) {
             // Verifica se o ID do treinamento já foi adicionado
             if (!in_array($turma['treinamento_id'], $treinamentosAdicionados)) {
                 // Se não foi adicionado, adiciona ao <select>
-                
                 ?>
-                <option  value="<?php echo $turma['treinamento_id']; ?>"><?php echo $turma['nomenclatura']; ?></option>
+                <option value="<?php echo $turma['treinamento_id']; ?>"><p class="flex-nowrap text-truncate treinamentoOption" style="max-width: 100px;"><?php echo $turma['nomenclatura']; ?></p></option>
                 <?php
                 // Adiciona o ID do treinamento ao array de treinamentos adicionados
                 $treinamentosAdicionados[] = $turma['treinamento_id'];
@@ -54,6 +53,22 @@ $id = $_SESSION['login']['id'];
     </select>
     <button class="btn btn-outline-danger fs-5 ms-2" id="relatorioBtnClass" data-filtrorelatorio="<?php echo $turma['treinamento_id']; ?>"><i class="fa-solid fa-file-pdf text-center"></i></button>
 </div>
+
+<script>
+    $(document).ready(function(){
+        var maxLength = 50;
+
+        $('filtroSelect').on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            var text = selectedOption.text();
+
+            if (text.length > maxLength) {
+                selectedOption.text(text.substring(0, maxLength));
+            }
+        });
+    });
+</script>
+
 
 </section>
 

@@ -106,8 +106,9 @@ foreach ($alunosData as $aluno) {
         $html .= '<h4 style=";">Por ter atendido os requisitos necessários confere-se o presente certificado a:</h4>';
         $html .= '<h1 style="text-align: center;">' . $aluno['nome_funcionario'] . '</h1>';
         $html .= '<h4 style="text-align: center;">Portador do CPF:' . $aluno['cpf'] . ', concluiu no dia ' . date('d/m/Y', strtotime($turma['data_conclusao'])) . ' o treinamento de:</h4>';
-        $html .= '<h5 style="text-align: center;">CURSO DE SEGURANÇA NO TRABALHO EM ' . $turma['nomenclatura'] . ' (' . $turma['nr'] . ')</h5>';
-        $html .= '<h5 style="text-align: center;">perfazendo 04 horas aula, '.$turma['horas_teorica'].' teórica e '.$turma['horas_pratica'].' prática, nas dependências da '.$turma['razao_social'].', de acordo com a NR '.$turma['nr'].' - '.$turma['nomenclatura'].'.</h5>';
+        $html .= '<h5 style="text-align: center;">' . $turma['nomenclatura'] . ' (' . $turma['nr'] . ')</h5>';
+        $html .= '<h5 style="text-align: center;">perfazendo 04 horas aula, '.$turma['horas_teorica'].' teórica e '.$turma['horas_pratica'].' prática, com uma frequencia '.$aluno['frequencia'].'% e uma media final de '.$aluno['nota_media'].' nas dependências da '.$turma['razao_social'].', de acordo com a NR '.$turma['nr'].' - '.$turma['nomenclatura'].'.</h5>';
+        
     }
 }
 $html .= '</div>';

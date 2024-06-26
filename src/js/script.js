@@ -124,9 +124,12 @@ $(document).ready(function () {
 
     if (currentURL) {
         loadContent(currentURL);
+    } else {
+        // Define a URL padrão aqui
+        var defaultURL = '/IDEE-SGT/pages/home/indexHome.php';
+        loadContent(defaultURL);
     }
 });
-
 
   
   

@@ -130,7 +130,7 @@ foreach ($turmasData as $key => $turma) {
     $html .= '<tr>';
     $html .= '<th>Turma</th>';
     $html .= '<th>Treinamento</th>';
-    $html .= '<th>Empresa</th>';
+    $html .= '<th>Reciclagem</th>';
     $html .= '<th>Colaborador</th>';
     $html .= '<th>Carga Horária</th>';
     $html .= '</tr>';
@@ -139,7 +139,7 @@ foreach ($turmasData as $key => $turma) {
     $html .= '<tr>';
     $html .= '<td style="max-width: 10px; word-wrap: break-word;  font-size: 14px;">' . ($turma['nome_turma']) . '</td>';
     $html .= '<td style="max-width: 100px; word-wrap: break-word;">' . truncateText($turma['nomenclatura']) . '</td>';
-    $html .= '<td style="max-width: 180px; word-wrap: break-word;">' . $turma['razao_social'] . '</td>';
+    $html .= '<td style="max-width: 180px; word-wrap: break-word;">' . $turma['reciclagem'] . '</td>';
     $html .= '<td style="max-width: 2px; word-wrap: break-word;">' . $turma['nome_colaborador'] . '</td>';
     $html .= '<td style="max-width: 2px; word-wrap: break-word; ">' . $turma['carga_horaria'] . '</td>';
     $html .= '</tr>';
