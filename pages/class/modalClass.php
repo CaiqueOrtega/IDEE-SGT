@@ -35,13 +35,13 @@
                             <span class="fw-semibold">Data de Inicio:</span> <?php echo date('d/m/Y', strtotime($turma['data_inicio'])); ?>
                         </p>
                         <p id="cargaHoraria">
-                            <span class="fw-semibold">Carga Horária:</span> <?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?>
+                            <span class="fw-semibold">Carga Horária:</span> <?php echo $turma['carga_horaria'] . ' Horas'; ?>
                         </p>
                         <p id="horasPratica">
-                            <span class="fw-semibold">Horas Prática:</span> <?php echo sprintf('%02d:00:00', $turma['horas_pratica']); ?>
+                            <span class="fw-semibold">Horas Prática:</span> <?php echo $turma['horas_pratica']. ' Horas'; ?>
                         </p>
                         <p id="horasTeorica">
-                            <span class="fw-semibold">Horas Teórica:</span> <?php echo sprintf('%02d:00:00', $turma['horas_teorica']); ?>
+                            <span class="fw-semibold">Horas Teórica:</span> <?php echo $turma['horas_teorica']. ' Horas'; ?>
                         </p>
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                                 <select class="form-select status-select" name="permissao" aria-label="Default select example" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-turmaid="<?php echo $turma['turma_id']; ?>">
                                     <option value="" selected>Selecione o Status do Aluno</option>
                                     <option value="" disabled><?php echo $aluno['status']  ?></option>
-                                    <option value="<?php echo $opcaoSelecionada; ?>"><?php echo ucfirst($opcaoSelecionada); ?></option>
+                                    <option value="<?php echo $opcaoSelecionada; ?>"><?php echo ($opcaoSelecionada); ?></option>
                                 </select>
                             </div>
                         </div>
@@ -352,7 +352,7 @@
                                     $dias = ceil($cargaHorariaTotal / $horasPorDia);
 
                                     for ($i = 1; $i <= $dias; $i++) { ?>
-                                        <th scope="col-3">Dia <?php echo $i; ?></th>
+                                        <th scope="col-3" class="text-center">Dia<?php echo $i; ?></th>
                                     <?php } ?>
                                 </tr>
                             </thead>
@@ -366,7 +366,7 @@
                                     <tr class="data-row align-middle" data-index="<?php echo $index; ?>">
                                         <th data-field="registro" class="text-right"><?php echo $aluno['numero_registro_empresa']; ?></th>
                                         <td data-field="nome_funcionario"><?php echo $aluno['nome_funcionario']; ?></td>
-                                        <td data-field="frequencia"><?php echo $aluno['frequencia']; ?></td>
+                                        <td data-field="frequencia" class="text-end"><?php echo $aluno['frequencia'] .'%'; ?></td>
                                         <?php for ($i = 1; $i <= $dias; $i++) { ?>
                                             <?php
                                             $sqlExisteFrequencia = ("SELECT * FROM `frequencia_aluno` WHERE `aluno_id_fk` = :aluno_id_fk AND `turma_id_fk` = :turma_id_fk AND `dia` = :dia LIMIT 1");
@@ -378,9 +378,9 @@
                                             $frequenciaAluno = $stmtFrequenciaAluno->fetch(PDO::FETCH_OBJ);
                                             ?>
                                             <td class="p-4">
-                                                <div class="form-check fs-5">
+                                                <div class="form-check fs-5 ">
                                                     <input data-turmaid="<?php echo $turma['turma_id']; ?>" data-alunoid="<?php echo $aluno['aluno_id']; ?>" data-dia="<?php echo $i; ?>" class="frequencia-aluno-<?php echo $turma['turma_id']; ?> frequencia-<?php echo $aluno['aluno_id']; ?> form-check-input" type="checkbox" id="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>" name="frequencia[]" value="dia-<?php echo $i; ?>" <?php echo !$frequenciaAluno ? 'checked' : ''; ?> disabled>
-                                                    <label class="form-check-label" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
+                                                    <label class="form-check-label text-center" for="frequencia-<?php echo $aluno['aluno_id']; ?>-dia-<?php echo $i; ?>"></label>
                                                 </div>
                                             </td>
                                         <?php } ?>

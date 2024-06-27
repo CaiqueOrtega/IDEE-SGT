@@ -30,9 +30,9 @@
                     <th class="editable-cell" data-field="nr"><?php echo $treinamento['nr']; ?></th>
                     <td class="editable-cell" data-field="nomenclatura"><?php echo $treinamento['nomenclatura']; ?></td>
                     <td class="editable-cell" data-field="reciclagem"><?php echo $treinamento['reciclagem']; ?></td>
-                    <td class="editable-cell" data-field="carga_horaria"><?php echo sprintf('%02d:00:00',  $treinamento['carga_horaria']); ?></td>
-                    <td class="editable-cell" data-field="horas_pratica"><?php echo sprintf('%02d:00:00',  $treinamento['horas_pratica']); ?></td>
-                    <td class="editable-cell" data-field="horas_teorica"><?php echo sprintf('%02d:00:00',  $treinamento['horas_teorica']); ?></td>
+                    <td class="editable-cell" data-field="carga_horaria"><?php echo $treinamento['carga_horaria']. ' Horas'; ?></td>
+                    <td class="editable-cell" data-field="horas_pratica"><?php echo $treinamento['horas_pratica']. ' Horas'; ?></td>
+                    <td class="editable-cell" data-field="horas_teorica"><?php echo $treinamento['horas_teorica']. ' Horas'; ?></td>
 
 
 

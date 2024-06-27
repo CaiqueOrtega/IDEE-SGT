@@ -40,17 +40,21 @@
       </div>
       <div class="card-body">
 
-
-        <h6 class="mt-2">Objetivo:</h6><span id="objetivo"><?php echo $treinamento['objetivo']; ?></span>
-
-        <h6 class="mt-2">Pré-requisitos:</h6><span id="preRequisitos"><?php echo $treinamento['pre_requisitos']; ?></span>
-
-        <h6 class="mt-2">Carga Horária</h6><span id="cargaHoraria"><?php echo sprintf('%02d:00:00', $treinamento['carga_horaria']); ?></span>
-
-        <h6 class="mt-2">Horas-prática</h6><span id="horasPratica"> <?php echo sprintf('%02d:00:00', $treinamento['horas_pratica']); ?></span>
-
-        <h6 class="mt-2">Horas-teórica</h6><span id="horas-teorica"><?php echo sprintf('%02d:00:00', $treinamento['horas_teorica']); ?></span>
-
+      <p id="objetivo">
+    <span class="fw-semibold">Objetivo: </span><?php echo $treinamento['objetivo']; ?>
+</p>
+<p>
+    <span class="fw-semibold">Pré-requisitos:</span> <span id="preRequisitos"><?php echo $treinamento['pre_requisitos']; ?></span>
+</p>
+<p>
+    <span class="fw-semibold">Carga Horária:</span> <?php echo $treinamento['carga_horaria'] . ' Horas'; ?>
+</p>
+<p>
+    <span class="fw-semibold">Horas-prática:</span> <?php echo $treinamento['horas_pratica'] . ' Horas'; ?>
+</p>
+<p>
+    <span class="fw-semibold">Horas-teórica:</span> <?php echo $treinamento['horas_teorica'] . ' Horas'; ?>
+</p>
 
         <div class="col-md-12 d-flex justify-content-end">
           <button type="button" class="btn btn-login modalInscricaoBtn" data-nomenclatura="<?php echo htmlspecialchars($treinamento['nomenclatura']); ?>" data-token="<?php echo $tokenTraining; ?> ">
