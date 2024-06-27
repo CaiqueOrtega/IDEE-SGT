@@ -74,11 +74,11 @@ $permissao = $_SESSION['login']['permissao'];
                         </a>
 
                     </div>
-
+                    <?php if ($permissao == 1 || $permissao == 4 ||  $permissao == 2) { ?> 
                     <a href="#" class="botao-menu-lateral-turmas list-group-item list-group-item-action py-3" onclick="loadContent('/IDEE-SGT/pages/class/indexClass.php')" data-url="/IDEE-SGT/pages/class/indexClass.php">
                         <i class="bi bi-book fa-fw me-3"></i>Turmas
                     </a>
-
+                    <?php } ?>
                     <a href="#" class="list-group-item list-group-item-action py-3" onclick="loadContent('/IDEE-SGT/pages/company/indexCompany.php')" data-url="/IDEE-SGT/pages/company/indexCompany.php">
                         <i class="bi bi-buildings fa-fw me-3"></i>Empresas
                     </a>

@@ -19,6 +19,9 @@
                         <p id="turma">
                             <span class="fw-semibold">Turma:</span> <?php echo $turma['nome_turma']; ?>
                         </p>
+                        <p id="NR">
+                            <span class="fw-semibold">NR:</span> <?php echo $turma['nr']; ?>
+                        </p>
                         <p id="treinamento">
                             <span class="fw-semibold">Treinamento:</span> <?php echo $turma['nomenclatura']; ?>
                         </p>
