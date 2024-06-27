@@ -39,7 +39,7 @@ include '../../api/private/cript.php';
                     <td class="editable-cell text-truncate" style="max-width: 170px;" data-field="treinamento_id"><?php echo $turma['nomenclatura']; ?></td>
                     <td class="editable-cell" data-field="empresa_aluno"><?php echo $turma['razao_social']; ?></td>
                     <td class="editable-cell-colaborador" data-field="colaborador"><?php echo $turma['nome_colaborador']; ?></td>
-                    <td class="editable-cell" data-field="treinamento_id"><?php echo sprintf('%02d:00:00', $turma['carga_horaria']); ?></td>
+                    <td class="editable-cell" data-field="treinamento_id"><?php echo  $turma['carga_horaria'] . ' Horas'; ?></td>
 
                     <?php if ($idPermissao == 1 || $idPermissao == 4) { ?>
                         <td class="text-center">
